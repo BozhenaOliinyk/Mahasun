@@ -1,66 +1,52 @@
-# main.py
-import pymysql
-from repository import RepositoryManager
-from entities import Klyent
+import os
+import django
 
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'MySQL',
-    'database': 'mydb',
-    'cursorclass': pymysql.cursors.DictCursor
-}
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Turkish_mahasyn.settings')
+django.setup()
+
+from appi_app.models import Klyent, TypBonusnoiKartky, Pracivnyk, TorhovaTochka
 
 
-def demo(repos: RepositoryManager):
+def demo():
+    for k in Klyent.objects.all():
+        print(f"ID: {k.id}, Ім'я: {k.prizvyshche} {k.imya}, Бонуси: {k.bonusy}")
 
-    for k in repos.klyenty.all():
-        print(k)
+    try:
+        kartka = TypBonusnoiKartky.objects.get(pk=1)
+        print(f"Знайдено картку: {kartka.typ}")
+    except TypBonusnoiKartky.DoesNotExist:
+        print("Помилка: Картку з ID=1 не знайдено в БД! Створіть її через адмінку або сайт.")
+        return
 
-    pracivnyky = repos.pracivnyky.all()
-    kartka = repos.kartky.get_by_id(1)
-
-    new_klyent = repos.klyenty.create(
+    print("\n--- 3. СТВОРЕННЯ НОВОГО КЛІЄНТА ---")
+    new_klyent = Klyent.objects.create(
         prizvyshche="Олійник",
         imya="Божена",
         pobatkovi="Ігорівна",
         data="2023-12-01",
         bonusy=300,
-        id_kartka=kartka.id
+        kartka=kartka
     )
-    print("Створили нового клієнта")
+    print(f"Створили клієнта: {new_klyent}")
 
-    new_klyent.add_bonus(500, kartka)
-    repos.klyenty.update(new_klyent.id, bonusy=new_klyent.bonusy)
+    new_klyent.add_bonus(500)
 
-    print("Оновили бонуси клієнта")
-    for k in repos.klyenty.all():
-        print(k)
+    new_klyent.refresh_from_db()
+    print(f"Бонуси після нарахування: {new_klyent.bonusy}")
 
+    new_klyent.delete()
+    print("Клієнта успішно видалено.")
 
-    print("Видалили клієнта")
-    repos.klyenty.delete(new_klyent.id)
-
-    for k in repos.klyenty.all():
-        print(k)
-
+    pracivnyky = Pracivnyk.objects.all()
     for p in pracivnyky:
-        if p.id_tochka:
-            tochka = repos.tochky.get_by_id(p.id_tochka)
-            print(f"Працівник {p.prizvyshche} {p.imya} {p.pobatkovi} працює у точці {tochka.nazva}")
+        if p.tochka:
+            print(f"Працівник {p.get_full_name()} працює у точці: {p.tochka.nazva}")
+        else:
+            print(f"Працівник {p.get_full_name()} не закріплений за точкою.")
 
 
 if __name__ == "__main__":
-    conn = None
     try:
-        conn = pymysql.connect(**DB_CONFIG)
-        repos = RepositoryManager(conn)
-        demo(repos)
-        conn.commit()
+        demo()
     except Exception as e:
-        print(f"{e}")
-        if conn:
-            conn.rollback()
-    finally:
-        if conn:
-            conn.close()
+        print(f"Виникла помилка: {e}")

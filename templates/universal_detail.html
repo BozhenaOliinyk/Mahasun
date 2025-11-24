@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+
+<div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
+    <table style="width: auto; margin-bottom: 0;">
+        {% for label, value in data %}
+        <tr>
+            <th style="background: none; color: black; width: 200px;">{{ label }}:</th>
+            <td style="border: none;">{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<br>
+<hr>
+<div style="margin-top: 20px;">
+    <a href="{% url back_url %}" class="btn btn-secondary">← Назад</a>
+    <a href="{% url edit_url pk=obj_id %}" class="btn btn-primary">Редагувати</a>
+    <a href="{% url delete_url pk=obj_id %}" class="btn btn-danger" style="float: right;">Видалити</a>
+</div>
+{% endblock %}

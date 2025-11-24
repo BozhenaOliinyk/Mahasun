@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+
+<div style="background: white; padding: 20px; border: 1px solid #ddd; max-width: 600px;">
+    <form method="post">
+        {% csrf_token %}
+        <table style="border: none;">
+            {{ form.as_table }}
+        </table>
+        <br>
+        <button type="submit" class="btn btn-success">Зберегти</button>
+        <a href="{% url back_url %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
+{% endblock %}

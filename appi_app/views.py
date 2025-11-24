@@ -1,280 +1,186 @@
-# appi_app/views.py
-
-import pymysql
-import json
-import base64
-import binascii
-from pathlib import Path
-import sys
-from datetime import date
-
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate
-
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from rest_framework.decorators import action
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-sys.path.append(str(BASE_DIR))
-
-try:
-    from repository import RepositoryManager
-except ImportError:
-    raise
-
-class KlyentSerializer: pass
-
-
-class PracivnykSerializer: pass
-
-
-class TochkySerializer: pass
-
-
-class KartkySerializer: pass
-
-
-class SpeciiSerializer: pass
-
-
-class FryktySerializer: pass
-
-
-class PereviznykySerializer: pass
-
-
-class PostachalnykySerializer: pass
-
-
-class ReklamySerializer: pass
-
-
-class PostachannyaSerializer: pass
-
-
-class ZnyzkySpeciiSerializer: pass
-
-
-class ZnyzkyFryktySerializer: pass
-
-
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'MySQL',
-    'database': 'mydb',
-    'cursorclass': pymysql.cursors.DictCursor
-}
-
-try:
-    conn = pymysql.connect(**DB_CONFIG)
-    repos = RepositoryManager(conn)
-except Exception as e:
-    print(f"\nПомилка підключення до БД: {e}\n")
-    repos = None
-
-
-def serialize(obj):
-    if obj is None:
-        return None
-    return obj.__dict__
+from django.shortcuts import render, get_object_or_404, redirect
+from django.apps import apps
+from .models import (
+    TypBonusnoiKartky, TorhovaTochka, Klyent, Pracivnyk,
+    Specii, Sukhofrukty, Pereviznyky, Postachalnyky,
+    Reklama, PostachannyaProduktsii, ZnyzhkaNaSpecii, ZnyzhkaNaSukhofrukty
+)
+from .forms import (
+    TypBonusnoiKartkyForm, TorhovaTochkaForm, KlyentForm, PracivnykForm,
+    SpeciiForm, SukhofruktyForm, PereviznykyForm, PostachalnykyForm,
+    ReklamaForm, PostachannyaProduktsiiForm, ZnyzhkaNaSpeciiForm, ZnyzhkaNaSukhofruktyForm
+)
 
 
 
-def basic_auth_required(view_func):
+def generic_list_view(request, model_class, url_prefix):
+    queryset = model_class.objects.all()
 
-    def _wrapped_view(request, *args, **kwargs):
-        unauth_response = JsonResponse({"error": "Аутентифікація не пройдена"}, status=401)
-        unauth_response['WWW-Authenticate'] = 'Basic realm="API"'
-        if request.user.is_authenticated:
-            return view_func(request, *args, **kwargs)
-        if 'HTTP_AUTHORIZATION' not in request.META:
-            return unauth_response
-        auth = request.META['HTTP_AUTHORIZATION'].split()
-        if len(auth) != 2 or auth[0].lower() != "basic":
-            return unauth_response
-        try:
-            auth_data = base64.b64decode(auth[1]).decode('utf-8')
-            username, password = auth_data.split(':', 1)
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                return view_func(request, *args, **kwargs)
-            else:
-                return unauth_response
-        except (UnicodeDecodeError, TypeError, ValueError, binascii.Error):
-            return unauth_response
+    headers = [field.verbose_name for field in model_class._meta.fields]
 
-    return _wrapped_view
+    rows = []
+    for obj in queryset:
+        values = []
+        for field in model_class._meta.fields:
+            val = getattr(obj, field.name)
+            if field.is_relation and val is not None:
+                val = str(val)
+            values.append(val)
+
+        rows.append({
+            'id': obj.pk,
+            'values': values
+        })
+
+    context = {
+        'title': model_class._meta.verbose_name_plural.capitalize(),
+        'headers': headers,
+        'rows': rows,
+        'url_prefix': url_prefix,
+        'create_url': f"{url_prefix}_create"
+    }
+    return render(request, 'universal_list.html', context)
 
 
+def generic_detail_view(request, model_class, url_prefix, pk):
+    obj = get_object_or_404(model_class, pk=pk)
 
-def _crud_list(request, repo, entity_name):
-    if request.method == 'GET':
-        items = repo.all()
-        data = [serialize(i) for i in items]
-        return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False, 'indent': 4})
-    elif request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            new_item = repo.create(**data)
-            conn.commit()
-            return JsonResponse(serialize(new_item), status=201, json_dumps_params={'ensure_ascii': False})
-        except Exception as e:
-            return JsonResponse({"error": f"Некоректна інформація для створення сутності {entity_name}: {e}"}, status=400)
+    data = []
+    for field in model_class._meta.fields:
+        val = getattr(obj, field.name)
+        if field.is_relation and val is not None:
+            val = str(val)
+        data.append((field.verbose_name, val))
+
+    context = {
+        'title': f"{model_class._meta.verbose_name}: {obj}",
+        'data': data,
+        'obj_id': pk,
+        'url_prefix': url_prefix,
+        'back_url': f"{url_prefix}_list",
+        'edit_url': f"{url_prefix}_update",
+        'delete_url': f"{url_prefix}_delete"
+    }
+    return render(request, 'universal_detail.html', context)
+
+
+def generic_edit_view(request, model_class, form_class, url_prefix, pk=None):
+    if pk:
+        obj = get_object_or_404(model_class, pk=pk)
+        form = form_class(request.POST or None, instance=obj)
+        title = f"Редагування: {model_class._meta.verbose_name}"
     else:
-        return JsonResponse({"error": f"Нема доступу до методу {request.method}"}, status=405)
+        obj = None
+        form = form_class(request.POST or None)
+        title = f"Додавання: {model_class._meta.verbose_name}"
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect(f"{url_prefix}_list")
+
+    context = {
+        'form': form,
+        'title': title,
+        'back_url': f"{url_prefix}_list"
+    }
+    return render(request, 'universal_form.html', context)
 
 
-def _crud_detail(request, id, repo, entity_name):
-    try:
-        if request.method == 'GET':
-            item = repo.get_by_id(id)
-            return JsonResponse(serialize(item), json_dumps_params={'ensure_ascii': False}) if item else JsonResponse(
-                {"error": f"{entity_name} не знайдено"}, status=404)
-        elif request.method == 'PUT':
-            data = json.loads(request.body)
-            updated_item = repo.update(id, **data)
-            if updated_item:
-                conn.commit()
-            return JsonResponse(serialize(updated_item),
-                                json_dumps_params={'ensure_ascii': False}) if updated_item else JsonResponse(
-                {"error": f"{entity_name} не знайдено"}, status=404)
-        elif request.method == 'DELETE':
-            repo.delete(id)
-            conn.commit()
-            return HttpResponse(status=204)
-        else:
-            return JsonResponse({"error": f"Нема доступу до методу {request.method}"}, status=405)
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+def generic_delete_view(request, model_class, url_prefix, pk):
+    obj = get_object_or_404(model_class, pk=pk)
+    if request.method == 'POST':
+        obj.delete()
+        return redirect(f"{url_prefix}_list")
 
-
-def drf_handle_crud(repo, request, pk=None):
-
-    if pk is None:
-        response_django_type = _crud_list(request, repo, repo.__class__.__name__)
-    else:
-        response_django_type = _crud_detail(request, pk, repo, repo.__class__.__name__)
-
-    if isinstance(response_django_type, JsonResponse):
-        status_code = response_django_type.status_code
-        try:
-            content = json.loads(response_django_type.content.decode('utf-8'))
-        except json.JSONDecodeError:
-            content = {"message": "Пусте повідомлення або не коректний JSON"}
-        return Response(content, status=status_code)
-
-    elif isinstance(response_django_type, HttpResponse) and response_django_type.status_code == 204:
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    return Response({"error": "Внутрішня помилка обробки запиту"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    context = {
+        'obj': obj,
+        'title': f"Видалення: {model_class._meta.verbose_name}",
+        'back_url': f"{url_prefix}_detail",
+        'back_id': pk
+    }
+    return render(request, 'universal_confirm_delete.html', context)
 
 
 
-class BaseViewSet(viewsets.ViewSet):
-
-    def list(self, request): return drf_handle_crud(self.repo, request, pk=None)
-
-    def retrieve(self, request, pk=None): return drf_handle_crud(self.repo, request, pk=pk)
-
-    def create(self, request): return drf_handle_crud(self.repo, request, pk=None)
-
-    def update(self, request, pk=None): return drf_handle_crud(self.repo, request, pk=pk)
-
-    def destroy(self, request, pk=None): return drf_handle_crud(self.repo, request, pk=pk)
+def klyent_list(request): return generic_list_view(request, Klyent, 'klyent')
+def klyent_detail(request, pk): return generic_detail_view(request, Klyent, 'klyent', pk)
+def klyent_edit(request, pk=None): return generic_edit_view(request, Klyent, KlyentForm, 'klyent', pk)
+def klyent_delete(request, pk): return generic_delete_view(request, Klyent, 'klyent', pk)
 
 
-class KlyentyViewSet(BaseViewSet):
-    repo = repos.klyenty
+def pracivnyk_list(request): return generic_list_view(request, Pracivnyk, 'pracivnyk')
+def pracivnyk_detail(request, pk): return generic_detail_view(request, Pracivnyk, 'pracivnyk', pk)
+def pracivnyk_edit(request, pk=None): return generic_edit_view(request, Pracivnyk, PracivnykForm, 'pracivnyk', pk)
+def pracivnyk_delete(request, pk): return generic_delete_view(request, Pracivnyk, 'pracivnyk', pk)
 
 
-class PracivnykyViewSet(BaseViewSet):
-    repo = repos.pracivnyky
-
-    @action(detail=False, methods=['get'])
-    def report(self, request):
-        if not repos:
-            return Response({"error": "База даних не підключена"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        try:
-            tochky = repos.tochky.all()
-            pracivnyky = repos.pracivnyky.all()
-
-            if not pracivnyky:
-                print("--- ЗВІТ ПРАЦІВНИКІВ: Репозиторій pracivnyky.all() повернув порожній список ---")
-            if not tochky:
-                print("--- ЗВІТ ПРАЦІВНИКІВ: Репозиторій tochky.all() повернув порожній список ---")
+def tochka_list(request): return generic_list_view(request, TorhovaTochka, 'tochka')
+def tochka_detail(request, pk): return generic_detail_view(request, TorhovaTochka, 'tochka', pk)
+def tochka_edit(request, pk=None): return generic_edit_view(request, TorhovaTochka, TorhovaTochkaForm, 'tochka', pk)
+def tochka_delete(request, pk): return generic_delete_view(request, TorhovaTochka, 'tochka', pk)
 
 
-            tochka_map = {t.id: t.nazva for t in tochky}
-
-            detailed_report = []
-
-            for p in pracivnyky:
-                prizvyshche = getattr(p, 'prizvyshche', '')
-                imya = getattr(p, 'imya', '')
-                pobatkovi = getattr(p, 'pobatkovi', '')
-
-                full_name = f"{prizvyshche} {imya} {pobatkovi}".strip()
-
-                tochka_id = getattr(p, 'id_tochka', None)
+def kartka_list(request): return generic_list_view(request, TypBonusnoiKartky, 'kartka')
+def kartka_detail(request, pk): return generic_detail_view(request, TypBonusnoiKartky, 'kartka', pk)
+def kartka_edit(request, pk=None): return generic_edit_view(request, TypBonusnoiKartky, TypBonusnoiKartkyForm, 'kartka',
+                                                            pk)
+def kartka_delete(request, pk): return generic_delete_view(request, TypBonusnoiKartky, 'kartka', pk)
 
 
-                # full_name = f"{p.prizvyshche} {p.imya} {p.pobatkovi}"
-
-                # tochka_id = p.id_tochka
-
-                if tochka_id and tochka_id in tochka_map:
-                    tochka_nazva = tochka_map[tochka_id]
-                else:
-                    tochka_nazva = "Не призначена"
-
-                detailed_report.append({
-                    "Працівник": full_name,
-                    "Працює у торгові точці": tochka_nazva
-                })
-
-            return Response()
-
-        except Exception as e:
-            print("==============================================")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-class TochkyViewSet(BaseViewSet):
-    repo = repos.tochky
+def specii_list(request): return generic_list_view(request, Specii, 'specii')
+def specii_detail(request, pk): return generic_detail_view(request, Specii, 'specii', pk)
+def specii_edit(request, pk=None): return generic_edit_view(request, Specii, SpeciiForm, 'specii', pk)
+def specii_delete(request, pk): return generic_delete_view(request, Specii, 'specii', pk)
 
 
-class KartkyViewSet(BaseViewSet):
-    repo = repos.kartky
+def sukhofrukty_list(request): return generic_list_view(request, Sukhofrukty, 'sukhofrukty')
+def sukhofrukty_detail(request, pk): return generic_detail_view(request, Sukhofrukty, 'sukhofrukty', pk)
+def sukhofrukty_edit(request, pk=None): return generic_edit_view(request, Sukhofrukty, SukhofruktyForm, 'sukhofrukty',
+                                                                 pk)
+def sukhofrukty_delete(request, pk): return generic_delete_view(request, Sukhofrukty, 'sukhofrukty', pk)
 
 
-class SpeciiViewSet(BaseViewSet):
-    repo = repos.specii
+def pereviznyky_list(request): return generic_list_view(request, Pereviznyky, 'pereviznyky')
+def pereviznyky_detail(request, pk): return generic_detail_view(request, Pereviznyky, 'pereviznyky', pk)
+def pereviznyky_edit(request, pk=None): return generic_edit_view(request, Pereviznyky, PereviznykyForm, 'pereviznyky',
+                                                                 pk)
+def pereviznyky_delete(request, pk): return generic_delete_view(request, Pereviznyky, 'pereviznyky', pk)
 
 
-class FryktyViewSet(BaseViewSet):
-    repo = repos.frykty
+def postachalnyky_list(request): return generic_list_view(request, Postachalnyky, 'postachalnyky')
+def postachalnyky_detail(request, pk): return generic_detail_view(request, Postachalnyky, 'postachalnyky', pk)
+def postachalnyky_edit(request, pk=None): return generic_edit_view(request, Postachalnyky, PostachalnykyForm,
+                                                                   'postachalnyky', pk)
+def postachalnyky_delete(request, pk): return generic_delete_view(request, Postachalnyky, 'postachalnyky', pk)
 
 
-class PereviznykyViewSet(BaseViewSet):
-    repo = repos.pereviznyky
+def reklama_list(request): return generic_list_view(request, Reklama, 'reklama')
+def reklama_detail(request, pk): return generic_detail_view(request, Reklama, 'reklama', pk)
+def reklama_edit(request, pk=None): return generic_edit_view(request, Reklama, ReklamaForm, 'reklama', pk)
+def reklama_delete(request, pk): return generic_delete_view(request, Reklama, 'reklama', pk)
 
 
-class PostachalnykyViewSet(BaseViewSet):
-    repo = repos.postachalnyky
+def postachannya_list(request): return generic_list_view(request, PostachannyaProduktsii, 'postachannya')
+def postachannya_detail(request, pk): return generic_detail_view(request, PostachannyaProduktsii, 'postachannya', pk)
+def postachannya_edit(request, pk=None): return generic_edit_view(request, PostachannyaProduktsii,
+                                                                  PostachannyaProduktsiiForm, 'postachannya', pk)
+def postachannya_delete(request, pk): return generic_delete_view(request, PostachannyaProduktsii, 'postachannya', pk)
 
 
-class ReklamyViewSet(BaseViewSet):
-    repo = repos.reklamy
+def znyzhka_specii_list(request): return generic_list_view(request, ZnyzhkaNaSpecii, 'znyzhka_specii')
+def znyzhka_specii_detail(request, pk): return generic_detail_view(request, ZnyzhkaNaSpecii, 'znyzhka_specii', pk)
+def znyzhka_specii_edit(request, pk=None): return generic_edit_view(request, ZnyzhkaNaSpecii, ZnyzhkaNaSpeciiForm,
+                                                                    'znyzhka_specii', pk)
+def znyzhka_specii_delete(request, pk): return generic_delete_view(request, ZnyzhkaNaSpecii, 'znyzhka_specii', pk)
 
 
-class PostachannyaViewSet(BaseViewSet):
-    repo = repos.postachannya
+def znyzhka_sukhofrukty_list(request): return generic_list_view(request, ZnyzhkaNaSukhofrukty, 'znyzhka_sukhofrukty')
 
-
-class ZnyzkySpeciiViewSet(BaseViewSet):
-    repo = repos.znyzky_na_specii
-
-
-class ZnyzkyFryktyViewSet(BaseViewSet):
-    repo = repos.znyzky_na_frykty
+def znyzhka_sukhofrukty_detail(request, pk): return generic_detail_view(request, ZnyzhkaNaSukhofrukty,
+                                                                        'znyzhka_sukhofrukty', pk)
+def znyzhka_sukhofrukty_edit(request, pk=None): return generic_edit_view(request, ZnyzhkaNaSukhofrukty,
+                                                                         ZnyzhkaNaSukhofruktyForm,
+                                                                         'znyzhka_sukhofrukty', pk)
+def znyzhka_sukhofrukty_delete(request, pk): return generic_delete_view(request, ZnyzhkaNaSukhofrukty,
+                                                                        'znyzhka_sukhofrukty', pk)

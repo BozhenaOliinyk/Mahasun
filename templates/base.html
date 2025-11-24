@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Система{% endblock %}</title>
+    <style>
+        body { font-family: sans-serif; margin: 0 auto; background-color: #FFE2DB; }
+        .container { max-width: 1330px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #EB918A; color: white; }
+        tr:nth-child(even) { background-color: #FFFCFC; }
+        .btn { padding: 8px 12px; text-decoration: none; color: white; border-radius: 4px; display: inline-block; margin-right: 5px; font-size: 14px; border: none; cursor: pointer;}
+        .btn-primary { background-color: #DC4343; }
+        .btn-success { background-color: #DC4343; }
+        .btn-primary:hover{ background-color: #B02D2D; transform: scale(1.1);}
+        .btn-success:hover { background-color: #B02D2D; transform: scale(1.1);}
+        .btn-danger { background-color: #dc3545; }
+        .btn-secondary { background-color: #6c757d; }
+        .nav { display: flex; justify-content: space-around; margin-bottom: 15px; padding: 10px; background: #EB918A; border-bottom: 2px solid #ddd; }
+        .nav a { justify-content: space-around; margin-right: 15px; color: white; font-weight: bold; font-size: 15px;}
+        .nav a:hover { color: #B02D2D; font-size: 17px;}
+    </style>
+</head>
+<body>
+        <header class="nav">
+            <a href="{% url 'klyent_list' %}">Клієнти</a>
+            <a href="{% url 'pracivnyk_list' %}">Працівники</a>
+            <a href="{% url 'tochka_list' %}">Торгові точки</a>
+            <a href="{% url 'kartka_list' %}">Картки</a>
+            <a href="{% url 'specii_list' %}">Спеції</a>
+            <a href="{% url 'sukhofrukty_list' %}">Сухофрукти</a>
+            <a href="{% url 'pereviznyky_list' %}">Перевізники</a>
+            <a href="{% url 'postachalnyky_list' %}">Постачальники</a>
+            <a href="{% url 'reklama_list' %}">Реклама</a>
+            <a href="{% url 'postachannya_list' %}">Постачання</a>
+            <a href="{% url 'znyzhka_specii_list' %}">Знижки (Спеції)</a>
+            <a href="{% url 'znyzhka_sukhofrukty_list' %}">Знижки (Фрукти)</a>
+        </header>
+
+    <div class="container">
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</body>
+</html>

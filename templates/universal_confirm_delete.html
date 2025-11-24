@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+
+<div style="background: #fff3cd; padding: 20px; border: 1px solid #ffeeba; color: #856404; margin-bottom: 20px;">
+    <p>Ви впевнені, що хочете видалити цей запис: <strong>{{ obj }}</strong>?</p>
+    <p>Цю дію неможливо відмінити.</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Так, видалити</button>
+    <a href="{% url back_url pk=back_id %}" class="btn btn-secondary">Ні, скасувати</a>
+</form>
+{% endblock %}

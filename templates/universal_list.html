@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>{{ title }}</h2>
+    <a href="{% url create_url %}" class="btn btn-success">Додати запис</a>
+</div>
+<br>
+
+{% if rows %}
+<table>
+    <thead>
+        <tr>
+            {% for header in headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+            <th style="width: 150px;">Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+        <tr>
+            {% for value in row.values %}
+                <td>{{ value }}</td>
+            {% endfor %}
+            
+            <td>
+                <a href="{% url url_prefix|add:'_detail' pk=row.id %}" class="btn btn-primary">Деталі</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>Список порожній.</p>
+{% endif %}
+{% endblock %}
