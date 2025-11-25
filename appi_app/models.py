@@ -9,8 +9,7 @@ class TypBonusnoiKartky(models.Model):
     class Meta:
         db_table = 'типи бонусних карток'
         managed = False
-        verbose_name = "Тип бонусної картки"
-        verbose_name_plural = "Типи бонусних карток"
+        verbose_name = "Типи бонусних карток"
 
     def calculate_bonus(self, suma: int) -> int:
         return int(suma + ((suma // 100) * self.nar_bon))
@@ -32,8 +31,7 @@ class Klyent(models.Model):
     class Meta:
         db_table = 'клієнти'
         managed = False
-        verbose_name = "Клієнт"
-        verbose_name_plural = "Клієнти"
+        verbose_name = "Клієнти"
 
     def add_bonus(self, suma: int):
         if self.kartka:
@@ -52,7 +50,7 @@ class TorhovaTochka(models.Model):
     class Meta:
         db_table = 'торгові точки'
         managed = False
-        verbose_name = "Торгова точка"
+        verbose_name = "Торгові точки"
 
     def __str__(self):
         return self.nazva
@@ -71,7 +69,7 @@ class Pracivnyk(models.Model):
     class Meta:
         db_table = 'працівники'
         managed = False
-        verbose_name = "Працівник"
+        verbose_name = "Працівники"
 
     def get_full_name(self):
         return f"{self.prizvyshche} {self.imya} {self.pobatkovi}"
@@ -90,7 +88,7 @@ class Pereviznyky(models.Model):
     class Meta:
         db_table = 'перевізники'
         managed = False
-        verbose_name = "Перевізник"
+        verbose_name = "Перевізники"
 
     def __str__(self):
         return f"{self.prizvyshche} {self.imya}"
@@ -105,7 +103,7 @@ class Postachalnyky(models.Model):
     class Meta:
         db_table = 'постачальники'
         managed = False
-        verbose_name = "Постачальник"
+        verbose_name = "Постачальники"
 
     def __str__(self):
         return self.nazva_merezhi
@@ -120,7 +118,7 @@ class Specii(models.Model):
     class Meta:
         db_table = 'спеції'
         managed = False
-        verbose_name = "Спеція"
+        verbose_name = "Спеції"
 
     def __str__(self):
         return self.nazva
@@ -135,7 +133,7 @@ class Sukhofrukty(models.Model):
     class Meta:
         db_table = 'сухофрукти'
         managed = False
-        verbose_name = "Сухофрукт"
+        verbose_name = "Сухофрукти"
 
     def __str__(self):
         return self.nazva
@@ -150,6 +148,7 @@ class Reklama(models.Model):
 
     class Meta:
         db_table = 'реклама'
+        verbose_name = "Реклами"
         managed = False
 
 
@@ -166,6 +165,7 @@ class PostachannyaProduktsii(models.Model):
 
     class Meta:
         db_table = 'постачання продукції'
+        verbose_name = "Постачання продукції"
         managed = False
 
 
@@ -177,6 +177,7 @@ class ZnyzhkaNaSpecii(models.Model):
 
     class Meta:
         db_table = 'знижка на спеції'
+        verbose_name = "знижки на спеції"
         managed = False
 
     def save(self, *args, **kwargs):
@@ -204,6 +205,7 @@ class ZnyzhkaNaSukhofrukty(models.Model):
 
     class Meta:
         db_table = 'знижка на сухофрукти'
+        verbose_name = "знижки на сухофрукти"
         managed = False
 
     def save(self, *args, **kwargs):

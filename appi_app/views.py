@@ -33,7 +33,7 @@ def generic_list_view(request, model_class, url_prefix):
         })
 
     context = {
-        'title': model_class._meta.verbose_name_plural.capitalize(),
+        'title': model_class._meta.verbose_name,
         'headers': headers,
         'rows': rows,
         'url_prefix': url_prefix,
