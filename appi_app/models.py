@@ -222,3 +222,33 @@ class ZnyzhkaNaSukhofrukty(models.Model):
         except (IndexError, AttributeError):
             pass
         super().save(*args, **kwargs)
+
+
+
+class ColleagueDbManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().using('colleague_db')
+
+
+class IvankaClient(models.Model):
+    id = models.AutoField(primary_key=True)
+    last_name = models.CharField(max_length=100, db_column='last_name')
+    first_name = models.CharField(max_length=100, db_column='first_name')
+    phone_number = models.CharField(max_length=20, db_column='phone_number')
+    city = models.CharField(max_length=100, db_column='city')
+    street = models.CharField(max_length=100, db_column='street')
+    number_of_house = models.CharField(max_length=10, db_column='number_of_house')
+    number_of_flat = models.CharField(max_length=10, db_column='number_of_flat', blank=True, null=True)
+
+    id_workers = models.IntegerField(db_column='id_workers', blank=True, null=True)
+    id_clients_card = models.IntegerField(db_column='id_clients_card', blank=True, null=True)
+
+    objects = ColleagueDbManager()
+
+    class Meta:
+        managed = False
+        db_table = 'client'
+        verbose_name = "Клієнти (База колеги)"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

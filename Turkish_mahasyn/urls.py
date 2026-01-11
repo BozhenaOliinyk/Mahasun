@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import path
-from appi_app import views
+from appi_app import views, api_views, dashboard_views
 
 urlpatterns = [
     path('klyenty/', views.klyent_list, name='klyent_list'),
@@ -75,6 +75,23 @@ urlpatterns = [
     path('znyzhka-sukhofrukty/<int:pk>/edit/', views.znyzhka_sukhofrukty_edit, name='znyzhka_sukhofrukty_update'),
     path('znyzhka-sukhofrukty/<int:pk>/delete/', views.znyzhka_sukhofrukty_delete, name='znyzhka_sukhofrukty_delete'),
 
-
     path('', lambda request: redirect('klyent_list', permanent=False)),
+
+    path('api/analytics/supply-by-shop/', api_views.SupplyVolumeByShopView.as_view(), name='api_supply_by_shop'),
+    path('api/analytics/client-bonuses/', api_views.ClientBonusesStatsView.as_view(), name='api_client_bonuses'),
+    path('api/analytics/supplier-efficiency/', api_views.SupplierEfficiencyView.as_view(),
+         name='api_supplier_efficiency'),
+    path('api/analytics/shop-staffing/', api_views.ShopStaffingView.as_view(), name='api_shop_staffing'),
+    path('api/analytics/discounts/', api_views.DiscountAnalysisView.as_view(), name='api_discounts'),
+    path('api/analytics/dried-fruit-workers/', api_views.DriedFruitWorkersView.as_view(),
+         name='api_dried_fruit_workers'),
+
+    path('dashboard/plotly/', dashboard_views.dashboard_plotly, name='dashboard_plotly'),
+    path('dashboard/bokeh/', dashboard_views.dashboard_bokeh, name='dashboard_bokeh'),
+    path('dashboard/performance/', dashboard_views.performance_test_view, name='dashboard_performance'),
+
+
+
+    path('ivanka-clients/', views.ivanka_client_list, name='ivanka_client_list'),
+    path('api/ivanka-clients/delete/<int:pk>/', api_views.IvankaClientDeleteAPI.as_view(), name='api_ivanka_delete'),
 ]

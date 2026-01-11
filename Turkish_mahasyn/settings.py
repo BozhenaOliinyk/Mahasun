@@ -14,7 +14,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,7 +54,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Turkish_mahasyn.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -64,9 +62,16 @@ DATABASES = {
         'PASSWORD': 'MySQL',
         'HOST': 'localhost',
         'PORT': '3306',
+    },
+    'colleague_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ivankasdb',
+        'USER': 'root',
+        'PASSWORD': 'MySQL',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -83,7 +88,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'uk'
 
 TIME_ZONE = 'Europe/Kyiv'
@@ -91,7 +95,6 @@ TIME_ZONE = 'Europe/Kyiv'
 USE_I18N = True
 
 USE_TZ = True
-
 
 STATIC_URL = 'static/'
 

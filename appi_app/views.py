@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.apps import apps
+from django.db import models
 from .models import (
     TypBonusnoiKartky, TorhovaTochka, Klyent, Pracivnyk,
     Specii, Sukhofrukty, Pereviznyky, Postachalnyky,
-    Reklama, PostachannyaProduktsii, ZnyzhkaNaSpecii, ZnyzhkaNaSukhofrukty
+    Reklama, PostachannyaProduktsii, ZnyzhkaNaSpecii, ZnyzhkaNaSukhofrukty, IvankaClient
 )
 from .forms import (
     TypBonusnoiKartkyForm, TorhovaTochkaForm, KlyentForm, PracivnykForm,
@@ -13,7 +13,7 @@ from .forms import (
 
 
 
-def generic_list_view(request, model_class, url_prefix):
+def generic_list_view(request, model_class, url_prefix, extra_context=None):
     queryset = model_class.objects.all()
 
     headers = [field.verbose_name for field in model_class._meta.fields]
@@ -39,6 +39,10 @@ def generic_list_view(request, model_class, url_prefix):
         'url_prefix': url_prefix,
         'create_url': f"{url_prefix}_create"
     }
+
+    if extra_context:
+        context.update(extra_context)
+
     return render(request, 'universal_list.html', context)
 
 
@@ -184,3 +188,15 @@ def znyzhka_sukhofrukty_edit(request, pk=None): return generic_edit_view(request
                                                                          'znyzhka_sukhofrukty', pk)
 def znyzhka_sukhofrukty_delete(request, pk): return generic_delete_view(request, ZnyzhkaNaSukhofrukty,
                                                                         'znyzhka_sukhofrukty', pk)
+
+
+
+def ivanka_client_list(request):
+    return generic_list_view(
+        request,
+        IvankaClient,
+        'ivanka_client',
+        extra_context={
+            'use_rest_delete': True,
+            'api_url': '/api/ivanka-clients/delete/'}
+    )
