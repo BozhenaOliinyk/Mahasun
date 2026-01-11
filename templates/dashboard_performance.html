@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Performance Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { width: 50%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Тестування багатопотоковості БД</h1>
+    <p>Цей тест виконує 50 "важких" запитів до бази даних, використовуючи різну кількість потоків.</p>
+
+    <div>
+        {{ graph|safe }}
+    </div>
+
+    <h3>Детальні метрики:</h3>
+    <table>
+        <tr>
+            <th>Кількість потоків</th>
+            <th>Час виконання (сек)</th>
+        </tr>
+        {% for row in table %}
+        <tr>
+            <td>{{ row.threads }}</td>
+            <td>{{ row.time|floatformat:4 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

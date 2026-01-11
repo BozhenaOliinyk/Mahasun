@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Plotly Dashboard</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .controls { background: #f4f4f4; padding: 15px; margin-bottom: 20px; border-radius: 5px;}
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chart { border: 1px solid #ddd; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <h1>📊 Аналітичний Дашборд (Plotly)</h1>
+
+    <div class="controls">
+        <form method="GET">
+            <label>Фільтр по мінімальній вартості:</label>
+            <input type="number" name="min_cost" value="0">
+            <button type="submit">Застосувати</button>
+            <a href="{% url 'dashboard_bokeh' %}" style="margin-left: 20px;">Перейти на Bokeh версію -></a>
+        </form>
+    </div>
+
+    <div class="grid">
+        {% for graph in graphs %}
+            <div class="chart">
+                {{ graph|safe }}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Bokeh Dashboard</title>
+
+    {{ resources|safe }}
+
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chart { border: 1px solid #ddd; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <h1>📈 Аналітичний Дашборд (Bokeh)</h1>
+    <p><a href="{% url 'dashboard_plotly' %}"><- Повернутися на Plotly</a></p>
+
+    <div class="grid">
+        {% for plot in plots %}
+            <div class="chart">
+                {{ plot.div|safe }}
+                {{ plot.script|safe }}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
