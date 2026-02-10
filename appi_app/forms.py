@@ -1,66 +1,34 @@
 from django import forms
 from .models import (
-    TypBonusnoiKartky, TorhovaTochka, Klyent, Pracivnyk,
-    Specii, Sukhofrukty, Pereviznyky, Postachalnyky,
-    Reklama, PostachannyaProduktsii, ZnyzhkaNaSpecii, ZnyzhkaNaSukhofrukty
+    Client, Spice, Supplier, BonusCard, Employee, RetailOutlet
 )
 
-class TypBonusnoiKartkyForm(forms.ModelForm):
+class ClientForm(forms.ModelForm):
     class Meta:
-        model = TypBonusnoiKartky
+        model = Client
         fields = '__all__'
 
-class TorhovaTochkaForm(forms.ModelForm):
+class SpiceForm(forms.ModelForm):
     class Meta:
-        model = TorhovaTochka
+        model = Spice
         fields = '__all__'
 
-class KlyentForm(forms.ModelForm):
+class SupplierForm(forms.ModelForm):
     class Meta:
-        model = Klyent
+        model = Supplier
         fields = '__all__'
 
-class PracivnykForm(forms.ModelForm):
+class BonusCardForm(forms.ModelForm):
     class Meta:
-        model = Pracivnyk
+        model = BonusCard
         fields = '__all__'
 
-class SpeciiForm(forms.ModelForm):
+class EmployeeForm(forms.ModelForm):
     class Meta:
-        model = Specii
+        model = Employee
         fields = '__all__'
 
-class SukhofruktyForm(forms.ModelForm):
+class RetailOutletForm(forms.ModelForm):
     class Meta:
-        model = Sukhofrukty
-        fields = '__all__'
-
-class PereviznykyForm(forms.ModelForm):
-    class Meta:
-        model = Pereviznyky
-        fields = '__all__'
-
-class PostachalnykyForm(forms.ModelForm):
-    class Meta:
-        model = Postachalnyky
-        fields = '__all__'
-
-class ReklamaForm(forms.ModelForm):
-    class Meta:
-        model = Reklama
-        fields = '__all__'
-
-class PostachannyaProduktsiiForm(forms.ModelForm):
-    class Meta:
-        model = PostachannyaProduktsii
-        fields = '__all__'
-
-class ZnyzhkaNaSpeciiForm(forms.ModelForm):
-    class Meta:
-        model = ZnyzhkaNaSpecii
-        fields = '__all__'
-
-class ZnyzhkaNaSukhofruktyForm(forms.ModelForm):
-    class Meta:
-        model = ZnyzhkaNaSukhofrukty
+        model = RetailOutlet
         fields = '__all__'
