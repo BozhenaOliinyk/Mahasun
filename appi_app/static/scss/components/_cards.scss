@@ -1,0 +1,338 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+
+.app .employee-name h2,
+.app .client-name h2,
+.app .outlet-title h2,
+.app .card-title h2,
+.app .spice-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app .card-details p,
+.app .client-info p,
+.app .employee-info p,
+.app .outlet-address {
+  margin: 0;
+  color: $text-300;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.app .card-details strong,
+.app .client-info strong,
+.app .employee-info strong {
+  display: inline;
+  color: $text-200;
+  font-weight: 700;
+}
+
+.app .shift-tag {
+  display: inline;
+  color: $text-200;
+}
+
+.app .long-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.app .long-card {
+  @include card-surface;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  cursor: default;
+  transition: transform 170ms ease, border 170ms ease, box-shadow 170ms ease;
+}
+
+.app .long-card .card-details p {
+  margin: 0;
+  color: $text-300;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.app .long-card .card-details p strong {
+  color: $text-200;
+  font-weight: 700;
+}
+
+.app .long-card .card-details h2 {
+  margin: 0 0 10px;
+  color: $text-100;
+}
+
+
+.app .long-card:hover {
+  transform: translateY(-2px);
+  border: 1px solid rgba(191, 109, 0, 0.22);
+  box-shadow: $shadow-1;
+}
+
+.app .card-image-wrapper {
+  width: 110px;
+  height: 110px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(243, 239, 233, 0.12);
+}
+
+.app .card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.03) saturate(1.05);
+}
+
+.app .card-details h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+  color: $text-100;
+}
+
+.app .outlet-address,
+.app .client-contact,
+.app .contact-info,
+.app .supplier-address,
+.app .supplier-phone,
+.app .spice-meta {
+  margin: 6px 0 0;
+  color: $muted-400;
+  font-size: 13px;
+}
+
+.app .employee-info p,
+.app .client-info p,
+.app .card-details p,
+.app .supplier-info p {
+  margin: 6px 0 0;
+  color: $text-200;
+  font-size: 13px;
+}
+
+.app .shift-tag {
+  color: rgba(191, 109, 0, 0.9);
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .app .long-card {
+    grid-template-columns: 1fr;
+  }
+
+  .app .card-image-wrapper {
+    width: 100%;
+    height: 160px;
+  }
+}
+
+
+
+
+
+/* spice cards */
+
+.app .spice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.app .spice-card {
+  @include card-surface;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  position: relative;
+  cursor: default;
+  transition: transform 170ms ease, border 170ms ease, box-shadow 170ms ease;
+}
+
+.app .spice-card:hover {
+  transform: translateY(-2px);
+  border: 1px solid rgba(191, 109, 0, 0.22);
+  box-shadow: $shadow-1;
+}
+
+.app .spice-image-container {
+  width: 110px;
+  height: 110px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(243, 239, 233, 0.12);
+}
+
+.app .spice-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.app .spice-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.app .spice-meta {
+  @include text-truncate(2);
+}
+
+.app .spice-price {
+  margin: 10px 0 0;
+  font-size: 15px;
+  color: $text-200;
+  font-weight: 800;
+}
+
+.app .price-unit {
+  color: $muted-400;
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.app .fav-heart-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: rgba(22, 16, 11, 0.55);
+  border: 1px solid rgba(243, 239, 233, 0.22);
+  color: rgba(243, 239, 233, 0.6);
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app .fav-heart-btn:hover {
+  transform: translateY(-1px);
+  border: 1px solid rgba(191, 109, 0, 0.45);
+}
+
+.app .fav-heart-btn.active {
+  color: $text-100;
+  background: rgba(132, 36, 0, 0.28);
+  border: 1px solid rgba(132, 36, 0, 0.6);
+}
+
+@media (max-width: 900px) {
+  .app .spice-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+/* bonus cards*/
+
+.app .bonus-card-full {
+  grid-template-columns: 160px 1fr;
+}
+
+.app .bonus-info-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.app .card-title h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+}
+
+@media (max-width: 560px) {
+  .app .bonus-card-full {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* client */
+
+.app .client-card {
+  @include card-surface;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 18px;
+}
+
+.app .client-card .card-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.app .client-card .client-name h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: $text-100;
+}
+
+.app .client-card .client-info {
+  display: grid;
+  gap: 6px;
+}
+
+.app .client-card .client-info p {
+  margin: 0;
+  color: $text-300;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.app .client-card .client-info strong,
+.app .client-card .client-info .bonus-count {
+  color: $text-100;
+  font-weight: 700;
+}
+
+.app .client-card .client-contact {
+  color: $text-200;
+}
+
+.app .client-card .card-actions {
+  height: auto;
+  border: #ff8f00;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.app .client-card .btn-del-small {
+  border: 1px solid rgba(132, 36, 0, 0.65);
+  background: rgba(132, 36, 0, 0.28);
+  color: $text-100;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.app .client-card .btn-del-small:hover {
+  background: rgba(132, 36, 0, 0.42);
+  border-color: rgba(191, 109, 0, 0.65);
+  transform: translateY(-1px);
+}
+
+.app .client-card .btn-del-small:active {
+  transform: translateY(0);
+}

@@ -1,32 +1,51 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="edit-container">
-    <h2>{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} бонусну картку</h2>
+<main class="edit-container">
+    <header class="form-header">
+        <h2>{% if obj %}Редагувати{% else %}Додати{% endif %} бонусну картку</h2>
+    </header>
 
-    <form class="edit-form" method="POST">
-        {% csrf_token %}
+    <section class="form-section">
+        <form class="edit-form" method="POST">
+            {% csrf_token %}
 
-        <label>Тип картки</label>
-        <input type="text" name="type" value="{{ form.instance.type|default:'' }}" required>
+            <fieldset class="form-fieldset">
+                <legend class="visually-hidden">Бонусна картка</legend>
 
-        <label>Нарахування бонусів (%)</label>
-        <input type="number" step="0.01" name="bonus_percent" value="{{ form.instance.bonus_percent|default:'' }}" required>
+                <div class="form-group">
+                    <label for="id_type">Тип картки</label>
+                    <input type="text" id="id_type" name="type" value="{{ obj.type|default:'' }}" required>
+                </div>
 
-        <label>Знижка (%)</label>
-        <input type="number" step="0.01" name="discount_percent" value="{{ form.instance.discount_percent|default:'' }}" required>
+                <div class="form-group">
+                    <label for="id_bonus">Нарахування бонусів (%)</label>
+                    <input type="number" id="id_bonus" name="bonus_percent" value="{{ obj.bonus_percent|default:'' }}" required>
+                </div>
 
-        <button type="submit" class="btn-main">Зберегти</button>
-    </form>
+                <div class="form-group">
+                    <label for="id_discount">Знижка (%)</label>
+                    <input type="number" id="id_discount" name="discount" value="{{ obj.discount|default:'' }}" required>
+                </div>
+            </fieldset>
 
-    {% if form.instance.pk %}
-    <form action="{% url 'card_delete' form.instance.pk %}" method="POST" style="margin-top: 10px;">
-        {% csrf_token %}
-        <button type="submit" class="btn-delete" onclick="return confirm('Видалити цей тип картки?')">Видалити</button>
-    </form>
-    {% endif %}
+            <footer class="form-actions">
+                <button type="submit" class="btn-main">Зберегти</button>
+            </footer>
+        </form>
 
-    <div style="margin-top: 15px;">
-        <a href="{% url 'card_list' %}" class="btn-main btn-outline">Скасувати</a>
-    </div>
-</div>
+        {% if obj %}
+        <aside class="danger-zone">
+            <form action="{% url 'card_delete' obj.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete" onclick="return confirm('Видалити цю картку?')">Видалити</button>
+            </form>
+        </aside>
+        {% endif %}
+
+        <nav class="navigation-actions">
+            <a href="{% url 'card_list' %}" class="btn-main btn-outline">Скасувати</a>
+        </nav>
+    </section>
+</main>
 {% endblock %}

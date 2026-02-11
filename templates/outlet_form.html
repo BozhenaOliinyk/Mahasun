@@ -1,29 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="edit-container">
-    <h2>{% if obj %}Редагувати{% else %}Додати{% endif %} торгову точку</h2>
+<main class="edit-container">
+    <header class="form-header">
+        <h2>{% if obj %}Редагувати{% else %}Додати{% endif %} торгову точку</h2>
+    </header>
 
-    <form class="edit-form" method="POST">
-        {% csrf_token %}
+    <section class="form-section">
+        <form class="edit-form" method="POST">
+            {% csrf_token %}
 
-        <label>Назва точки</label>
-        <input type="text" name="name" value="{{ obj.name|default:'' }}" required>
+            <fieldset class="form-fieldset">
+                <legend class="visually-hidden">Торгова точка</legend>
 
-        <label>Адреса</label>
-        <input type="text" name="address" value="{{ obj.address|default:'' }}" required>
+                <div class="form-group">
+                    <label for="id_name">Назва точки</label>
+                    <input type="text" id="id_name" name="name" value="{{ obj.name|default:'' }}" required>
+                </div>
 
-        <button type="submit" class="btn-main">Зберегти</button>
-    </form>
+                <div class="form-group">
+                    <label for="id_address">Адреса</label>
+                    <input type="text" id="id_address" name="address" value="{{ obj.address|default:'' }}" required>
+                </div>
+            </fieldset>
 
-    {% if obj %}
-    <form action="{% url 'outlet_delete' obj.pk %}" method="POST" style="margin-top: 10px;">
-        {% csrf_token %}
-        <button type="submit" class="btn-delete" onclick="return confirm('Видалити цю точку?')">Видалити</button>
-    </form>
-    {% endif %}
+            <footer class="form-actions">
+                <button type="submit" class="btn-main">Зберегти</button>
+            </footer>
+        </form>
 
-    <div style="margin-top: 15px;">
-        <a href="{% url 'outlet_list' %}" class="btn-main btn-outline">Скасувати</a>
-    </div>
-</div>
+        {% if obj %}
+        <aside class="danger-zone">
+            <form action="{% url 'outlet_delete' obj.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete" onclick="return confirm('Видалити цю точку?')">Видалити</button>
+            </form>
+        </aside>
+        {% endif %}
+
+        <nav class="navigation-actions">
+            <a href="{% url 'outlet_list' %}" class="btn-main btn-outline">Скасувати</a>
+        </nav>
+    </section>
+</main>
 {% endblock %}

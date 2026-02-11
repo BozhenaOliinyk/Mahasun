@@ -1,0 +1,17 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+
+
+.app {
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.app .accent-text {
+  color: $accent-1;
+}
+
+.app .highlight-value {
+  color: $accent-1;
+  font-weight: 700;
+}

@@ -1,24 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="auth-box">
-    <h2 style="color: var(--primary-dark)">Вхід</h2>
-    {% if error %}
-        <p style="color: #ff4d4d; background: #ffe6e6; padding: 10px; border-radius: 5px; text-align: center;">
-            {{ error }}
-        </p>
-    {% endif %}
+<main class="auth-container">
+    <section class="auth-box">
+        <header class="auth-header">
+            <h2>Вхід</h2>
+        </header>
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="email" name="email" placeholder="Пошта" required>
-        <input type="password" name="password" placeholder="Пароль" required>
-        <button type="submit" class="btn-main">Ввійти</button>
-    </form>
+        {% if error %}
+            <div class="error-message" role="alert">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
 
-    <div style="margin-top: 15px; text-align: center;">
-        <a href="{% url 'register' %}" style="text-decoration: none;">
-            <button class="btn-main btn-outline">Зареєструватись</button>
-        </a>
-    </div>
-</div>
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+            <fieldset class="form-fieldset">
+                <legend class="visually-hidden">Дані для входу</legend>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Пошта" aria-label="Пошта" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Пароль" aria-label="Пароль" required>
+                </div>
+            </fieldset>
+
+            <footer class="form-actions">
+                <button type="submit" class="btn-main">Ввійти</button>
+            </footer>
+        </form>
+
+        <nav class="auth-navigation">
+            <a href="{% url 'register' %}" class="btn-link">
+                <button type="button" class="btn-main btn-outline">Зареєструватись</button>
+            </a>
+        </nav>
+    </section>
+</main>
 {% endblock %}

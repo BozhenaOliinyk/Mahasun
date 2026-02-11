@@ -1,0 +1,32 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+
+
+.app .profile-container {
+  @include container(620px);
+  padding: 40px 0 56px;
+}
+
+.app .profile-box {
+  padding: 18px;
+}
+
+.app .profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.app .loyalty-info {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(73, 74, 32, 0.16);
+  border: 1px solid rgba(73, 74, 32, 0.45);
+}
+
+.app .loyalty-info p {
+  margin: 6px 0 0;
+  color: $text-200;
+  font-weight: 700;
+}

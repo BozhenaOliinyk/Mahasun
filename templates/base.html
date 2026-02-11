@@ -7,8 +7,8 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-    <input type="checkbox" id="fav-toggle">
+<body class="app">
+    <input type="checkbox" id="fav-toggle" class="visually-hidden">
 
     <header class="main-header">
         <div class="logo-container">
@@ -16,68 +16,76 @@
         </div>
 
         <nav class="nav-menu">
-            {% if user.is_authenticated or request.session.client_id %}
-                <a href="{% url 'spice_list' %}">Спеції</a>
-                <a href="{% url 'card_list' %}">Бонусні картки</a>
-                <a href="{% url 'outlet_list' %}">Торгові точки</a>
+            <a href="{% url 'spice_list' %}">Спеції</a>
+            <a href="{% url 'card_list' %}">Бонусні картки</a>
+            <a href="{% url 'outlet_list' %}">Торгові точки</a>
 
-                {% if user.is_staff %}
-                    <a href="{% url 'employee_list' %}">Працівники</a>
-                    <a href="{% url 'supplier_list' %}">Постачальники</a>
-                    <a href="{% url 'client_list' %}">Клієнти</a>
-                {% endif %}
+            {% if user.is_staff %}
+                <a href="{% url 'employee_list' %}">Працівники</a>
+                <a href="{% url 'supplier_list' %}">Постачальники</a>
+                <a href="{% url 'client_list' %}">Клієнти</a>
             {% endif %}
         </nav>
 
-        <div class="header-actions">
-            {% if request.session.client_id %}
-                <label for="fav-toggle" class="heart-btn" style="cursor: pointer;">❤</label>
-            {% endif %}
-
+        <section class="header-actions">
+        {% if not user.is_staff or request.session.client_id%}
+            <label for="fav-toggle" class="heart-btn" aria-label="Улюблені">❤</label>
+{% endif %}
             <div class="profile-area">
                 {% if not user.is_authenticated and not request.session.client_id %}
-                    <a href="{% url 'login' %}"><img src="{% static 'images/default_user.jpg' %}" alt="Login"></a>
+                    <a href="{% url 'login' %}">
+                        <img src="{% static 'images/default_user.jpg' %}" alt="Login">
+                    </a>
                 {% elif user.is_staff %}
-                    <img src="{% static 'images/admin_icon.jpg' %}" onclick="confirmLogout()" style="cursor: pointer;" alt="Admin">
+                    <a href="{% url 'logout' %}">
+                        <img src="{% static 'images/admin_icon.jpg' %}" class="admin-avatar" alt="Admin">
+                    </a>
                 {% else %}
-                    <a href="{% url 'profile' %}"><img src="{% static 'images/user_avatar.jpg' %}" alt="Profile"></a>
+                    <a href="{% url 'profile' %}">
+                        <img src="{% static 'images/user_avatar.jpg' %}" alt="Profile">
+                    </a>
                 {% endif %}
             </div>
-        </div>
+        </section>
     </header>
 
-    <div class="overlay">
-    <div class="fav-window">
-        <h2 style="color: var(--primary-dark)">Ваші улюблені</h2>
+    <aside class="overlay">
+        <section class="fav-window">
+            <header class="fav-header">
+                <h2>Улюблені</h2>
+            </header>
 
-        <div id="fav-content" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
-            {% for fav in user_favorites %}
-            <div class="fav-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
-                <span style="font-weight: 500;">{{ fav.spice_id.name }}</span>
+            <div id="fav-content" class="fav-scroll-area">
+                {% if request.session.client_id %}
+                    {% for fav in user_favorites %}
+                        <article class="fav-item">
+                            <span class="fav-name">{{ fav.spice.name }}</span>
+                            <a href="{% url 'del_fav' fav.id %}" class="fav-delete-heart" title="Видалити з улюблених">❤</a>
+                        </article>
+                    {% empty %}
+                        <p class="empty-msg">У списку ще немає спецій</p>
+                    {% endfor %}
+                {% else %}
+                    <div class="fav-guest">
+                        <p class="fav-guest-title">Улюблені доступні після входу</p>
+                        <p class="fav-guest-text">Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.</p>
 
-                <a href="{% url 'del_fav' fav.id %}" class="fav-delete-heart" title="Видалити з улюблених">
-                    ❤
-                </a>
+                        <div class="fav-guest-actions">
+                            <a class="btn-main" href="{% url 'login' %}">Увійти</a>
+                            <a class="btn-main btn-outline" href="{% url 'register' %}">Зареєструватись</a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
-            {% empty %}
-            <p style="color: #999; padding: 20px;">У списку ще немає спецій</p>
-            {% endfor %}
-        </div>
 
-        <label for="fav-toggle" class="btn-main btn-outline" style="cursor: pointer; display: inline-block;">Закрити</label>
-    </div>
-</div>
+            <footer class="fav-footer">
+                <label for="fav-toggle" class="btn-main btn-outline">Закрити</label>
+            </footer>
+        </section>
+    </aside>
 
     <main id="main-content">
         {% block content %}{% endblock %}
     </main>
-
-    <script>
-        function confirmLogout() {
-            if(confirm("Ви справді хочете вийти з акаунту?")) {
-                window.location.href = "{% url 'logout' %}";
-            }
-        }
-    </script>
 </body>
 </html>

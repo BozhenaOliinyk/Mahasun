@@ -1,0 +1,74 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+
+.app .spice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 820px) {
+  .app .spice-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.app .spice-card {
+  @include card-surface;
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.app .spice-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(191, 109, 0, 0.35);
+}
+
+.app .spice-image-container {
+  flex: 0 0 96px;
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(243, 239, 233, 0.14);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.app .spice-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.app .spice-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.app .spice-title {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 800;
+  color: $text-100;
+}
+
+.app .spice-meta {
+  margin: 0 0 8px;
+  color: $text-300;
+  font-size: 13px;
+}
+
+.app .spice-price {
+  margin: 0;
+  color: $text-200;
+  font-weight: 800;
+}
+
+.app .price-unit {
+  color: $text-300;
+  font-weight: 600;
+}

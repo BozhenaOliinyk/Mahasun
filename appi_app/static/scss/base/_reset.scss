@@ -1,0 +1,34 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+
+
+.app {
+  box-sizing: border-box;
+  background: #42280b;
+  color: $text-100;
+  min-height: 100vh;
+}
+
+.app *,
+.app *::before,
+.app *::after {
+  box-sizing: inherit;
+}
+
+.app img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.app .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
