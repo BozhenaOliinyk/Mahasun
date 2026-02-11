@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="edit-container">
+    <h2>{% if obj %}Редагувати дані{% else %}Додати{% endif %} працівника</h2>
+
+    <form class="edit-form" method="POST">
+        {% csrf_token %}
+
+        <label>Прізвище</label>
+        <input type="text" name="last_name" value="{{ obj.last_name|default:'' }}" required>
+
+        <label>Ім'я</label>
+        <input type="text" name="first_name" value="{{ obj.first_name|default:'' }}" required>
+
+        <label>По батькові</label>
+        <input type="text" name="fathers_name" value="{{ obj.fathers_name|default:'' }}">
+
+        <label>Посада</label>
+        <input type="text" name="position" value="{{ obj.position|default:'' }}">
+
+        <label>Зміна (номер)</label>
+        <input type="number" name="shift" value="{{ obj.shift|default:'' }}">
+
+        <label>Торгова точка</label>
+        <select name="outlet_id" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+            <option value="">-- Оберіть точку --</option>
+            {% for outlet in outlets %}
+                <option value="{{ outlet.id }}" {% if obj.outlet_id_id == outlet.id %}selected{% endif %}>
+                    {{ outlet.name }} ({{ outlet.address }})
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Номер телефону</label>
+        <input type="text" name="phone_number" value="{{ obj.phone_number|default:'' }}">
+
+        <button type="submit" class="btn-main">Зберегти</button>
+    </form>
+
+    {% if obj %}
+    <form action="{% url 'employee_delete' obj.pk %}" method="POST" style="margin-top: 10px;">
+        {% csrf_token %}
+        <button type="submit" class="btn-delete" onclick="return confirm('Видалити працівника?')">Видалити</button>
+    </form>
+    {% endif %}
+
+
+    <div style="margin-top: 15px;">
+        <a href="{% url 'outlet_list' %}" class="btn-main btn-outline">Скасувати</a>
+    </div>
+</div>
+{% endblock %}

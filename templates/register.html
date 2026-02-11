@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-box">
+    <h2 style="color: var(--primary-dark)">Реєстрація</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Пошта" required>
+        <input type="password" name="password" placeholder="Пароль" required>
+
+        <input type="text" name="last_name" placeholder="Прізвище" required>
+        <input type="text" name="first_name" placeholder="Ім'я" required>
+        <input type="text" name="fathers_name" placeholder="По батькові" required>
+
+        <input type="text" name="phone_number" placeholder="Номер телефону" required>
+
+
+        <button type="submit" class="btn-main">Зареєструватись</button>
+    </form>
+
+    <div style="margin-top: 10px; text-align: center;">
+        <a href="{% url 'login' %}">
+            <button class="btn-main btn-outline" style="width: 100%">Ввійти</button>
+        </a>
+    </div>
+</div>
+{% endblock %}

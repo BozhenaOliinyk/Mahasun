@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.is_staff %}
+    <a href="{% url 'card_create' %}" class="admin-add-btn">+</a>
+{% endif %}
+
+<div class="long-list">
+    {% for row in rows %}
+    <div class="long-card bonus-card-full" onclick="{% if user.is_staff %}location.href='{% url 'card_update' row.id %}'{% endif %}">
+
+       <img src="{% if 'pro' in row.values.1|lower %}pro_card.jpg{% elif 'advanced' in row.values.1|lower %}adv_card.jpg{% else %}new_card.jpg{% endif %}" alt="Card Image">
+
+        <div class="bonus-info-block">\
+            <h2>{{ row.values.1|upper }}</h2>
+
+            <p>Відсоток нарахування бонусів:
+                <span style="color: black; font-weight: bold;">{{ row.values.2 }}%</span>
+            </p>
+            <p>Знижка(%):
+                <span style="color: black; font-weight: bold;">{{ row.values.3 }}%</span>
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

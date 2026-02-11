@@ -26,6 +26,7 @@ class Client(models.Model):
     password = models.CharField(max_length=128)
     bonus_count = models.IntegerField(default=0)
     bonus_card = models.ForeignKey(BonusCard, on_delete=models.SET_NULL, null=True, blank=True)
+    phone_number = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'clients'
@@ -61,7 +62,7 @@ class Employee(models.Model):
     position = models.CharField(max_length=100) # виправлено posiyion
     shift = models.IntegerField()
     outlet = models.ForeignKey(RetailOutlet, on_delete=models.CASCADE)
-    phone_number = models.IntegerField()
+    phone_number = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'employees'
@@ -88,8 +89,9 @@ class Supplier(models.Model):
 class Spice(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    type = models.BooleanField(default=True)
+    type = models.TextField()
     purpose = models.TextField()
+    price = models.DecimalField(max_digits=100, decimal_places=2)
 
     class Meta:
         db_table = 'spices'
@@ -97,3 +99,29 @@ class Spice(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Favorite(models.Model):
+    id = models.AutoField(primary_key=True)
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
+    spice_id = models.ForeignKey(Spice, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'favorite'
+        verbose_name = "Favorite"
+
+    def __str__(self):
+        return f"{self.client_id} {self.spice_id}"
+
+
+class SupplierSpice(models.Model):
+    id = models.AutoField(primary_key=True)
+    supplier_id = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+    spice_id = models.ForeignKey(Spice, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'supplier_spice'
+        verbose_name = "Supplier Spice"
+
+    def __str__(self):
+        return f"{self.supplier_id} {self.spice_id}"

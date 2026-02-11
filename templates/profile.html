@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-box" style="max-width: 500px;">
+    <h2 style="color: var(--primary-dark)">Мій профіль</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Прізвище</label>
+        <input type="text" name="ln" value="{{ client.last_name }}">
+
+        <label>Ім'я</label>
+        <input type="text" name="fn" value="{{ client.first_name }}">
+
+        <label>По батькові</label>
+        <input type="text" name="mn" value="{{ client.fathers_name }}">
+
+        <label>Телефон</label>
+        <input type="text" name="phone" value="{{ client.phone_number }}">
+
+        <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: left;">
+            <p>Тип картки: <strong>{{ client.bonus_card_id.type }}</strong></p>
+            <p>Нараховано бонусів: <strong style="color: var(--accent-orange)">{{ client.bonus_count }}</strong></p>
+        </div>
+
+        <button type="submit" class="btn-main">Зберегти зміни</button>
+    </form>
+
+    <a href="{% url 'logout' %}" style="text-decoration: none;">
+        <button class="btn-main btn-delete" style="width: 100%; margin-top: 10px;">Вийти з акаунту</button>
+    </a>
+</div>
+
+<script>
+function confirmLogout() {
+    if (confirm('Ви впевнені, що хочете вийти?')) {
+        window.location.href = "{% url 'logout' %}";
+    }
+}
+</script>
+{% endblock %}

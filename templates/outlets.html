@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_staff %}
+    <a href="{% url 'outlet_create' %}" class="admin-add-btn">+</a>
+{% endif %}
+
+<div class="long-list">
+    {% for row in rows %}
+    <div class="long-card" onclick="{% if user.is_staff %}location.href='{% url 'outlet_update' row.id %}'{% endif %}">
+        <img src="outlet_placeholder.jpg" alt="Outlet">
+        <div class="card-details">
+            <h2>{{ row.values.1 }}</h2>
+            <p>{{ row.values.2 }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.is_staff %}
+    <a href="{% url 'supplier_create' %}" class="admin-add-btn">+</a>
+{% endif %}
+
+<div class="long-list">
+    {% for row in rows %}
+    <div class="long-card" onclick="location.href='{% url 'supplier_update' row.id %}'">
+        <div class="card-details">
+            <h2>{{ row.values.1 }}</h2>
+            <p>{{ row.values.2 }}</p>
+            <p>{{ row.values.3 }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

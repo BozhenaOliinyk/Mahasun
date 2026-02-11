@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if user.is_staff %}
+    <a href="{% url 'spice_create' %}" class="admin-add-btn">+</a>
+{% endif %}
+
+<div class="spice-grid">
+    {% for row in rows %}
+    <div class="spice-card" onclick="{% if user.is_staff %}location.href='{% url 'spice_edit' row.id %}'{% endif %}">
+
+        <img src="{% static 'images/placeholder.jpg' %}" class="spice-img" alt="Spice">
+
+        <div class="spice-content">
+            <h3 class="spice-title">{{ row.values.1 }}</h3>
+
+            <p class="spice-meta">
+                {row.values.2} | {{ row.values.3 }}
+            </p>
+
+            <p class="spice-price">{{ row.values.4 }} <span class="price-unit">грн / 100 гр</span></p>
+        </div>
+
+        {% if not user.is_staff and request.session.client_id %}
+            <div class="fav-heart-btn {% if row.id in fav_ids %}active{% endif %}"
+                 onclick="event.stopPropagation(); location.href='{% url 'add_fav' row.id %}'">
+                ❤
+            </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

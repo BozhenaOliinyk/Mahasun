@@ -1,6 +1,6 @@
 from django import forms
 from .models import (
-    Client, Spice, Supplier, BonusCard, Employee, RetailOutlet
+    Client, Spice, Supplier, BonusCard, Employee, RetailOutlet, SupplierSpice, Favorite
 )
 
 class ClientForm(forms.ModelForm):
@@ -31,4 +31,14 @@ class EmployeeForm(forms.ModelForm):
 class RetailOutletForm(forms.ModelForm):
     class Meta:
         model = RetailOutlet
+        fields = '__all__'
+
+class SupplierSpiceForm(forms.ModelForm):
+    class Meta:
+        model = SupplierSpice
+        fields = '__all__'
+
+class FavoriteForm(forms.ModelForm):
+    class Meta:
+        model = Favorite
         fields = '__all__'

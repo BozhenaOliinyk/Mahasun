@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'employee_create' %}" class="admin-add-btn">+</a>
+
+<div class="long-list">
+    {% for row in rows %}
+    <div class="long-card" onclick="location.href='{% url 'employee_update' row.id %}'">
+        <div class="card-details">
+            <h2>{{ row.values.1 }} {{ row.values.2 }} {{ row.values.3 }}</h2>
+
+            <p><strong>Посада:</strong> {{ row.values.4 }} (Зміна: {{ row.values.5 }})</p>
+
+            <p>Торгова точка: {{ row.values.6 }}</p>
+
+            <p>{{ row.values.7 }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

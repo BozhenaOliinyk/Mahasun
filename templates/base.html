@@ -2,119 +2,82 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Система{% endblock %}</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0 auto;
-            background-color: #FFE2DB;
-        }
-
-        .container {
-            max-width: 1330px;
-            margin: 0 auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background: white;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #EB918A;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #FFFCFC;
-        }
-
-        .btn {
-            padding: 8px 12px;
-            text-decoration: none;
-            color: white;
-            border-radius: 4px;
-            display: inline-block;
-            margin-right: 5px;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background-color: #DC4343;
-        }
-
-        .btn-success {
-            background-color: #DC4343;
-        }
-
-        .btn-primary:hover {
-            background-color: #B02D2D;
-            transform: scale(1.1);
-        }
-
-        .btn-success:hover {
-            background-color: #B02D2D;
-            transform: scale(1.1);
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #EB918A;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .nav a {
-            justify-content: space-around;
-            margin-right: 15px;
-            color: white;
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        .nav a:hover {
-            color: #B02D2D;
-            font-size: 17px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish Mahasyn</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<header class="nav"><a href="{% url 'client_list' %}">Clients</a>
+    <input type="checkbox" id="fav-toggle">
 
-    <a href="{% url 'employee_list' %}">Employees</a>
+    <header class="main-header">
+        <div class="logo-container">
+            <a href="/"><img src="{% static 'images/logo_spices.jpg' %}" alt="Logo"></a>
+        </div>
 
-    <a href="{% url 'outlet_list' %}">Retail outlets</a>
+        <nav class="nav-menu">
+            {% if user.is_authenticated or request.session.client_id %}
+                <a href="{% url 'spice_list' %}">Спеції</a>
+                <a href="{% url 'card_list' %}">Бонусні картки</a>
+                <a href="{% url 'outlet_list' %}">Торгові точки</a>
 
-    <a href="{% url 'card_list' %}">Bonus cards</a>
+                {% if user.is_staff %}
+                    <a href="{% url 'employee_list' %}">Працівники</a>
+                    <a href="{% url 'supplier_list' %}">Постачальники</a>
+                    <a href="{% url 'client_list' %}">Клієнти</a>
+                {% endif %}
+            {% endif %}
+        </nav>
 
-    <a href="{% url 'spice_list' %}">Spices</a>
-</header>
+        <div class="header-actions">
+            {% if request.session.client_id %}
+                <label for="fav-toggle" class="heart-btn" style="cursor: pointer;">❤</label>
+            {% endif %}
 
-<div class="container">
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+            <div class="profile-area">
+                {% if not user.is_authenticated and not request.session.client_id %}
+                    <a href="{% url 'login' %}"><img src="{% static 'images/default_user.jpg' %}" alt="Login"></a>
+                {% elif user.is_staff %}
+                    <img src="{% static 'images/admin_icon.jpg' %}" onclick="confirmLogout()" style="cursor: pointer;" alt="Admin">
+                {% else %}
+                    <a href="{% url 'profile' %}"><img src="{% static 'images/user_avatar.jpg' %}" alt="Profile"></a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="overlay">
+    <div class="fav-window">
+        <h2 style="color: var(--primary-dark)">Ваші улюблені</h2>
+
+        <div id="fav-content" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+            {% for fav in user_favorites %}
+            <div class="fav-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
+                <span style="font-weight: 500;">{{ fav.spice_id.name }}</span>
+
+                <a href="{% url 'del_fav' fav.id %}" class="fav-delete-heart" title="Видалити з улюблених">
+                    ❤
+                </a>
+            </div>
+            {% empty %}
+            <p style="color: #999; padding: 20px;">У списку ще немає спецій</p>
+            {% endfor %}
+        </div>
+
+        <label for="fav-toggle" class="btn-main btn-outline" style="cursor: pointer; display: inline-block;">Закрити</label>
+    </div>
 </div>
+
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        function confirmLogout() {
+            if(confirm("Ви справді хочете вийти з акаунту?")) {
+                window.location.href = "{% url 'logout' %}";
+            }
+        }
+    </script>
 </body>
 </html>
