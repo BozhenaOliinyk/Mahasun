@@ -13,28 +13,28 @@
 
                 <div class="form-group">
                     <label for="id_ln">Прізвище</label>
-                    <input type="text" id="id_ln" name="ln" value="{{ client.last_name }}">
+                    <input type="text" id="id_ln" name="ln" value="{{ client_id.last_name }}">
                 </div>
 
                 <div class="form-group">
                     <label for="id_fn">Ім'я</label>
-                    <input type="text" id="id_fn" name="fn" value="{{ client.first_name }}">
+                    <input type="text" id="id_fn" name="fn" value="{{ client_id.first_name }}">
                 </div>
 
                 <div class="form-group">
                     <label for="id_mn">По батькові</label>
-                    <input type="text" id="id_mn" name="mn" value="{{ client.fathers_name }}">
+                    <input type="text" id="id_mn" name="mn" value="{{ client_id.fathers_name }}">
                 </div>
 
                 <div class="form-group">
                     <label for="id_phone">Телефон</label>
-                    <input type="text" id="id_phone" name="phone" value="{{ client.phone_number }}">
+                    <input type="text" id="id_phone" name="phone" value="{{ client_id.phone_number }}">
                 </div>
             </fieldset>
 
             <aside class="loyalty-info">
-                <p>Тип картки: <strong>{{ client.bonus_card_id.type }}</strong></p>
-                <p>Нараховано бонусів: <strong class="accent-text">{{ client.bonus_count }}</strong></p>
+                <p>Тип картки: <strong>{{ client_id.bonus_card_id.type }}</strong></p>
+                <p>Нараховано бонусів: <strong class="accent-text">{{ client_id.bonus_count }}</strong></p>
             </aside>
 
             <footer class="form-actions">

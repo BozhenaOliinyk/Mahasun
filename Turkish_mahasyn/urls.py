@@ -37,6 +37,5 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
 
     path('favorites/', views.favorite_list, name='favorite_list'),
-    path('favorites/add/<int:spice_id>/', views.add_favorite, name='add_fav'),
-    path('favorites/del/<int:fav_id>/', views.delete_favorite, name='del_fav'),
+    path('favorites/add_del/<int:spice_id>/', views.add_del_favorite, name='add_del_fav')
 ]

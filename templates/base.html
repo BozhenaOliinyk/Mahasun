@@ -59,8 +59,9 @@
                 {% if request.session.client_id %}
                     {% for fav in user_favorites %}
                         <article class="fav-item">
-                            <span class="fav-name">{{ fav.spice.name }}</span>
-                            <a href="{% url 'del_fav' fav.id %}" class="fav-delete-heart" title="Видалити з улюблених">❤</a>
+                            <span class="fav-name">{{ fav.spice.name }}, </span>
+                            <p class="fav-price">{{ fav.spice.price }} грн / 100 гр</p>
+                            <a href="{% url 'add_del_fav' fav.spice_id %}" class="fav-delete-heart" title="Видалити з улюблених">❤</a>
                         </article>
                     {% empty %}
                         <p class="empty-msg">У списку ще немає спецій</p>

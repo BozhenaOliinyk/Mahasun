@@ -1,12 +1,16 @@
 @use "../abstracts/colors" as *;
 @use "../abstracts/mixins" as *;
 
-.app .outlets-page .long-card {
+.app .outlets-page .long-card{
   @include card-surface;
   display: flex;
   gap: 14px;
   align-items: center;
   padding: 14px;
+}
+
+.app .outlets-page .long-card:hover{
+  border-color: rgba(112, 67, 4, 0.65);
 }
 
 .app .outlets-page .card-image-wrapper {
@@ -15,7 +19,6 @@
   height: 96px;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(243, 239, 233, 0.14);
 }
 
 .app .outlets-page .card-image-wrapper img {

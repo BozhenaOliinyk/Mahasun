@@ -25,7 +25,7 @@
 
 .app .spice-card:hover {
   transform: translateY(-1px);
-  border-color: rgba(191, 109, 0, 0.35);
+  border-color: rgba(112, 67, 4, 0.65);
 }
 
 .app .spice-image-container {
@@ -50,25 +50,63 @@
 }
 
 .app .spice-title {
-  margin: 0 0 6px;
+  margin: 0;
   font-size: 18px;
   font-weight: 800;
+  letter-spacing: 0.2px;
   color: $text-100;
 }
 
 .app .spice-meta {
+  @include text-truncate(2);
   margin: 0 0 8px;
   color: $text-300;
   font-size: 13px;
 }
 
 .app .spice-price {
-  margin: 0;
+  margin: 10px 0 0;
+  font-size: 15px;
   color: $text-200;
   font-weight: 800;
 }
 
 .app .price-unit {
-  color: $text-300;
+  color: $muted-400;
   font-weight: 600;
+  margin-left: 6px;
+}
+
+.app .fav-heart-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: rgba(150, 69, 69, 0.09);
+  border: 1px solid rgba(152, 29, 29, 0.44);
+  color: rgba(243, 239, 233, 0.6);
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app .fav-heart-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(199, 7, 0, 0.25);
+  border: 1px solid rgba(191, 6, 0, 0.55);
+}
+
+.app .fav-heart-btn.active {
+  color: $text-100;
+  background: rgba(199, 7, 0, 0.25);
+  border: 1px solid rgba(191, 6, 0, 0.55);
+}
+
+@media (max-width: 900px) {
+  .app .spice-grid {
+    grid-template-columns: 1fr;
+  }
 }

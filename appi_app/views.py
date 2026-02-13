@@ -111,15 +111,19 @@ def favorite_list(request):
     favorites = Favorite.objects.filter(client_id=client_id).select_related("spice")
     return render(request, "favorites_partial.html", {"favorites": favorites})
 
-def add_favorite(request, spice_id):
+def add_del_favorite(request, spice_id):
     client_id = request.session.get("client_id")
-    if client_id:
-        Favorite.objects.get_or_create(client_id=client_id, spice_id=spice_id)
-    return redirect("spice_list")
+    if not client_id:
+        return redirect("login")
 
-def delete_favorite(request, fav_id):
-    Favorite.objects.filter(pk=fav_id).delete()
+    fav = Favorite.objects.filter(client_id=client_id, spice_id=spice_id).first()
+    if fav:
+        fav.delete()
+    else:
+        Favorite.objects.create(client_id=client_id, spice_id=spice_id)
+
     return redirect(request.META.get("HTTP_REFERER", "spice_list"))
+
 
 
 

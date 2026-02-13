@@ -70,7 +70,7 @@
 
 .app .long-card:hover {
   transform: translateY(-2px);
-  border: 1px solid rgba(191, 109, 0, 0.22);
+  border: 1px solid rgba(112, 67, 4, 0.65);
   box-shadow: $shadow-1;
 }
 
@@ -131,108 +131,6 @@
     height: 160px;
   }
 }
-
-
-
-
-
-/* spice cards */
-
-.app .spice-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.app .spice-card {
-  @include card-surface;
-  padding: 12px;
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 12px;
-  position: relative;
-  cursor: default;
-  transition: transform 170ms ease, border 170ms ease, box-shadow 170ms ease;
-}
-
-.app .spice-card:hover {
-  transform: translateY(-2px);
-  border: 1px solid rgba(191, 109, 0, 0.22);
-  box-shadow: $shadow-1;
-}
-
-.app .spice-image-container {
-  width: 110px;
-  height: 110px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid rgba(243, 239, 233, 0.12);
-}
-
-.app .spice-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.app .spice-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 0.2px;
-}
-
-.app .spice-meta {
-  @include text-truncate(2);
-}
-
-.app .spice-price {
-  margin: 10px 0 0;
-  font-size: 15px;
-  color: $text-200;
-  font-weight: 800;
-}
-
-.app .price-unit {
-  color: $muted-400;
-  font-weight: 700;
-  margin-left: 6px;
-}
-
-.app .fav-heart-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  background: rgba(22, 16, 11, 0.55);
-  border: 1px solid rgba(243, 239, 233, 0.22);
-  color: rgba(243, 239, 233, 0.6);
-  font-size: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.app .fav-heart-btn:hover {
-  transform: translateY(-1px);
-  border: 1px solid rgba(191, 109, 0, 0.45);
-}
-
-.app .fav-heart-btn.active {
-  color: $text-100;
-  background: rgba(132, 36, 0, 0.28);
-  border: 1px solid rgba(132, 36, 0, 0.6);
-}
-
-@media (max-width: 900px) {
-  .app .spice-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
 
 
 /* bonus cards*/
@@ -329,7 +227,7 @@
 
 .app .client-card .btn-del-small:hover {
   background: rgba(132, 36, 0, 0.42);
-  border-color: rgba(191, 109, 0, 0.65);
+  border-color: rgba(173, 53, 1, 0.65);
   transform: translateY(-1px);
 }
 

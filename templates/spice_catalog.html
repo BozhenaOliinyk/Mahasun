@@ -35,9 +35,9 @@
                 </footer>
             </div>
 
-            {% if not user.is_staff and request.session.client_id %}
+            {% if not user.is_staff%}
                 <button class="fav-heart-btn {% if row.id in fav_ids %}active{% endif %}"
-                        onclick="event.stopPropagation(); location.href='{% url 'add_fav' row.id %}'"
+                        onclick="event.stopPropagation(); location.href='{% url 'add_del_fav' row.id %}'"
                         aria-label="Додати в обране">
                     ❤
                 </button>
