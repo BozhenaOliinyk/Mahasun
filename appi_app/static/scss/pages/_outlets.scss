@@ -1,7 +1,7 @@
 @use "../abstracts/colors" as *;
 @use "../abstracts/mixins" as *;
 
-.app .outlets-page .long-card{
+.app .outlets-page .long-card {
   @include card-surface;
   display: flex;
   gap: 14px;
@@ -9,7 +9,7 @@
   padding: 14px;
 }
 
-.app .outlets-page .long-card:hover{
+.app .outlets-page .long-card:hover {
   border-color: rgba(63, 94, 14, 0.8);
 }
 
@@ -30,4 +30,11 @@
 .app .outlets-page .card-details {
   flex: 1;
   min-width: 0;
+}
+
+.app .card-title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 800;
+  color: $text-100;
 }
