@@ -1,58 +1,187 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish Mahasyn</title>
+    <link rel="stylesheet" href="../appi_app/static/css/style.css">
+</head>
 
-{% block content %}
+<body class="app">
+<input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
+<input type="checkbox" id="fav-toggle" class="visually-hidden">
+<input type="checkbox" id="menu-toggle" class="visually-hidden">
+
+<header class="main-header">
+
+    <div class="logo-container">
+        <a href="index.html"><img src="../appi_app/static/images/spices_logo.png" alt="Logo"></a>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="spice_catalog.html">Спеції</a>
+        <a href="bonus_cards.html">Бонусні картки</a>
+        <a href="outlets.html">Торгові точки</a>
+    </nav>
+
+    <section class="header-actions">
+        <label for="fav-toggle" class="heart-btn">❤</label>
+
+        <div class="profile-area">
+            <a href="login.html">
+                <img src="../appi_app/static/images/default_user.jpg" alt="Profile">
+            </a>
+        </div>
+
+        <label for="menu-toggle" class="burger-btn">☰</label>
+    </section>
+</header>
+
+<aside class="overlay">
+    <section class="fav-window">
+        <header class="fav-header">
+            <h2>Улюблені</h2>
+        </header>
+
+        <div id="fav-content" class="fav-scroll-area">
+            <div class="fav-guest">
+                <p class="fav-guest-title">Улюблені доступні після входу</p>
+                <p class="fav-guest-text">Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.</p>
+
+                <div class="fav-guest-actions">
+                    <a class="btn-main" href="login.html">Увійти</a>
+                    <a class="btn-main btn-outline" href="register.html">Зареєструватись</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="fav-footer">
+            <label for="fav-toggle" class="btn-main btn-outline">Закрити</label>
+        </footer>
+    </section>
+</aside>
+
+<aside class="mobile-menu-overlay" aria-hidden="true">
+    <nav class="mobile-menu" aria-label="Мобільне меню">
+        <div class="mobile-menu-top">
+            <div class="mobile-menu-profile">
+                <img src="../appi_app/static/images/default_user.jpg" alt="Профіль">
+            </div>
+
+            <label for="menu-toggle" class="mobile-menu-close" aria-label="Закрити">✕</label>
+        </div>
+
+        <div class="mobile-menu-links">
+        <a href="spice_catalog.html">Спеції</a>
+        <a href="bonus_cards.html">Бонусні картки</a>
+        <a href="outlets.html">Торгові точки</a>
+        </div>
+    </nav>
+</aside>
+
+<main id="main-content">
 <main class="content-container">
     <header class="page-header">
         <h1 class="visually-hidden">Бонусні картки</h1>
 
-        {% if user.is_staff %}
-            <a href="{% url 'card_create' %}"
-               class="admin-add-btn"
-               aria-label="Додати нову картку">
-                +
-            </a>
-        {% endif %}
+        <a href="bonus_cards.html"
+           class="admin-add-btn"
+           aria-label="Додати нову картку"
+           hidden>
+            +
+        </a>
     </header>
 
     <section class="long-list">
-        {% for row in rows %}
         <article class="long-card bonus-card-full"
                  role="button"
                  tabindex="0">
 
             <figure class="card-image-wrapper">
-                <img src="{% static 'images/' %}
-                {% if 'pro' in row.values.1|lower %}
-                    pro_card.jpg
-                {% elif 'advanced' in row.values.1|lower %}
-                    adv_card.jpg
-                {% else %}
-                    new_card.jpg
-                {% endif %}"
-                alt="Візуалізація картки {{ row.values.1 }}">
+                <img src="../appi_app/static/images/new_card.jpg"
+                     alt="Візуалізація картки NEW">
             </figure>
 
             <div class="bonus-info-block">
                 <header class="card-title">
-                    <h2>{{ row.values.1|upper }}</h2>
+                    <h2>NEW</h2>
                 </header>
 
                 <section class="card-details">
                     <p>
                         Відсоток нарахування бонусів:
-                        <span class="highlight-value">{{ row.values.2 }}%</span>
+                        <span class="highlight-value">0%</span>
                     </p>
 
                     <p>
                         Знижка(%):
-                        <span class="highlight-value">{{ row.values.3 }}%</span>
+                        <span class="highlight-value">0%</span>
                     </p>
                 </section>
             </div>
 
         </article>
-        {% endfor %}
+
+        <article class="long-card bonus-card-full"
+                 role="button"
+                 tabindex="0">
+
+            <figure class="card-image-wrapper">
+                <img src="../appi_app/static/images/adv_card.jpg"
+                     alt="Візуалізація картки ADVANCED">
+            </figure>
+
+            <div class="bonus-info-block">
+                <header class="card-title">
+                    <h2>ADVANCED</h2>
+                </header>
+
+                <section class="card-details">
+                    <p>
+                        Відсоток нарахування бонусів:
+                        <span class="highlight-value">5%</span>
+                    </p>
+
+                    <p>
+                        Знижка(%):
+                        <span class="highlight-value">3%</span>
+                    </p>
+                </section>
+            </div>
+
+        </article>
+
+        <article class="long-card bonus-card-full"
+                 role="button"
+                 tabindex="0">
+
+            <figure class="card-image-wrapper">
+                <img src="../appi_app/static/images/pro_card.jpg"
+                     alt="Візуалізація картки PRO">
+            </figure>
+
+            <div class="bonus-info-block">
+                <header class="card-title">
+                    <h2>PRO</h2>
+                </header>
+
+                <section class="card-details">
+                    <p>
+                        Відсоток нарахування бонусів:
+                        <span class="highlight-value">10%</span>
+                    </p>
+
+                    <p>
+                        Знижка(%):
+                        <span class="highlight-value">7%</span>
+                    </p>
+                </section>
+            </div>
+
+        </article>
     </section>
 </main>
-{% endblock %}
+</main>
+
+</body>
+</html>

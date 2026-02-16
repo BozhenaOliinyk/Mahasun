@@ -1,33 +1,154 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish Mahasyn</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-{% block content %}
+<body class="app">
+
+<input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
+<input type="checkbox" id="fav-toggle" class="visually-hidden">
+<input type="checkbox" id="menu-toggle" class="visually-hidden">
+
+<header class="main-header">
+
+    <div class="logo-container">
+        <a href="index.html"><img src="../appi_app/static/images/spices_logo.png" alt="Logo"></a>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="spice_catalog.html">Спеції</a>
+        <a href="bonus_cards.html">Бонусні картки</a>
+        <a href="outlets.html">Торгові точки</a>
+        <a href="employees.html">Працівники</a>
+        <a href="suppliers.html">Постачальники</a>
+        <a href="clients.html">Клієнти</a>
+    </nav>
+
+    <section class="header-actions">
+        <label for="fav-toggle" class="heart-btn">❤</label>
+
+        <div class="profile-area">
+            <a href="login.html">
+                <img src="../appi_app/static/images/default_user.jpg" alt="Profile">
+            </a>
+        </div>
+
+        <label for="menu-toggle" class="burger-btn">☰</label>
+    </section>
+
+</header>
+
+<aside class="overlay">
+    <section class="fav-window">
+        <header class="fav-header">
+            <h2>Улюблені</h2>
+        </header>
+
+        <div id="fav-content" class="fav-scroll-area">
+            <div class="fav-guest">
+                <p class="fav-guest-title">Улюблені доступні після входу</p>
+                <p class="fav-guest-text">Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.</p>
+
+                <div class="fav-guest-actions">
+                    <a class="btn-main" href="login.html">Увійти</a>
+                    <a class="btn-main btn-outline" href="register.html">Зареєструватись</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="fav-footer">
+            <label for="fav-toggle" class="btn-main btn-outline">Закрити</label>
+        </footer>
+    </section>
+</aside>
+
+<aside class="mobile-menu-overlay" aria-hidden="true">
+    <nav class="mobile-menu" aria-label="Мобільне меню">
+        <div class="mobile-menu-top">
+            <div class="mobile-menu-profile">
+                <img src="../appi_app/static/images/default_user.jpg" alt="Профіль">
+            </div>
+
+            <label for="menu-toggle" class="mobile-menu-close" aria-label="Закрити">✕</label>
+        </div>
+
+        <div class="mobile-menu-links">
+            <a href="spice_catalog.html">Спеції</a>
+            <a href="bonus_cards.html">Бонусні картки</a>
+            <a href="outlets.html">Торгові точки</a>
+            <a href="employees.html">Працівники</a>
+            <a href="suppliers.html">Постачальники</a>
+            <a href="clients.html">Клієнти</a>
+        </div>
+    </nav>
+</aside>
+
+<main id="main-content">
+
 <main class="outlets-page">
     <header class="page-header">
         <h1 class="visually-hidden">Наші торгові точки</h1>
-        {% if user.is_staff %}
-            <a href="{% url 'outlet_create' %}" class="admin-add-btn" aria-label="Додати торгову точку">+</a>
-        {% endif %}
+        <a href="outlet_form.html" class="admin-add-btn" aria-label="Додати торгову точку" hidden>+</a>
     </header>
 
     <section class="long-list">
-        {% for row in rows %}
+
         <article class="long-card"
                  role="button"
                  tabindex="0">
 
             <figure class="card-image-wrapper">
-                <img src="{% static 'images/outlet_placeholder.jpg' %}" alt="Торгова точка {{ row.values.1 }}">
+                <img src="../appi_app/static/images/outlet_placeholder.jpg" alt="Торгова точка Central Store">
             </figure>
 
             <section class="card-details">
                 <header class="outlet-title">
-                    <h2>{{ row.values.1 }}</h2>
+                    <h2>Central Store</h2>
                 </header>
-                <p class="outlet-address">{{ row.values.2 }}</p>
+                <p class="outlet-address">вул. Центральна, 10</p>
             </section>
         </article>
-        {% endfor %}
+
+        <article class="long-card"
+                 role="button"
+                 tabindex="0">
+
+            <figure class="card-image-wrapper">
+                <img src="../appi_app/static/images/outlet_placeholder.jpg" alt="Торгова точка Market West">
+            </figure>
+
+            <section class="card-details">
+                <header class="outlet-title">
+                    <h2>Market West</h2>
+                </header>
+                <p class="outlet-address">пр. Західний, 25</p>
+            </section>
+        </article>
+
+        <article class="long-card"
+                 role="button"
+                 tabindex="0">
+
+            <figure class="card-image-wrapper">
+                <img src="../appi_app/static/images/outlet_placeholder.jpg" alt="Торгова точка Spice Point">
+            </figure>
+
+            <section class="card-details">
+                <header class="outlet-title">
+                    <h2>Spice Point</h2>
+                </header>
+                <p class="outlet-address">пл. Миру, 3</p>
+            </section>
+        </article>
+
     </section>
 </main>
-{% endblock %}
+
+</main>
+
+</body>
+</html>

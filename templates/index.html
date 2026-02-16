@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turkish Mahasyn</title>
-    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="../appi_app/static/css/style.css">
 </head>
 
 <body class="app">
@@ -12,7 +13,6 @@
 <input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
 <input type="checkbox" id="fav-toggle" class="visually-hidden">
 <input type="checkbox" id="menu-toggle" class="visually-hidden">
-
 
 <header class="main-header">
 
@@ -22,16 +22,11 @@
         </a>
     </div>
 
-
     <nav class="nav-menu">
         <a href="spice_catalog.html">Спеції</a>
         <a href="bonus_cards.html">Бонусні картки</a>
         <a href="outlets.html">Торгові точки</a>
-        <a href="employees.html">Працівники</a>
-        <a href="suppliers.html">Постачальники</a>
-        <a href="clients.html">Клієнти</a>
     </nav>
-
 
     <section class="header-actions">
 
@@ -58,8 +53,8 @@
             <h2>Улюблені</h2>
         </header>
 
-
         <div id="fav-content" class="fav-scroll-area">
+
 
             <div class="fav-guest">
 
@@ -71,7 +66,6 @@
                     Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.
                 </p>
 
-
                 <div class="fav-guest-actions">
                     <a class="btn-main" href="login.html">Увійти</a>
                     <a class="btn-main btn-outline" href="register.html">Зареєструватись</a>
@@ -80,7 +74,6 @@
             </div>
 
         </div>
-
 
         <footer class="fav-footer">
             <label for="fav-toggle" class="btn-main btn-outline">
@@ -103,22 +96,17 @@
                 <img src="../appi_app/static/images/default_user.jpg" alt="Профіль">
             </div>
 
-
             <label for="menu-toggle"
                    class="mobile-menu-close"
                    aria-label="Закрити">✕</label>
 
         </div>
 
-
         <div class="mobile-menu-links">
 
             <a href="spice_catalog.html">Спеції</a>
             <a href="bonus_cards.html">Бонусні картки</a>
             <a href="outlets.html">Торгові точки</a>
-            <a href="employees.html">Працівники</a>
-            <a href="suppliers.html">Постачальники</a>
-            <a href="clients.html">Клієнти</a>
 
         </div>
 
@@ -129,63 +117,11 @@
 
 <main id="main-content">
 
+    <section class="home-section">
 
-    <main class="edit-container">
+        <h1>Turkish Mahasyn</h1>
 
-        <header class="form-header">
-            <h2>Додати торгову точку</h2>
-        </header>
-
-
-        <section class="form-section">
-
-            <form class="edit-form" method="POST" action="#">
-
-                <fieldset class="form-fieldset">
-
-                    <legend class="visually-hidden">Торгова точка</legend>
-
-
-                    <div class="form-group">
-                        <label for="id_name">Назва точки</label>
-                        <input type="text" id="id_name" name="name" required>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="id_address">Адреса</label>
-                        <input type="text" id="id_address" name="address" required>
-                    </div>
-
-
-                </fieldset>
-
-
-                <footer class="form-actions">
-                    <button type="submit" class="btn-main">Зберегти</button>
-                </footer>
-
-            </form>
-
-
-            <aside class="danger-zone" hidden>
-
-                <form action="#" method="POST">
-                    <button type="submit" class="btn-delete">Видалити</button>
-                </form>
-
-            </aside>
-
-
-            <nav class="navigation-actions">
-                <a href="outlets.html" class="btn-main btn-outline">Скасувати</a>
-            </nav>
-
-
-        </section>
-
-    </main>
-
+    </section>
 
 </main>
 

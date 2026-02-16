@@ -1,77 +1,228 @@
-{% extends 'base.html' %}
-{% block content %}
-<main class="edit-container">
-    <header class="form-header">
-        <h2>{% if obj %}Редагувати дані{% else %}Додати{% endif %} працівника</h2>
-    </header>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish Mahasyn</title>
+    <link rel="stylesheet" href="../appi_app/static/css/style.css">
+</head>
 
-    <section class="form-section">
-        <form class="edit-form" method="POST">
-            {% csrf_token %}
+<body class="app">
 
-            <fieldset class="form-fieldset">
-                <legend class="visually-hidden">Працівник</legend>
+<input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
+<input type="checkbox" id="fav-toggle" class="visually-hidden">
+<input type="checkbox" id="menu-toggle" class="visually-hidden">
 
-                <div class="form-group">
-                    <label for="id_last_name">Прізвище</label>
-                    <input type="text" id="id_last_name" name="last_name" value="{{ obj.last_name|default:'' }}" required>
-                </div>
 
-                <div class="form-group">
-                    <label for="id_first_name">Ім'я</label>
-                    <input type="text" id="id_first_name" name="first_name" value="{{ obj.first_name|default:'' }}" required>
-                </div>
+<header class="main-header">
 
-                <div class="form-group">
-                    <label for="id_fathers_name">По батькові</label>
-                    <input type="text" id="id_fathers_name" name="fathers_name" value="{{ obj.fathers_name|default:'' }}">
-                </div>
+    <div class="logo-container">
+        <a href="index.html">
+            <img src="../appi_app/static/images/spices_logo.png" alt="Logo">
+        </a>
+    </div>
 
-                <div class="form-group">
-                    <label for="id_position">Посада</label>
-                    <input type="text" id="id_position" name="position" value="{{ obj.position|default:'' }}">
-                </div>
+    <nav class="nav-menu">
+        <a href="spice_catalog.html">Спеції</a>
+        <a href="bonus_cards.html">Бонусні картки</a>
+        <a href="outlets.html">Торгові точки</a>
+        <a href="employees.html">Працівники</a>
+        <a href="suppliers.html">Постачальники</a>
+        <a href="clients.html">Клієнти</a>
+    </nav>
 
-                <div class="form-group">
-                    <label for="id_shift">Зміна (номер)</label>
-                    <input type="number" id="id_shift" name="shift" value="{{ obj.shift|default:'' }}">
-                </div>
 
-                <div class="form-group">
-                    <label for="id_outlet">Торгова точка</label>
-                    <select name="outlet_id" id="id_outlet" required class="full-width-select">
-                        <option value="">-- Оберіть точку --</option>
-                        {% for outlet in outlets %}
-                            <option value="{{ outlet.id }}" {% if obj.outlet_id == outlet.id %}selected{% endif %}>
-                                {{ outlet.name }} ({{ outlet.address }})
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
+    <section class="header-actions">
 
-                <div class="form-group">
-                    <label for="id_phone">Номер телефону</label>
-                    <input type="text" id="id_phone" name="phone_number" value="{{ obj.phone_number|default:'' }}">
-                </div>
-            </fieldset>
+        <label for="fav-toggle" class="heart-btn">❤</label>
 
-            <footer class="form-actions">
-                <button type="submit" class="btn-main">Зберегти</button>
-            </footer>
-        </form>
+        <div class="profile-area">
+            <a href="login.html">
+                <img src="../appi_app/static/images/default_user.jpg" alt="Profile">
+            </a>
+        </div>
 
-        {% if obj %}
-        <aside class="danger-zone">
-            <form action="{% url 'employee_delete' obj.pk %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn-delete">Видалити</button>
-            </form>
-        </aside>
-        {% endif %}
+        <label for="menu-toggle" class="burger-btn">☰</label>
 
-        <nav class="navigation-actions">
-            <a href="{% url 'employee_list' %}" class="btn-main btn-outline">Скасувати</a>
-        </nav>
     </section>
+
+</header>
+
+
+<aside class="overlay">
+
+    <section class="fav-window">
+
+        <header class="fav-header">
+            <h2>Улюблені</h2>
+        </header>
+
+        <div id="fav-content" class="fav-scroll-area">
+
+            <div class="fav-guest">
+
+                <p class="fav-guest-title">
+                    Улюблені доступні після входу
+                </p>
+
+                <p class="fav-guest-text">
+                    Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.
+                </p>
+
+                <div class="fav-guest-actions">
+                    <a class="btn-main" href="login.html">Увійти</a>
+                    <a class="btn-main btn-outline" href="register.html">Зареєструватись</a>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <footer class="fav-footer">
+            <label for="fav-toggle" class="btn-main btn-outline">
+                Закрити
+            </label>
+        </footer>
+
+    </section>
+
+</aside>
+
+
+<aside class="mobile-menu-overlay" aria-hidden="true">
+
+    <nav class="mobile-menu" aria-label="Мобільне меню">
+
+        <div class="mobile-menu-top">
+
+            <div class="mobile-menu-profile">
+                <img src="../appi_app/static/images/default_user.jpg" alt="Профіль">
+            </div>
+
+            <label for="menu-toggle"
+                   class="mobile-menu-close"
+                   aria-label="Закрити">✕</label>
+
+        </div>
+
+
+        <div class="mobile-menu-links">
+
+            <a href="spice_catalog.html">Спеції</a>
+            <a href="bonus_cards.html">Бонусні картки</a>
+            <a href="outlets.html">Торгові точки</a>
+            <a href="employees.html">Працівники</a>
+            <a href="suppliers.html">Постачальники</a>
+            <a href="clients.html">Клієнти</a>
+
+        </div>
+
+    </nav>
+
+</aside>
+
+
+<main id="main-content">
+
+
+    <main class="edit-container">
+
+        <header class="form-header">
+            <h2>Додати працівника</h2>
+        </header>
+
+
+        <section class="form-section">
+
+            <form class="edit-form" method="POST" action="#">
+
+                <fieldset class="form-fieldset">
+
+                    <legend class="visually-hidden">Працівник</legend>
+
+
+                    <div class="form-group">
+                        <label for="id_last_name">Прізвище</label>
+                        <input type="text" id="id_last_name" name="last_name" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="id_first_name">Ім'я</label>
+                        <input type="text" id="id_first_name" name="first_name" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="id_fathers_name">По батькові</label>
+                        <input type="text" id="id_fathers_name" name="fathers_name">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="id_position">Посада</label>
+                        <input type="text" id="id_position" name="position">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="id_shift">Зміна (номер)</label>
+                        <input type="number" id="id_shift" name="shift">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="id_outlet">Торгова точка</label>
+
+                        <select name="outlet_id" id="id_outlet" required class="full-width-select">
+
+                            <option value="">-- Оберіть точку --</option>
+
+                            <option value="1">Central Store (вул. Центральна)</option>
+                            <option value="2">Market West (пр. Західний)</option>
+                            <option value="3">Spice Point (пл. Миру)</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="id_phone">Номер телефону</label>
+                        <input type="text" id="id_phone" name="phone_number">
+                    </div>
+
+
+                </fieldset>
+
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти</button>
+                </footer>
+
+            </form>
+
+
+            <aside class="danger-zone" hidden>
+
+                <form action="#" method="POST">
+                    <button type="submit" class="btn-delete">Видалити</button>
+                </form>
+
+            </aside>
+
+
+            <nav class="navigation-actions">
+                <a href="employees.html" class="btn-main btn-outline">Скасувати</a>
+            </nav>
+
+
+        </section>
+
+    </main>
+
+
 </main>
-{% endblock %}
+</body>
+</html>

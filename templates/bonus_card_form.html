@@ -1,51 +1,134 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish Mahasyn</title>
+    <link rel="stylesheet" href="../appi_app/static/css/style.css">
+</head>
 
-{% block content %}
-<main class="edit-container">
-    <header class="form-header">
-        <h2>{% if obj %}Редагувати{% else %}Додати{% endif %} бонусну картку</h2>
-    </header>
+<body class="app">
+<input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
+<input type="checkbox" id="fav-toggle" class="visually-hidden">
+<input type="checkbox" id="menu-toggle" class="visually-hidden">
 
-    <section class="form-section">
-        <form class="edit-form" method="POST">
-            {% csrf_token %}
+<header class="main-header">
 
-            <fieldset class="form-fieldset">
-                <legend class="visually-hidden">Бонусна картка</legend>
+    <div class="logo-container">
+        <a href="./index.html"><img src="images/spices_logo.png" alt="Logo"></a>
+    </div>
 
-                <div class="form-group">
-                    <label for="id_type">Тип картки</label>
-                    <input type="text" id="id_type" name="type" value="{{ obj.type|default:'' }}" required>
-                </div>
+    <nav class="nav-menu">
+            <a href="./spice_catalog.html">Спеції</a>
+            <a href="./bonus_cards.html">Бонусні картки</a>
+            <a href="./outlets.html">Торгові точки</a>
+            <a href="./employees.html">Працівники</a>
+            <a href="./suppliers.html">Постачальники</a>
+            <a href="./clients.html">Клієнти</a>
+    </nav>
 
-                <div class="form-group">
-                    <label for="id_bonus">Нарахування бонусів (%)</label>
-                    <input type="number" id="id_bonus" name="bonus_percent" value="{{ obj.bonus_percent|default:'' }}" required>
-                </div>
+    <section class="header-actions">
+        <label for="fav-toggle" class="heart-btn">❤</label>
 
-                <div class="form-group">
-                    <label for="id_discount">Знижка (%)</label>
-                    <input type="number" id="id_discount" name="discount" value="{{ obj.discount|default:'' }}" required>
-                </div>
-            </fieldset>
+        <div class="profile-area">
+            <a href="./login.html">
+                <img src="images/default_user.jpg" alt="Profile">
+            </a>
+        </div>
 
-            <footer class="form-actions">
-                <button type="submit" class="btn-main">Зберегти</button>
-            </footer>
-        </form>
-
-        {% if obj %}
-        <aside class="danger-zone">
-            <form action="{% url 'card_delete' obj.pk %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn-delete">Видалити</button>
-            </form>
-        </aside>
-        {% endif %}
-
-        <nav class="navigation-actions">
-            <a href="{% url 'card_list' %}" class="btn-main btn-outline">Скасувати</a>
-        </nav>
+        <label for="menu-toggle" class="burger-btn">☰</label>
     </section>
+</header>
+
+<aside class="overlay">
+    <section class="fav-window">
+        <header class="fav-header">
+            <h2>Улюблені</h2>
+        </header>
+
+        <div id="fav-content" class="fav-scroll-area">
+            <div class="fav-guest">
+                <p class="fav-guest-title">Улюблені доступні після входу</p>
+                <p class="fav-guest-text">Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.</p>
+
+                <div class="fav-guest-actions">
+                    <a class="btn-main" href="./login.html">Увійти</a>
+                    <a class="btn-main btn-outline" href="./register.html">Зареєструватись</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="fav-footer">
+            <label for="fav-toggle" class="btn-main btn-outline">Закрити</label>
+        </footer>
+    </section>
+</aside>
+
+<aside class="mobile-menu-overlay" aria-hidden="true">
+    <nav class="mobile-menu" aria-label="Мобільне меню">
+        <div class="mobile-menu-top">
+            <div class="mobile-menu-profile">
+                <img src="images/default_user.jpg" alt="Профіль">
+            </div>
+
+            <label for="menu-toggle" class="mobile-menu-close" aria-label="Закрити">✕</label>
+        </div>
+
+        <div class="mobile-menu-links">
+            <a href="./spice_catalog.html">Спеції</a>
+            <a href="./bonus_cards.html">Бонусні картки</a>
+            <a href="./outlets.html">Торгові точки</a>
+            <a href="./employees.html">Працівники</a>
+            <a href="./suppliers.html">Постачальники</a>
+            <a href="./clients.html">Клієнти</a>
+        </div>
+    </nav>
+</aside>
+
+<main id="main-content">
+    <main class="edit-container">
+        <header class="form-header">
+            <h2>Додати бонусну картку</h2>
+        </header>
+
+        <section class="form-section">
+            <form class="edit-form" method="POST" action="#">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Бонусна картка</legend>
+
+                    <div class="form-group">
+                        <label for="id_type">Тип картки</label>
+                        <input type="text" id="id_type" name="type" value="" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_bonus">Нарахування бонусів (%)</label>
+                        <input type="number" id="id_bonus" name="bonus_percent" value="" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_discount">Знижка (%)</label>
+                        <input type="number" id="id_discount" name="discount" value="" required>
+                    </div>
+                </fieldset>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти</button>
+                </footer>
+            </form>
+
+            <aside class="danger-zone" hidden>
+                <form action="#" method="POST">
+                    <button type="submit" class="btn-delete">Видалити</button>
+                </form>
+            </aside>
+
+            <nav class="navigation-actions">
+                <a href="./bonus_cards.html" class="btn-main btn-outline">Скасувати</a>
+            </nav>
+        </section>
+    </main>
 </main>
-{% endblock %}
+
+</body>
+</html>
