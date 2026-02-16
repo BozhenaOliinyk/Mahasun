@@ -10,6 +10,7 @@
 .app .employee-card {
   @include card-surface;
   padding: 18px;
+  grid-template-columns: 1fr;
 }
 
 .app .employee-card .employee-name,
@@ -21,17 +22,15 @@
   max-width: none;
 }
 
-
-.app .employee-page .long-card {
+.app .employees-page .long-card {
   grid-template-columns: 1fr;
 }
 
-.app .employee-page .card-details a {
+.app .employees-page .card-details a {
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
 }
-
 
 .app .employee-fullname {
   margin: 0 0 12px;
@@ -44,33 +43,42 @@
   align-items: baseline;
 }
 
+.employee-info .kv-line {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 8px;
+}
 
-@media (max-width: 360px) {
-  .app .employee-mn {
+.employee-info .kv-label { white-space: nowrap; }
+.employee-info .kv-muted { white-space: nowrap; }
+.employee-info .kv-value { white-space: nowrap; }
+
+
+@media (min-width: 561px) {
+  .app .employees-page .kv-line {
+    flex-wrap: nowrap;
+  }
+
+  .app .employees-page .employee-ln,
+  .app .employees-page .employee-fn,
+  .app .employees-page .employee-mn {
+    white-space: nowrap;
+  }
+
+  .app .employees-page .employee-mn {
+    flex-basis: auto;
+  }
+}
+
+
+@media (max-width: 560px) {
+  .app .employees-page .employee-mn {
     flex-basis: 100%;
   }
 
-  .employee-info .kv-line {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .employee-info .kv-label {
-      white-space: nowrap;
-    }
-
-    .employee-info .kv-muted {
-      white-space: nowrap;
-    }
-
-    .employee-info .kv-value {
-      white-space: nowrap;
-    }
-
-  .app .employees-page .employee-info p {
-    margin-top: 4px;
+  .app .employees-page .kv-line {
+    flex-wrap: wrap;
   }
 }
 
