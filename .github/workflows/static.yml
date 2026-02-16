@@ -2,7 +2,7 @@ name: Deploy static content to Pages
 
 on:
   push:
-    branches: ["deployment"]
+    branches: ["development"]
   workflow_dispatch:
 
 permissions:
@@ -24,8 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare site
+      - name: Build site folder
         run: |
+          rm -rf site
           mkdir -p site/css site/images
           cp -R appi_app/templates/* site/
           cp -R appi_app/static/css/* site/css/
