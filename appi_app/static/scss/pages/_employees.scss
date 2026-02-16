@@ -35,13 +35,28 @@
 
 
 @media (max-width: 360px) {
-  .app .employee-ln {
+  .app .employee-mn {
     flex-basis: 100%;
   }
 
-  .app .kv-line span{
-    flex-basis: 100%;
-  }
+  .employee-info .kv-line {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .employee-info .kv-label {
+      white-space: nowrap;
+    }
+
+    .employee-info .kv-muted {
+      white-space: nowrap;
+    }
+
+    .employee-info .kv-value {
+      white-space: nowrap;
+    }
 }
 
 .app .employee-info {
