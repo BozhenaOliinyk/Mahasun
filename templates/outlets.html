@@ -13,7 +13,6 @@
     <section class="long-list">
         {% for row in rows %}
         <article class="long-card"
-                 {% if user.is_staff %}onclick="location.href='{% url 'outlet_update' row.id %}'"{% endif %}
                  role="button"
                  tabindex="0">
 

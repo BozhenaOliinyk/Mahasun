@@ -7,13 +7,11 @@
             {% if user.is_staff %}
                 <a href="{% url 'employee_create' %}" class="admin-add-btn" aria-label="Додати працівника">+</a>
             {% endif %}
-
         </header>
 
         <section class="long-list">
             {% for row in rows %}
                 <article class="long-card employee-card"
-                         onclick="location.href='{% url 'employee_update' row.id %}'"
                          role="button"
                          tabindex="0">
                     <section class="card-details">

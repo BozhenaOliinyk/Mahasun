@@ -13,7 +13,6 @@
     <section class="spice-grid">
         {% for row in rows %}
         <article class="spice-card"
-                 {% if user.is_staff %}onclick="location.href='{% url 'spice_edit' row.id %}'"{% endif %}
                  role="button"
                  tabindex="0">
 
@@ -27,7 +26,7 @@
                 </header>
 
                 <p class="spice-meta"> {{ row.values.2 }} </p>
-                
+
                 <p class="spice-meta"> {{ row.values.3 }} </p>
 
                 <footer class="spice-footer">
@@ -35,12 +34,12 @@
                 </footer>
             </div>
 
-            {% if not user.is_staff%}
-                <button class="fav-heart-btn {% if row.id in fav_ids %}active{% endif %}"
-                        onclick="event.stopPropagation(); location.href='{% url 'add_del_fav' row.id %}'"
-                        aria-label="Додати в обране">
+            {% if not user.is_staff %}
+                <a href="{% url 'add_del_fav' row.id %}"
+                   class="fav-heart-btn {% if row.id in fav_ids %}active{% endif %}"
+                   aria-label="Додати в обране">
                     ❤
-                </button>
+                </a>
             {% endif %}
         </article>
         {% endfor %}

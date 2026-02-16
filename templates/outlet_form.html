@@ -32,7 +32,7 @@
         <aside class="danger-zone">
             <form action="{% url 'outlet_delete' obj.pk %}" method="POST">
                 {% csrf_token %}
-                <button type="submit" class="btn-delete" onclick="return confirm('Видалити цю точку?')">Видалити</button>
+                <button type="submit" class="btn-delete">Видалити</button>
             </form>
         </aside>
         {% endif %}

@@ -57,8 +57,7 @@
                 <aside class="danger-zone">
                     <form action="{% url 'supplier_delete' obj.id %}" method="POST">
                         {% csrf_token %}
-                        <button type="submit" class="btn-delete"
-                                onclick="return confirm('Якщо спеції постачає тільки цей постачальник, вони також видаляться. Видалити постачальника?')">
+                        <button type="submit" class="btn-delete">
                             Видалити
                         </button>
                     </form>
