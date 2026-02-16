@@ -32,7 +32,7 @@
   min-width: 0;
 }
 
-.app .card-title {
+.app .outlet-title {
   margin: 0 0 12px;
   font-size: 22px;
   font-weight: 800;
@@ -40,21 +40,23 @@
 }
 
 
-.app .outlets-page {
-  .long-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
+@medis (max-width: 656px) {
+  .app .outlets-page {
+    .long-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
 
-  .card-details {
-    text-align: center;
-  }
+    .card-details {
+      text-align: center;
+    }
 
-  .card-image-wrapper img {
-    display: block;
-    max-width: 100%;
-    height: auto;
+    .card-image-wrapper img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
   }
 }
