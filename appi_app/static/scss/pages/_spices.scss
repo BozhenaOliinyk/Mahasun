@@ -15,6 +15,7 @@
 
 .app .spice-card {
   @include card-surface;
+  position: relative;
   display: flex;
   gap: 14px;
   padding: 14px;
@@ -25,7 +26,7 @@
 
 .app .spice-card:hover {
   transform: translateY(-1px);
-  border-color: rgba(112, 67, 4, 0.65);
+  border-color: rgba(63, 94, 14, 0.8);
 }
 
 .app .spice-image-container {

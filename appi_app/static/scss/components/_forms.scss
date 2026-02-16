@@ -45,8 +45,8 @@
 .app .form-group select {
   width: 100%;
   border-radius: 12px;
-  border: 1px solid rgba(44, 27, 7, 0.96);
-  background: rgba(15, 11, 8, 0.55);
+  border: 1px solid #576e36;;
+  background: #a0ad8d;;
   color: $text-100;
   padding: 12px 12px;
   font-family: inherit;
@@ -62,7 +62,7 @@
 .app .form-group textarea:focus-visible,
 .app .form-group select:focus-visible {
   @include focus-ring;
-  border: 1px solid rgba(191, 109, 0, 0.55);
+  border: 1px solid rgba(102, 143, 40, 0.8);
 }
 
 .app .form-actions {
@@ -98,4 +98,29 @@
   border-radius: 14px;
   object-fit: cover;
   border: 1px solid rgba(243, 239, 233, 0.12);
+}
+
+
+
+
+@media (max-width: 560px) {
+  .app .form-header h2 {
+    font-size: 20px;
+  }
+
+  .app .form-section {
+    padding: 14px;
+  }
+
+  .app .form-group input,
+  .app .form-group textarea,
+  .app .form-group select {
+    padding: 10px 10px;
+    font-size: 14px;
+  }
+
+  .app .edit-image-big {
+    height: 200px;
+  }
+
 }

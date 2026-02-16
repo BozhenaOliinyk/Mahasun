@@ -33,3 +33,21 @@
   font-size: 28px;
   letter-spacing: 0.2px;
 }
+
+
+@media (max-width: 560px) {
+
+  .app #main-content,
+  .app .content-container,
+  .app .catalog-page,
+  .app .outlets-page,
+  .app .employees-page,
+  .app .clients-page,
+  .app .page-title,
+  .app .edit-container,
+  .app .auth-container,
+  .app .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

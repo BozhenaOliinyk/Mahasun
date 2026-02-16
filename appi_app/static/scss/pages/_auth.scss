@@ -37,3 +37,16 @@
   color: $text-100;
   font-weight: 700;
 }
+
+
+
+@media (max-width: 560px) {
+  .app .auth-header h2 {
+    font-size: 20px;
+  }
+
+  .app .auth-box {
+    padding: 14px;
+  }
+
+}
