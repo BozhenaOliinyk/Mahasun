@@ -1,32 +1,144 @@
-{% extends 'base.html' %}
-{% block content %}
-<main class="clients-page">
-    <header class="page-title">
-        <h1>Список клієнтів</h1>
-    </header>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish Mahasyn</title>
+    <link rel="stylesheet" href="../appi_app/static/css/style.css">
+</head>
 
-    <section class="long-list">
-        {% for row in rows %}
-        <article class="long-card client-card">
-            <section class="card-details">
-                <header class="client-name">
-                    <h2>{{ row.values.1 }} {{ row.values.2 }} {{ row.values.3 }}</h2>
-                </header>
+<body class="app">
+<input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
+<input type="checkbox" id="fav-toggle" class="visually-hidden">
+<input type="checkbox" id="menu-toggle" class="visually-hidden">
 
-                <div class="client-info">
-                    <p>Тип картки: <strong>{{ row.values.5 }}</strong></p>
-                    <p>Кількість бонусів: <span class="bonus-count">{{ row.values.4 }}</span></p>
-                    <p class="client-contact">{{ row.values.8 }}</p>
-                </div>
-            </section>
+<header class="main-header">
 
-            <footer class="card-actions">
-                <button class="btn-del-small">
-                    Видалити
-                </button>
-            </footer>
-        </article>
-        {% endfor %}
+    <div class="logo-container">
+        <a href="index.html"><img src="../appi_app/static/images/spices_logo.png" alt="Logo"></a>
+    </div>
+
+    <nav class="nav-menu">
+
+        <a href="spice_catalog.html">Спеції</a>
+        <a href="bonus_cards.html">Бонусні картки</a>
+        <a href="outlets.html">Торгові точки</a>
+        <a href="employees.html">Працівники</a>
+        <a href="suppliers.html">Постачальники</a>
+        <a href="clients.html">Клієнти</a>
+    </nav>
+
+    <section class="header-actions">
+        <label for="fav-toggle" class="heart-btn">❤</label>
+
+        <div class="profile-area">
+            <a href="login.html">
+                <img src="../appi_app/static/images/default_user.jpg" alt="Profile">
+            </a>
+        </div>
+
+        <label for="menu-toggle" class="burger-btn">☰</label>
     </section>
+</header>
+
+<aside class="overlay">
+    <section class="fav-window">
+        <header class="fav-header">
+            <h2>Улюблені</h2>
+        </header>
+
+        <div id="fav-content" class="fav-scroll-area">
+            <div class="fav-guest">
+                <p class="fav-guest-title">Улюблені доступні після входу</p>
+                <p class="fav-guest-text">Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.</p>
+
+                <div class="fav-guest-actions">
+                    <a class="btn-main" href="login.html">Увійти</a>
+                    <a class="btn-main btn-outline" href="register.html">Зареєструватись</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="fav-footer">
+            <label for="fav-toggle" class="btn-main btn-outline">Закрити</label>
+        </footer>
+    </section>
+</aside>
+
+<aside class="mobile-menu-overlay" aria-hidden="true">
+    <nav class="mobile-menu" aria-label="Мобільне меню">
+        <div class="mobile-menu-top">
+            <div class="mobile-menu-profile">
+                <img src="../appi_app/static/images/default_user.jpg" alt="Профіль">
+            </div>
+
+            <label for="menu-toggle" class="mobile-menu-close" aria-label="Закрити">✕</label>
+        </div>
+
+        <div class="mobile-menu-links">
+            <a href="spice_catalog.html">Спеції</a>
+            <a href="bonus_cards.html">Бонусні картки</a>
+            <a href="outlets.html">Торгові точки</a>
+            <a href="employees.html">Працівники</a>
+            <a href="suppliers.html">Постачальники</a>
+            <a href="clients.html">Клієнти</a>
+        </div>
+    </nav>
+</aside>
+
+<main id="main-content">
+
+    <main class="clients-page">
+        <header class="page-title">
+            <h1>Список клієнтів</h1>
+        </header>
+
+        <section class="long-list">
+
+            <article class="long-card client-card">
+                <section class="card-details">
+                    <header class="client-name">
+                        <h2>Іваненко Іван Іванович</h2>
+                    </header>
+
+                    <div class="client-info">
+                        <p>Тип картки: <strong>PRO</strong></p>
+                        <p>Кількість бонусів: <span class="bonus-count">120</span></p>
+                        <p class="client-contact">123456578</p>
+                    </div>
+                </section>
+
+                <footer class="card-actions">
+                    <button class="btn-del-small">
+                        Видалити
+                    </button>
+                </footer>
+            </article>
+
+            <article class="long-card client-card">
+                <section class="card-details">
+                    <header class="client-name">
+                        <h2>Петренко Олена Сергіївна</h2>
+                    </header>
+
+                    <div class="client-info">
+                        <p>Тип картки: <strong>ADVANCED</strong></p>
+                        <p>Кількість бонусів: <span class="bonus-count">65</span></p>
+                        <p class="client-contact">87654321</p>
+                    </div>
+                </section>
+
+                <footer class="card-actions">
+                    <button class="btn-del-small">
+                        Видалити
+                    </button>
+                </footer>
+            </article>
+
+        </section>
+    </main>
+
 </main>
-{% endblock %}
+
+</body>
+</html>

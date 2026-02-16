@@ -1,40 +1,128 @@
-{% extends 'base.html' %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish Mahasyn</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="app">
+
+<input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
+<input type="checkbox" id="fav-toggle" class="visually-hidden">
+<input type="checkbox" id="menu-toggle" class="visually-hidden">
+
+<header class="main-header">
+
+    <div class="logo-container">
+        <a href="index.html"><img src="../appi_app/static/images/spices_logo.png" alt="Logo"></a>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="spice_catalog.html">Спеції</a>
+        <a href="bonus_cards.html">Бонусні картки</a>
+        <a href="outlets.html">Торгові точки</a>
+        <a href="employees.html">Працівники</a>
+        <a href="suppliers.html">Постачальники</a>
+        <a href="clients.html">Клієнти</a>
+    </nav>
+
+    <section class="header-actions">
+        <label for="fav-toggle" class="heart-btn">❤</label>
+
+        <div class="profile-area">
+            <a href="profile.html">
+                <img src="../appi_app/static/images/user_avatar.jpg" alt="Profile">
+            </a>
+        </div>
+
+        <label for="menu-toggle" class="burger-btn">☰</label>
+    </section>
+
+</header>
+
+<aside class="overlay">
+    <section class="fav-window">
+        <header class="fav-header">
+            <h2>Улюблені</h2>
+        </header>
+
+        <div id="fav-content" class="fav-scroll-area">
+            <div class="fav-guest">
+                <p class="fav-guest-title">Улюблені доступні після входу</p>
+                <p class="fav-guest-text">Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.</p>
+
+                <div class="fav-guest-actions">
+                    <a class="btn-main" href="login.html">Увійти</a>
+                    <a class="btn-main btn-outline" href="register.html">Зареєструватись</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="fav-footer">
+            <label for="fav-toggle" class="btn-main btn-outline">Закрити</label>
+        </footer>
+    </section>
+</aside>
+
+<aside class="mobile-menu-overlay" aria-hidden="true">
+    <nav class="mobile-menu" aria-label="Мобільне меню">
+        <div class="mobile-menu-top">
+            <div class="mobile-menu-profile">
+                <img src="../appi_app/static/images/user_avatar.jpg" alt="Профіль">
+            </div>
+
+            <label for="menu-toggle" class="mobile-menu-close" aria-label="Закрити">✕</label>
+        </div>
+
+        <div class="mobile-menu-links">
+            <a href="spice_catalog.html">Спеції</a>
+            <a href="bonus_cards.html">Бонусні картки</a>
+            <a href="outlets.html">Торгові точки</a>
+            <a href="employees.html">Працівники</a>
+            <a href="suppliers.html">Постачальники</a>
+            <a href="clients.html">Клієнти</a>
+        </div>
+    </nav>
+</aside>
+
+<main id="main-content">
+
 <main class="profile-container">
     <section class="auth-box profile-box">
         <header class="auth-header">
             <h2>Мій профіль</h2>
         </header>
 
-        <form method="POST" class="profile-form">
-            {% csrf_token %}
+        <form method="POST" class="profile-form" action="#">
             <fieldset class="form-fieldset">
                 <legend class="visually-hidden">Дані користувача</legend>
 
                 <div class="form-group">
                     <label for="id_ln">Прізвище</label>
-                    <input type="text" id="id_ln" name="ln" value="{{ client_id.last_name }}">
+                    <input type="text" id="id_ln" name="ln" value="Іваненко">
                 </div>
 
                 <div class="form-group">
                     <label for="id_fn">Ім'я</label>
-                    <input type="text" id="id_fn" name="fn" value="{{ client_id.first_name }}">
+                    <input type="text" id="id_fn" name="fn" value="Іван">
                 </div>
 
                 <div class="form-group">
                     <label for="id_mn">По батькові</label>
-                    <input type="text" id="id_mn" name="mn" value="{{ client_id.fathers_name }}">
+                    <input type="text" id="id_mn" name="mn" value="Іванович">
                 </div>
 
                 <div class="form-group">
                     <label for="id_phone">Телефон</label>
-                    <input type="text" id="id_phone" name="phone" value="{{ client_id.phone_number }}">
+                    <input type="text" id="id_phone" name="phone" value="+380501234567">
                 </div>
             </fieldset>
 
             <aside class="loyalty-info">
-                <p>Тип картки: <strong>{{ client_id.bonus_card_id.type }}</strong></p>
-                <p>Нараховано бонусів: <strong class="accent-text">{{ client_id.bonus_count }}</strong></p>
+                <p>Тип картки: <strong>PRO</strong></p>
+                <p>Нараховано бонусів: <strong class="accent-text">120</strong></p>
             </aside>
 
             <footer class="form-actions">
@@ -43,11 +131,14 @@
         </form>
 
         <nav class="profile-actions">
-            <a href="{% url 'logout' %}" class="btn-link">
+            <a href="index.html" class="btn-link">
                 <button type="button" class="btn-main btn-delete">Вийти з акаунту</button>
             </a>
         </nav>
     </section>
 </main>
-    
-{% endblock %}
+
+</main>
+
+</body>
+</html>
