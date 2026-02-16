@@ -35,7 +35,11 @@
 
 
 @media (max-width: 360px) {
-  .app .employee-mn {
+  .app .employee-ln {
+    flex-basis: 100%;
+  }
+
+  .app .kv-line span{
     flex-basis: 100%;
   }
 }
@@ -56,7 +60,9 @@
   text-overflow: clip;
 
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
+  align-items: baseline;
 }
 
 .app .kv-label {
