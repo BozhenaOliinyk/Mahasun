@@ -38,3 +38,23 @@
   font-weight: 800;
   color: $text-100;
 }
+
+
+.app .outlets-page {
+  .long-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .card-details {
+    text-align: center;
+  }
+
+  .card-image-wrapper img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
