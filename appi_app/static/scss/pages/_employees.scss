@@ -27,6 +27,17 @@
   font-size: 22px;
   font-weight: 800;
   color: $text-100;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+
+
+@media (max-width: 360px) {
+  .app .employee-mn {
+    flex-basis: 100%;
+  }
 }
 
 .app .employee-info {
