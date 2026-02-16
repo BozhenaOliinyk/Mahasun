@@ -1,27 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
+<main class="content-container">
+    <header class="page-header">
+        <h1 class="visually-hidden">Бонусні картки</h1>
 
-{% if user.is_staff %}
-    <a href="{% url 'card_create' %}" class="admin-add-btn">+</a>
-{% endif %}
+        {% if user.is_staff %}
+            <a href="{% url 'card_create' %}"
+               class="admin-add-btn"
+               aria-label="Додати нову картку">
+                +
+            </a>
+        {% endif %}
+    </header>
 
-<div class="long-list">
-    {% for row in rows %}
-    <div class="long-card bonus-card-full" onclick="{% if user.is_staff %}location.href='{% url 'card_update' row.id %}'{% endif %}">
+    <section class="long-list">
+        {% for row in rows %}
+        <article class="long-card bonus-card-full"
+                 role="button"
+                 tabindex="0">
 
-       <img src="{% if 'pro' in row.values.1|lower %}pro_card.jpg{% elif 'advanced' in row.values.1|lower %}adv_card.jpg{% else %}new_card.jpg{% endif %}" alt="Card Image">
+            <figure class="card-image-wrapper">
+                <img src="{% static 'images/' %}
+                {% if 'pro' in row.values.1|lower %}
+                    pro_card.jpg
+                {% elif 'advanced' in row.values.1|lower %}
+                    adv_card.jpg
+                {% else %}
+                    new_card.jpg
+                {% endif %}"
+                alt="Візуалізація картки {{ row.values.1 }}">
+            </figure>
 
-        <div class="bonus-info-block">\
-            <h2>{{ row.values.1|upper }}</h2>
+            <div class="bonus-info-block">
+                <header class="card-title">
+                    <h2>{{ row.values.1|upper }}</h2>
+                </header>
 
-            <p>Відсоток нарахування бонусів:
-                <span style="color: black; font-weight: bold;">{{ row.values.2 }}%</span>
-            </p>
-            <p>Знижка(%):
-                <span style="color: black; font-weight: bold;">{{ row.values.3 }}%</span>
-            </p>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+                <section class="card-details">
+                    <p>
+                        Відсоток нарахування бонусів:
+                        <span class="highlight-value">{{ row.values.2 }}%</span>
+                    </p>
+
+                    <p>
+                        Знижка(%):
+                        <span class="highlight-value">{{ row.values.3 }}%</span>
+                    </p>
+                </section>
+            </div>
+
+        </article>
+        {% endfor %}
+    </section>
+</main>
 {% endblock %}

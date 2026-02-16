@@ -1,26 +1,46 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="auth-box">
-    <h2 style="color: var(--primary-dark)">Реєстрація</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="email" name="email" placeholder="Пошта" required>
-        <input type="password" name="password" placeholder="Пароль" required>
+<main class="auth-container">
+    <section class="auth-box">
+        <header class="auth-header">
+            <h2>Реєстрація</h2>
+        </header>
 
-        <input type="text" name="last_name" placeholder="Прізвище" required>
-        <input type="text" name="first_name" placeholder="Ім'я" required>
-        <input type="text" name="fathers_name" placeholder="По батькові" required>
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+            <fieldset class="form-fieldset">
+                <legend class="visually-hidden">Реєстраційні дані</legend>
 
-        <input type="text" name="phone_number" placeholder="Номер телефону" required>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Пошта" aria-label="Пошта" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Пароль" aria-label="Пароль" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="last_name" placeholder="Прізвище" aria-label="Прізвище" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="first_name" placeholder="Ім'я" aria-label="Ім'я" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="fathers_name" placeholder="По батькові" aria-label="По батькові" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="phone_number" placeholder="Номер телефону" aria-label="Номер телефону" required>
+                </div>
+            </fieldset>
 
+            <footer class="form-actions">
+                <button type="submit" class="btn-main">Зареєструватись</button>
+            </footer>
+        </form>
 
-        <button type="submit" class="btn-main">Зареєструватись</button>
-    </form>
-
-    <div style="margin-top: 10px; text-align: center;">
-        <a href="{% url 'login' %}">
-            <button class="btn-main btn-outline" style="width: 100%">Ввійти</button>
-        </a>
-    </div>
-</div>
+        <nav class="auth-navigation">
+            <a href="{% url 'login' %}" class="btn-link">
+                <button type="button" class="btn-main btn-outline">Ввійти</button>
+            </a>
+        </nav>
+    </section>
+</main>
 {% endblock %}

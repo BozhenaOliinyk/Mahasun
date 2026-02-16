@@ -1,0 +1,250 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+
+
+.app .main-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border: 1px solid rgb(89, 103, 68);
+    background: linear-gradient(180deg, rgb(134, 147, 114), #7e8a6c);
+  backdrop-filter: blur(10px);
+}
+
+.app .main-header {
+  @include container(1160px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px;
+  border-radius: 13px;
+}
+
+.app .logo-container img {
+  width: 45px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  filter: saturate(1.05);
+}
+
+.app .nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.app .nav-menu a {
+  text-decoration: none;
+  color: $text-200;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.25px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.app .nav-menu a:link,
+.app .nav-menu a:visited {
+  color: $text-200;
+}
+
+.app .nav-menu a:hover {
+  background: rgba(101, 121, 73, 0.61);
+  color: $text-100;
+  transform: translateY(-1px);
+}
+
+.app .nav-menu a:active {
+  transform: translateY(0);
+}
+
+.app .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app .profile-area a,
+.app .profile-area img {
+  display: block;
+}
+
+.app .profile-area img {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgb(89, 103, 68);
+  box-shadow: $shadow-2;
+  cursor: pointer;
+  transition: transform 160ms ease, border 160ms ease;
+}
+
+.app .profile-area img:hover {
+  transform: translateY(-1px);
+  border: 1px solid rgb(43, 43, 43);
+}
+
+.app .heart-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(150, 69, 69, 0.09);
+  border: 1px solid rgba(152, 29, 29, 0.44);
+  color: $text-100;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border 160ms ease;
+}
+
+.app .heart-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(199, 7, 0, 0.25);
+  border: 1px solid rgba(191, 6, 0, 0.55);
+}
+
+
+.burger-btn {
+      display: none;
+}
+
+.app .mobile-menu-overlay {
+      display: none;
+}
+
+@media (max-width: 656px) {
+  .app .main-header {
+    width: min(100% - 16px, 1160px);
+    margin-inline: auto;
+    padding: 10px 12px;
+    border-radius: 13px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .app .logo-container img {
+    height: 36px;
+    width: auto;
+  }
+
+  .app .nav-menu {
+    display: none;
+  }
+
+  .app .profile-area {
+    display: none;
+  }
+
+  .app .burger-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: rgba(102, 129, 59, 0.09);
+    border: 1px solid rgb(89, 103, 68);
+    color: $text-100;
+    transition: transform 160ms ease, background 160ms ease, border 160ms ease;
+  }
+
+  .app .burger-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(103, 199, 0, 0.25);
+    border: 1px solid rgb(67, 107, 9);
+  }
+
+  .app .mobile-menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+    z-index: 60;
+    padding: 12px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .app .mobile-menu {
+    width: min(360px, 92vw);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgb(89, 103, 68);
+    background: linear-gradient(180deg, rgb(134, 147, 114), #7e8a6c);
+    box-shadow: $shadow-2;
+  }
+
+  .app .mobile-menu-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid rgba(243, 239, 233, 0.12);
+  }
+
+  .app .mobile-menu-profile img {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(243, 239, 233, 0.16);
+    object-fit: cover;
+  }
+
+  .app .mobile-menu-close {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(243, 239, 233, 0.9);
+    font-size: 22px;
+  }
+
+  .app .mobile-menu-links {
+    padding: 10px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .app .mobile-menu-links a {
+    text-decoration: none;
+    color: rgba(243, 239, 233, 0.9);
+    font-weight: 800;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 12px;
+    background: transparent;
+  }
+
+  .app .mobile-menu-links a:hover {
+    background: rgba(101, 121, 73, 0.61);
+  }
+
+  .app #menu-toggle:checked ~ .mobile-menu-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .app:has(#menu-toggle:checked) {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+}

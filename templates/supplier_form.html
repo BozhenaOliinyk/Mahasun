@@ -1,42 +1,72 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="edit-container">
-    <h2>{% if obj %}Редагування{% else %}Створення{% endif %} постачальника</h2>
+    <main class="edit-container">
+        <header class="form-header">
+            <h2>{% if obj %}Редагування{% else %}Створення{% endif %} постачальника</h2>
+        </header>
 
-    <form class="edit-form" method="POST">
-        {% csrf_token %}
-        <label>Назва мережі</label>
-        <input type="text" name="name" value="{{ obj.name|default:'' }}" required>
+        <section class="form-section">
+            <form class="edit-form" method="POST">
+                {% csrf_token %}
 
-        <label>Адреса</label>
-        <input type="text" name="address" value="{{ obj.address|default:'' }}">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Постачальник</legend>
 
-        <label>Номер телефону</label>
-        <input type="text" name="phone_number" value="{{ obj.phone_number|default:'' }}">
+                    <div class="form-group">
+                        <label for="id_name">Назва мережі</label>
+                        <input type="text" id="id_name" name="name" value="{{ obj.name|default:'' }}" required>
+                    </div>
 
-        {% if obj %}
-        <div class="supplier-spice-list" style="margin-top: 20px; background: #f9f9f9; padding: 10px; border-radius: 5px;">
-            <h3>Спеції від цього постачальника:</h3>
-            <a href="{% url 'supplier_spices' obj.id %}" style="color: var(--primary-dark); font-weight: bold;">
-                Переглянути асортимент ({{ obj.supplierspice_set.count }})
-            </a>
-        </div>
-        {% endif %}
+                    <div class="form-group">
+                        <label for="id_address">Адреса</label>
+                        <input type="text" id="id_address" name="address" value="{{ obj.address|default:'' }}">
+                    </div>
 
-        <button type="submit" class="btn-main" style="margin-top: 20px;">Зберегти</button>
-    </form>
+                    <div class="form-group">
+                        <label for="id_phone">Номер телефону</label>
+                        <input type="text" id="id_phone" name="phone_number" value="{{ obj.phone_number|default:'' }}">
+                    </div>
+                </fieldset>
 
-    {% if obj %}
-    <form action="{% url 'supplier_delete' obj.id %}" method="POST" style="margin-top: 10px;">
-        {% csrf_token %}
-        <button type="submit" class="btn-delete" onclick="return confirm('Якщо спеції постачає тільки цей постачальник, вони також видаляться. Видалити постачальника?')">
-            Видалити
-        </button>
-    </form>
-    {% endif %}
+                {% if obj %}
+                    <aside class="supplier-inventory">
+                        <h3 class="section-title">Спеції від цього постачальника:</h3>
 
-    <div style="margin-top: 10px;">
-        <a href="{% url 'supplier_list' %}" class="btn-main btn-outline" style="text-decoration: none; display: block; text-align: center;">Скасувати</a>
-    </div>
-</div>
+                        {% if obj %}
+                            {% if spices %}
+                                <ul class="inline-list">
+                                    {% for s in spices %}
+                                        <li class="inline-list__item">{{ s }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="muted">Немає прив’язаних спецій.</p>
+                            {% endif %}
+                        {% else %}
+                            <p class="muted">Спочатку створіть постачальника, потім можна прив’язати спеції.</p>
+                        {% endif %}
+                    </aside>
+                {% endif %}
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти</button>
+                </footer>
+            </form>
+
+            {% if obj %}
+                <aside class="danger-zone">
+                    <form action="{% url 'supplier_delete' obj.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-delete">
+                            Видалити
+                        </button>
+                    </form>
+                </aside>
+            {% endif %}
+
+            <nav class="navigation-actions">
+                <a href="{% url 'supplier_list' %}" class="btn-main btn-outline btn-block">Скасувати</a>
+            </nav>
+        </section>
+    </main>
 {% endblock %}

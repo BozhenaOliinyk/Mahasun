@@ -1,18 +1,33 @@
 {% extends 'base.html' %}
-{% block content %}
-{% if user.is_staff %}
-    <a href="{% url 'outlet_create' %}" class="admin-add-btn">+</a>
-{% endif %}
+{% load static %}
 
-<div class="long-list">
-    {% for row in rows %}
-    <div class="long-card" onclick="{% if user.is_staff %}location.href='{% url 'outlet_update' row.id %}'{% endif %}">
-        <img src="outlet_placeholder.jpg" alt="Outlet">
-        <div class="card-details">
-            <h2>{{ row.values.1 }}</h2>
-            <p>{{ row.values.2 }}</p>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+{% block content %}
+<main class="outlets-page">
+    <header class="page-header">
+        <h1 class="visually-hidden">Наші торгові точки</h1>
+        {% if user.is_staff %}
+            <a href="{% url 'outlet_create' %}" class="admin-add-btn" aria-label="Додати торгову точку">+</a>
+        {% endif %}
+    </header>
+
+    <section class="long-list">
+        {% for row in rows %}
+        <article class="long-card"
+                 role="button"
+                 tabindex="0">
+
+            <figure class="card-image-wrapper">
+                <img src="{% static 'images/outlet_placeholder.jpg' %}" alt="Торгова точка {{ row.values.1 }}">
+            </figure>
+
+            <section class="card-details">
+                <header class="outlet-title">
+                    <h2>{{ row.values.1 }}</h2>
+                </header>
+                <p class="outlet-address">{{ row.values.2 }}</p>
+            </section>
+        </article>
+        {% endfor %}
+    </section>
+</main>
 {% endblock %}

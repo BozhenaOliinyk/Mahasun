@@ -1,52 +1,77 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="edit-container">
-    <h2>{% if obj %}Редагувати дані{% else %}Додати{% endif %} працівника</h2>
+<main class="edit-container">
+    <header class="form-header">
+        <h2>{% if obj %}Редагувати дані{% else %}Додати{% endif %} працівника</h2>
+    </header>
 
-    <form class="edit-form" method="POST">
-        {% csrf_token %}
+    <section class="form-section">
+        <form class="edit-form" method="POST">
+            {% csrf_token %}
 
-        <label>Прізвище</label>
-        <input type="text" name="last_name" value="{{ obj.last_name|default:'' }}" required>
+            <fieldset class="form-fieldset">
+                <legend class="visually-hidden">Працівник</legend>
 
-        <label>Ім'я</label>
-        <input type="text" name="first_name" value="{{ obj.first_name|default:'' }}" required>
+                <div class="form-group">
+                    <label for="id_last_name">Прізвище</label>
+                    <input type="text" id="id_last_name" name="last_name" value="{{ obj.last_name|default:'' }}" required>
+                </div>
 
-        <label>По батькові</label>
-        <input type="text" name="fathers_name" value="{{ obj.fathers_name|default:'' }}">
+                <div class="form-group">
+                    <label for="id_first_name">Ім'я</label>
+                    <input type="text" id="id_first_name" name="first_name" value="{{ obj.first_name|default:'' }}" required>
+                </div>
 
-        <label>Посада</label>
-        <input type="text" name="position" value="{{ obj.position|default:'' }}">
+                <div class="form-group">
+                    <label for="id_fathers_name">По батькові</label>
+                    <input type="text" id="id_fathers_name" name="fathers_name" value="{{ obj.fathers_name|default:'' }}">
+                </div>
 
-        <label>Зміна (номер)</label>
-        <input type="number" name="shift" value="{{ obj.shift|default:'' }}">
+                <div class="form-group">
+                    <label for="id_position">Посада</label>
+                    <input type="text" id="id_position" name="position" value="{{ obj.position|default:'' }}">
+                </div>
 
-        <label>Торгова точка</label>
-        <select name="outlet_id" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
-            <option value="">-- Оберіть точку --</option>
-            {% for outlet in outlets %}
-                <option value="{{ outlet.id }}" {% if obj.outlet_id_id == outlet.id %}selected{% endif %}>
-                    {{ outlet.name }} ({{ outlet.address }})
-                </option>
-            {% endfor %}
-        </select>
+                <div class="form-group">
+                    <label for="id_shift">Зміна (номер)</label>
+                    <input type="number" id="id_shift" name="shift" value="{{ obj.shift|default:'' }}">
+                </div>
 
-        <label>Номер телефону</label>
-        <input type="text" name="phone_number" value="{{ obj.phone_number|default:'' }}">
+                <div class="form-group">
+                    <label for="id_outlet">Торгова точка</label>
+                    <select name="outlet_id" id="id_outlet" required class="full-width-select">
+                        <option value="">-- Оберіть точку --</option>
+                        {% for outlet in outlets %}
+                            <option value="{{ outlet.id }}" {% if obj.outlet_id == outlet.id %}selected{% endif %}>
+                                {{ outlet.name }} ({{ outlet.address }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-        <button type="submit" class="btn-main">Зберегти</button>
-    </form>
+                <div class="form-group">
+                    <label for="id_phone">Номер телефону</label>
+                    <input type="text" id="id_phone" name="phone_number" value="{{ obj.phone_number|default:'' }}">
+                </div>
+            </fieldset>
 
-    {% if obj %}
-    <form action="{% url 'employee_delete' obj.pk %}" method="POST" style="margin-top: 10px;">
-        {% csrf_token %}
-        <button type="submit" class="btn-delete" onclick="return confirm('Видалити працівника?')">Видалити</button>
-    </form>
-    {% endif %}
+            <footer class="form-actions">
+                <button type="submit" class="btn-main">Зберегти</button>
+            </footer>
+        </form>
 
+        {% if obj %}
+        <aside class="danger-zone">
+            <form action="{% url 'employee_delete' obj.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete">Видалити</button>
+            </form>
+        </aside>
+        {% endif %}
 
-    <div style="margin-top: 15px;">
-        <a href="{% url 'outlet_list' %}" class="btn-main btn-outline">Скасувати</a>
-    </div>
-</div>
+        <nav class="navigation-actions">
+            <a href="{% url 'employee_list' %}" class="btn-main btn-outline">Скасувати</a>
+        </nav>
+    </section>
+</main>
 {% endblock %}

@@ -1,21 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a href="{% url 'employee_create' %}" class="admin-add-btn">+</a>
+    <main class="employees-page">
+        <header class="page-header">
+            <h1 class="visually-hidden">Список працівників</h1>
+            {% if user.is_staff %}
+                <a href="{% url 'employee_create' %}" class="admin-add-btn" aria-label="Додати працівника">+</a>
+            {% endif %}
+        </header>
 
-<div class="long-list">
-    {% for row in rows %}
-    <div class="long-card" onclick="location.href='{% url 'employee_update' row.id %}'">
-        <div class="card-details">
-            <h2>{{ row.values.1 }} {{ row.values.2 }} {{ row.values.3 }}</h2>
+        <section class="long-list">
+            {% for row in rows %}
+                <article class="long-card employee-card"
+                         role="button"
+                         tabindex="0">
+                    <section class="card-details">
+                        <header class="employee-name">
+                            <h2 class="employee-fullname">{{ row.values.1 }} {{ row.values.2 }} {{ row.values.3 }}</h2>
+                        </header>
 
-            <p><strong>Посада:</strong> {{ row.values.4 }} (Зміна: {{ row.values.5 }})</p>
+                        <div class="employee-info">
+                            <p class="kv-line">
+                                <span class="kv-label">Посада:</span>
+                                <span class="kv-value">{{ row.values.4 }}</span>
+                                <span class="kv-muted">(Зміна: {{ row.values.5 }})</span>
+                            </p>
 
-            <p>Торгова точка: {{ row.values.6 }}</p>
+                            <p class="kv-line">
+                                <span class="kv-label">Торгова точка:</span>
+                                <span class="kv-value">{{ row.values.6 }}</span>
+                            </p>
 
-            <p>{{ row.values.7 }}</p>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+                            <p class="kv-line">
+                                <span class="kv-value">{{ row.values.7 }}</span>
+                            </p>
+                        </div>
+                    </section>
+                </article>
+            {% endfor %}
+        </section>
+    </main>
 {% endblock %}

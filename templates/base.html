@@ -7,77 +7,126 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-    <input type="checkbox" id="fav-toggle">
+<body class="app">
+<input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
+<input type="checkbox" id="fav-toggle" class="visually-hidden">
+<input type="checkbox" id="menu-toggle" class="visually-hidden">
 
-    <header class="main-header">
-        <div class="logo-container">
-            <a href="/"><img src="{% static 'images/logo_spices.jpg' %}" alt="Logo"></a>
-        </div>
+<header class="main-header">
 
-        <nav class="nav-menu">
-            {% if user.is_authenticated or request.session.client_id %}
-                <a href="{% url 'spice_list' %}">Спеції</a>
-                <a href="{% url 'card_list' %}">Бонусні картки</a>
-                <a href="{% url 'outlet_list' %}">Торгові точки</a>
-
-                {% if user.is_staff %}
-                    <a href="{% url 'employee_list' %}">Працівники</a>
-                    <a href="{% url 'supplier_list' %}">Постачальники</a>
-                    <a href="{% url 'client_list' %}">Клієнти</a>
-                {% endif %}
-            {% endif %}
-        </nav>
-
-        <div class="header-actions">
-            {% if request.session.client_id %}
-                <label for="fav-toggle" class="heart-btn" style="cursor: pointer;">❤</label>
-            {% endif %}
-
-            <div class="profile-area">
-                {% if not user.is_authenticated and not request.session.client_id %}
-                    <a href="{% url 'login' %}"><img src="{% static 'images/default_user.jpg' %}" alt="Login"></a>
-                {% elif user.is_staff %}
-                    <img src="{% static 'images/admin_icon.jpg' %}" onclick="confirmLogout()" style="cursor: pointer;" alt="Admin">
-                {% else %}
-                    <a href="{% url 'profile' %}"><img src="{% static 'images/user_avatar.jpg' %}" alt="Profile"></a>
-                {% endif %}
-            </div>
-        </div>
-    </header>
-
-    <div class="overlay">
-    <div class="fav-window">
-        <h2 style="color: var(--primary-dark)">Ваші улюблені</h2>
-
-        <div id="fav-content" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
-            {% for fav in user_favorites %}
-            <div class="fav-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
-                <span style="font-weight: 500;">{{ fav.spice_id.name }}</span>
-
-                <a href="{% url 'del_fav' fav.id %}" class="fav-delete-heart" title="Видалити з улюблених">
-                    ❤
-                </a>
-            </div>
-            {% empty %}
-            <p style="color: #999; padding: 20px;">У списку ще немає спецій</p>
-            {% endfor %}
-        </div>
-
-        <label for="fav-toggle" class="btn-main btn-outline" style="cursor: pointer; display: inline-block;">Закрити</label>
+    <div class="logo-container">
+        <a href="/"><img src="{% static 'images/spices_logo.png' %}" alt="Logo"></a>
     </div>
-</div>
 
-    <main id="main-content">
-        {% block content %}{% endblock %}
-    </main>
+    <nav class="nav-menu">
+        <a href="{% url 'spice_list' %}">Спеції</a>
+        <a href="{% url 'card_list' %}">Бонусні картки</a>
+        <a href="{% url 'outlet_list' %}">Торгові точки</a>
 
-    <script>
-        function confirmLogout() {
-            if(confirm("Ви справді хочете вийти з акаунту?")) {
-                window.location.href = "{% url 'logout' %}";
-            }
-        }
-    </script>
+        {% if user.is_staff %}
+            <a href="{% url 'employee_list' %}">Працівники</a>
+            <a href="{% url 'supplier_list' %}">Постачальники</a>
+            <a href="{% url 'client_list' %}">Клієнти</a>
+        {% endif %}
+    </nav>
+
+    <section class="header-actions">
+
+        {% if not user.is_staff or request.session.client_id %}
+            <label for="fav-toggle" class="heart-btn">❤</label>
+        {% endif %}
+
+        <div class="profile-area">
+            {% if not user.is_authenticated and not request.session.client_id %}
+                <a href="{% url 'login' %}">
+                    <img src="{% static 'images/default_user.jpg' %}">
+                </a>
+            {% elif user.is_staff %}
+                <a href="{% url 'logout' %}">
+                    <img src="{% static 'images/admin_icon.jpg' %}">
+                </a>
+            {% else %}
+                <a href="{% url 'profile' %}">
+                    <img src="{% static 'images/user_avatar.jpg' %}">
+                </a>
+            {% endif %}
+        </div>
+
+        <label for="menu-toggle" class="burger-btn">☰</label>
+
+    </section>
+</header>
+
+<aside class="overlay">
+    <section class="fav-window">
+        <header class="fav-header">
+            <h2>Улюблені</h2>
+        </header>
+
+        <div id="fav-content" class="fav-scroll-area">
+            {% if request.session.client_id %}
+                {% for fav in user_favorites %}
+                    <article class="fav-item">
+                        <span class="fav-name">{{ fav.spice.name }}, </span>
+                        <p class="fav-price">{{ fav.spice.price }} грн / 100 гр</p>
+                        <a href="{% url 'add_del_fav' fav.spice_id %}" class="fav-delete-heart"
+                           title="Видалити з улюблених">❤</a>
+                    </article>
+                {% empty %}
+                    <p class="empty-msg">У списку ще немає спецій</p>
+                {% endfor %}
+            {% else %}
+                <div class="fav-guest">
+                    <p class="fav-guest-title">Улюблені доступні після входу</p>
+                    <p class="fav-guest-text">Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в
+                        улюблені.</p>
+
+                    <div class="fav-guest-actions">
+                        <a class="btn-main" href="{% url 'login' %}">Увійти</a>
+                        <a class="btn-main btn-outline" href="{% url 'register' %}">Зареєструватись</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <footer class="fav-footer">
+            <label for="fav-toggle" class="btn-main btn-outline">Закрити</label>
+        </footer>
+    </section>
+</aside>
+
+<aside class="mobile-menu-overlay" aria-hidden="true">
+    <nav class="mobile-menu" aria-label="Мобільне меню">
+        <div class="mobile-menu-top">
+            <div class="mobile-menu-profile">
+                {% if not user.is_authenticated and not request.session.client_id %}
+                    <img src="{% static 'images/default_user.jpg' %}" alt="Профіль">
+                {% elif user.is_staff %}
+                    <img src="{% static 'images/admin_icon.jpg' %}" alt="Адмін">
+                {% else %}
+                    <img src="{% static 'images/user_avatar.jpg' %}" alt="Профіль">
+                {% endif %}
+            </div>
+
+            <label for="menu-toggle" class="mobile-menu-close" aria-label="Закрити">✕</label>
+        </div>
+
+        <div class="mobile-menu-links">
+            <a href="{% url 'spice_list' %}">Спеції</a>
+            <a href="{% url 'card_list' %}">Бонусні картки</a>
+            <a href="{% url 'outlet_list' %}">Торгові точки</a>
+
+            {% if user.is_staff %}
+                <a href="{% url 'employee_list' %}">Працівники</a>
+                <a href="{% url 'supplier_list' %}">Постачальники</a>
+                <a href="{% url 'client_list' %}">Клієнти</a>
+            {% endif %}
+        </div>
+    </nav>
+</aside>
+
+<main id="main-content">
+    {% block content %}{% endblock %}
+</main>
 </body>
 </html>

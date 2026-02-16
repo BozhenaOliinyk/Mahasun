@@ -2,33 +2,47 @@
 {% load static %}
 
 {% block content %}
-{% if user.is_staff %}
-    <a href="{% url 'spice_create' %}" class="admin-add-btn">+</a>
-{% endif %}
-
-<div class="spice-grid">
-    {% for row in rows %}
-    <div class="spice-card" onclick="{% if user.is_staff %}location.href='{% url 'spice_edit' row.id %}'{% endif %}">
-
-        <img src="{% static 'images/placeholder.jpg' %}" class="spice-img" alt="Spice">
-
-        <div class="spice-content">
-            <h3 class="spice-title">{{ row.values.1 }}</h3>
-
-            <p class="spice-meta">
-                {row.values.2} | {{ row.values.3 }}
-            </p>
-
-            <p class="spice-price">{{ row.values.4 }} <span class="price-unit">грн / 100 гр</span></p>
-        </div>
-
-        {% if not user.is_staff and request.session.client_id %}
-            <div class="fav-heart-btn {% if row.id in fav_ids %}active{% endif %}"
-                 onclick="event.stopPropagation(); location.href='{% url 'add_fav' row.id %}'">
-                ❤
-            </div>
+<main class="catalog-page">
+    <header class="page-header">
+        <h1 class="visually-hidden">Каталог спецій</h1>
+        {% if user.is_staff %}
+            <a href="{% url 'spice_create' %}" class="admin-add-btn" aria-label="Додати спецію">+</a>
         {% endif %}
-    </div>
-    {% endfor %}
-</div>
+    </header>
+
+    <section class="spice-grid">
+        {% for row in rows %}
+        <article class="spice-card"
+                 role="button"
+                 tabindex="0">
+
+            <figure class="spice-image-container">
+                <img src="{% static 'images/placeholder.jpg' %}" class="spice-img" alt="{{ row.values.1 }}">
+            </figure>
+
+            <div class="spice-content">
+                <header class="spice-header">
+                    <h3 class="spice-title">{{ row.values.1 }}</h3>
+                </header>
+
+                <p class="spice-meta"> {{ row.values.2 }} </p>
+
+                <p class="spice-meta"> {{ row.values.3 }} </p>
+
+                <footer class="spice-footer">
+                    <p class="spice-price">{{ row.values.4 }} <span class="price-unit">грн / 100 гр</span></p>
+                </footer>
+            </div>
+
+            {% if not user.is_staff %}
+                <a href="{% url 'add_del_fav' row.id %}"
+                   class="fav-heart-btn {% if row.id in fav_ids %}active{% endif %}"
+                   aria-label="Додати в обране">
+                    ❤
+                </a>
+            {% endif %}
+        </article>
+        {% endfor %}
+    </section>
+</main>
 {% endblock %}

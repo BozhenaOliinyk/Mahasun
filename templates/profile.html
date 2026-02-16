@@ -1,39 +1,53 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="auth-box" style="max-width: 500px;">
-    <h2 style="color: var(--primary-dark)">Мій профіль</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label>Прізвище</label>
-        <input type="text" name="ln" value="{{ client.last_name }}">
+<main class="profile-container">
+    <section class="auth-box profile-box">
+        <header class="auth-header">
+            <h2>Мій профіль</h2>
+        </header>
 
-        <label>Ім'я</label>
-        <input type="text" name="fn" value="{{ client.first_name }}">
+        <form method="POST" class="profile-form">
+            {% csrf_token %}
+            <fieldset class="form-fieldset">
+                <legend class="visually-hidden">Дані користувача</legend>
 
-        <label>По батькові</label>
-        <input type="text" name="mn" value="{{ client.fathers_name }}">
+                <div class="form-group">
+                    <label for="id_ln">Прізвище</label>
+                    <input type="text" id="id_ln" name="ln" value="{{ client_id.last_name }}">
+                </div>
 
-        <label>Телефон</label>
-        <input type="text" name="phone" value="{{ client.phone_number }}">
+                <div class="form-group">
+                    <label for="id_fn">Ім'я</label>
+                    <input type="text" id="id_fn" name="fn" value="{{ client_id.first_name }}">
+                </div>
 
-        <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: left;">
-            <p>Тип картки: <strong>{{ client.bonus_card_id.type }}</strong></p>
-            <p>Нараховано бонусів: <strong style="color: var(--accent-orange)">{{ client.bonus_count }}</strong></p>
-        </div>
+                <div class="form-group">
+                    <label for="id_mn">По батькові</label>
+                    <input type="text" id="id_mn" name="mn" value="{{ client_id.fathers_name }}">
+                </div>
 
-        <button type="submit" class="btn-main">Зберегти зміни</button>
-    </form>
+                <div class="form-group">
+                    <label for="id_phone">Телефон</label>
+                    <input type="text" id="id_phone" name="phone" value="{{ client_id.phone_number }}">
+                </div>
+            </fieldset>
 
-    <a href="{% url 'logout' %}" style="text-decoration: none;">
-        <button class="btn-main btn-delete" style="width: 100%; margin-top: 10px;">Вийти з акаунту</button>
-    </a>
-</div>
+            <aside class="loyalty-info">
+                <p>Тип картки: <strong>{{ client_id.bonus_card_id.type }}</strong></p>
+                <p>Нараховано бонусів: <strong class="accent-text">{{ client_id.bonus_count }}</strong></p>
+            </aside>
 
-<script>
-function confirmLogout() {
-    if (confirm('Ви впевнені, що хочете вийти?')) {
-        window.location.href = "{% url 'logout' %}";
-    }
-}
-</script>
+            <footer class="form-actions">
+                <button type="submit" class="btn-main">Зберегти зміни</button>
+            </footer>
+        </form>
+
+        <nav class="profile-actions">
+            <a href="{% url 'logout' %}" class="btn-link">
+                <button type="button" class="btn-main btn-delete">Вийти з акаунту</button>
+            </a>
+        </nav>
+    </section>
+</main>
+    
 {% endblock %}

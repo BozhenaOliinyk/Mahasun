@@ -1,37 +1,63 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<div class="edit-container">
-    <h2>{% if object %}Редагування{% else %}Створення{% endif %} спеції</h2>
+<main class="edit-container">
+    <header class="form-header">
+        <h2>{% if object %}Редагування{% else %}Створення{% endif %} спеції</h2>
+    </header>
 
-        <img src="{% static 'images/placeholder.jpg' %}" class="edit-image-big">
+    <figure class="edit-preview">
+        <img src="{% static 'images/placeholder.jpg' %}" class="edit-image-big" alt="Прев'ю спеції">
+    </figure>
 
-    <form class="edit-form" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+    <section class="form-section">
+        <form class="edit-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <label>Назва спеції</label>
-        <input type="text" name="name" value="{{ object.name|default:'' }}" required>
+            <fieldset class="form-fieldset">
+                <legend class="visually-hidden">Спеція</legend>
 
-        <label>Вид спеції</label>
-        <textarea name="type" rows="4">{{ object.type|default:'' }}</textarea>
+                <div class="form-group">
+                    <label for="id_name">Назва спеції</label>
+                    <input type="text" id="id_name" name="name" value="{{ object.name|default:'' }}" required>
+                </div>
 
-        <label>Призначення</label>
-        <textarea name="purpose" rows="4">{{ object.purpose|default:'' }}</textarea>
+                <div class="form-group">
+                    <label for="id_type">Вид спеції</label>
+                    <textarea id="id_type" name="type" rows="4">{{ object.type|default:'' }}</textarea>
+                </div>
 
-        <label>Ціна (грн / 100 гр)</label>
-        <input type="number" step="0.01" name="price" value="{{ object.price|default:'' }}" required>
+                <div class="form-group">
+                    <label for="id_purpose">Призначення</label>
+                    <textarea id="id_purpose" name="purpose" rows="4">{{ object.purpose|default:'' }}</textarea>
+                </div>
 
-        <label>Назва постачальника</label>
-        <input type="text" name="supplier_name" value="{{ current_supplier|default:'' }}" placeholder="Введіть назву постачальника">
+                <div class="form-group">
+                    <label for="id_price">Ціна (грн / 100 гр)</label>
+                    <input type="number" id="id_price" step="0.01" name="price" value="{{ object.price|default:'' }}" required>
+                </div>
 
-        <button type="submit" class="btn-main">Зберегти</button>
-    </form>
+                <div class="form-group">
+                    <label for="id_supplier">Назва постачальника</label>
+                    <input type="text" id="id_supplier" name="supplier_name" value="{{ current_supplier|default:'' }}" placeholder="Введіть назву постачальника">
+                </div>
+            </fieldset>
 
-    {% if object %}
-    <button class="btn-delete" onclick="if(confirm('Видалити спецію?')) location.href='{% url 'spice_delete' object.id %}'">Видалити</button>
-    {% endif %}
+            <footer class="form-actions">
+                <button type="submit" class="btn-main">Зберегти</button>
+            </footer>
+        </form>
 
-    <div style="margin-top: 15px; text-align: center;">
-        <a href="{% url 'spice_list' %}" class="btn-main btn-outline" style="text-decoration: none; display: block;">Скасувати</a>
-    </div>
-</div>
+        {% if object %}
+        <aside class="danger-zone">
+            <button class="btn-delete">Видалити</button>
+        </aside>
+        {% endif %}
+
+        <nav class="navigation-actions">
+            <a href="{% url 'spice_list' %}" class="btn-main btn-outline btn-block">Скасувати</a>
+        </nav>
+    </section>
+</main>
 {% endblock %}
