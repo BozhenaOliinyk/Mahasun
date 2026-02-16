@@ -255,6 +255,22 @@
   color: $text-100;
 }
 
+.app .supplier-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+@media (min-width: 768px) {
+  .app .supplier-title {
+    white-space: nowrap;
+  }
+
+  .app .supplier-address {
+    white-space: normal;
+  }
+}
+
 
 @media (max-width: 360px) {
   .app .employee-mn {
@@ -273,21 +289,22 @@
   .bonus-card-full {
     .card-image-wrapper {
       width: 100%;
-      height: 90px;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       border-radius: inherit;
+      padding-top: 8px;
     }
 
     .card-image-wrapper img {
-      width: 78%;
+      width: 68%;
       height: 100%;
       display: block;
       object-fit: cover;
       object-position: center;
-      border-radius: 14px;
+      border-radius: 12px;
     }
   }
 
