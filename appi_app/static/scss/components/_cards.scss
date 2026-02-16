@@ -248,6 +248,16 @@
 }
 
 
+.app .suppliers-page .long-card {
+  grid-template-columns: 1fr;
+}
+
+.app .suppliers-page .card-details a {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
 .app .supplier-title {
   margin: 0 0 12px;
   font-size: 22px;
@@ -322,6 +332,10 @@
   .app .outlet-address,
   .app .spice-meta {
     font-size: 12px;
+  }
+
+  .app .suppliers-page .supplier-info p {
+    margin-top: 4px;
   }
 
   .app .client-card {
