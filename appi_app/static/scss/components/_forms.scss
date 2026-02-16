@@ -72,13 +72,12 @@
 }
 
 .app .navigation-actions,
-.app .auth-navigation,
 .app .profile-actions {
   margin-top: 14px;
   display: flex;
-  gap: 12px;
   flex-wrap: wrap;
 }
+
 
 .app .danger-zone {
   margin-top: 16px;
