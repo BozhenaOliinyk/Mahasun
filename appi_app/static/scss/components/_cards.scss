@@ -145,12 +145,13 @@
   gap: 8px;
 }
 
-.app .card-title a {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 0.4px;
+.app .bonus-title{
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 800;
+  color: $text-100;
 }
+
 
 @media (max-width: 560px) {
   .app .bonus-card-full {
@@ -160,7 +161,6 @@
 
 
 /* client */
-
 .app .client-card {
   @include card-surface;
   display: flex;
@@ -243,6 +243,7 @@
 }
 
 
+
 @media (max-width: 360px) {
   .app .employee-mn {
     flex-basis: 100%;
@@ -265,7 +266,7 @@
 
     .card-image-wrapper img {
       display: block;
-      width: 100%;
+      width: 70%;
       height: auto;
       max-width: 100%;
       object-fit: cover;
