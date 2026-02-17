@@ -7,13 +7,13 @@
 }
 
 @mixin focus-ring {
-  outline: 2px solid #52603c;
+  outline: 2px solid $border;
   outline-offset: 2px;
 }
 
 @mixin card-surface {
-  background: linear-gradient(180deg, rgb(134, 147, 114), #7e8a6c);
-  border: 1px solid rgb(89, 103, 68);
+  background: linear-gradient(180deg, $background-1, $background-2);
+  border: 1px solid $border;
   border-radius: $radius-2;
   box-shadow: $shadow-2;
 }

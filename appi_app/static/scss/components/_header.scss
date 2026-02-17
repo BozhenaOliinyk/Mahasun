@@ -6,8 +6,8 @@
   position: sticky;
   top: 0;
   z-index: 30;
-  border: 1px solid rgb(89, 103, 68);
-    background: linear-gradient(180deg, rgb(134, 147, 114), #7e8a6c);
+  border: 1px solid $border;
+  background: linear-gradient(180deg, $background-1, $background-2);
   backdrop-filter: blur(10px);
 }
 
@@ -160,7 +160,7 @@
   .app .burger-btn:hover {
     transform: translateY(-1px);
     background: rgba(103, 199, 0, 0.25);
-    border: 1px solid rgb(67, 107, 9);
+    border: 1px solid $border-card;
   }
 
   .app .mobile-menu-overlay {

@@ -10,7 +10,7 @@ $text-300: #cbc4b9;
 $muted-400: #d3cfc8;
 $muted-500: #c4bdb2;
 
-$accent-1: #d59903;
+$accent-1: rgba(208, 149, 11, 0.95);
 $accent-2: #3f491a;
 $accent-3: #842400;
 $accent-4: #563618;
@@ -18,6 +18,12 @@ $accent-5: #9d9010;
 
 $success: #477a2a;
 $danger: $accent-3;
+
+$border-card: rgba(98, 138, 37, 0.8);
+
+$background-1: rgb(134, 147, 114);
+$background-2: #7e8a6c;
+$border: rgb(89, 103, 68);
 
 $shadow-1: 0 10px 30px rgba(0, 0, 0, 0.45);
 $shadow-2: 0 6px 18px rgba(0, 0, 0, 0.35);
