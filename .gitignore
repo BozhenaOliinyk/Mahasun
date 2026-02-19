@@ -1,5 +1,6 @@
 .idea/
 .vscode/
+*.log
 
 __pycache__/
 *.py[cod]
@@ -9,3 +10,6 @@ venv/
 .venv/
 
 db.sqlite3
+
+dist/
+node_modules/

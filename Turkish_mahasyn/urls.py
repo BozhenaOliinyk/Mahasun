@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from appi_app import views
 
@@ -37,5 +39,21 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
 
     path('favorites/', views.favorite_list, name='favorite_list'),
-    path('favorites/add_del/<int:spice_id>/', views.add_del_favorite, name='add_del_fav')
+    path('favorites/add_del/<int:spice_id>/', views.add_del_favorite, name='add_del_fav'),
+    path('session/', views.session_view, name='session'),
+
+    path('spices/<int:spice_id>/', views.spice_detail, name='spice_detail'),
+
+    path('cards/<int:pk>/', views.card_detail, name='card_detail'),
+
+    path('outlets/<int:pk>/', views.outlet_detail, name='outlet_detail'),
+
+    path('employees/<int:pk>/', views.employee_detail, name='employee_detail'),
+
+    path('suppliers/<int:pk>/', views.supplier_detail, name='supplier_detail'),
+
+    path('', views.spa_index, name='spa')
+
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

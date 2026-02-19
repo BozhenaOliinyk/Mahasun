@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish Mahasyn</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body class="app">
+<input type="checkbox" id="mobile-menu-toggle" class="visually-hidden">
+<input type="checkbox" id="fav-toggle" class="visually-hidden">
+<input type="checkbox" id="menu-toggle" class="visually-hidden">
+
+<header class="main-header">
+
+    <div class="logo-container">
+        <a href="#/spices" aria-label="Turkish Mahasyn">
+            <img src="/static/images/spices_logo.png" alt="Logo">
+        </a>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="#/spices" data-route>Спеції</a>
+        <a href="#/cards" data-route>Бонусні картки</a>
+        <a href="#/outlets" data-route>Торгові точки</a>
+
+        <a href="#/employees" data-route data-admin-only>Працівники</a>
+        <a href="#/suppliers" data-route data-admin-only>Постачальники</a>
+        <a href="#/clients" data-route data-admin-only>Клієнти</a>
+    </nav>
+
+    <section class="header-actions">
+        <label for="fav-toggle" class="heart-btn" data-fav-open aria-label="Улюблені">❤</label>
+
+        <div class="profile-area">
+            <a id="profile-link" href="#/login" data-route aria-label="Профіль">
+                <img id="profile-avatar" src="/static/images/default_user.jpg" alt="User">
+            </a>
+        </div>
+
+        <label for="menu-toggle" class="burger-btn" aria-label="Меню">☰</label>
+    </section>
+</header>
+
+<aside class="overlay">
+    <section class="fav-window">
+        <header class="fav-header">
+            <h2>Улюблені</h2>
+        </header>
+
+        <div id="fav-content" class="fav-scroll-area">
+            <div class="fav-guest" id="fav-guest" hidden>
+                <p class="fav-guest-title">Улюблені доступні після входу</p>
+                <p class="fav-guest-text">
+                    Будь ласка, увійдіть або зареєструйтесь, щоб додавати спеції в улюблені.
+                </p>
+
+                <div class="fav-guest-actions">
+                    <a class="btn-main" href="#/login" data-route>Увійти</a>
+                    <a class="btn-main btn-outline" href="#/register" data-route>Зареєструватись</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="fav-footer">
+            <label for="fav-toggle" class="btn-main btn-outline">Закрити</label>
+        </footer>
+    </section>
+</aside>
+
+<aside class="mobile-menu-overlay" aria-hidden="true">
+    <nav class="mobile-menu" aria-label="Мобільне меню">
+        <div class="mobile-menu-top">
+            <div class="mobile-menu-profile">
+                <img id="mobile-profile-avatar" src="/static/images/default_user.jpg" alt="Профіль">
+            </div>
+
+            <label for="menu-toggle" class="mobile-menu-close" aria-label="Закрити">✕</label>
+        </div>
+
+        <div class="mobile-menu-links">
+            <a href="#/spices" data-route>Спеції</a>
+            <a href="#/cards" data-route>Бонусні картки</a>
+            <a href="#/outlets" data-route>Торгові точки</a>
+
+            <a href="#/employees" data-route data-admin-only>Працівники</a>
+            <a href="#/suppliers" data-route data-admin-only>Постачальники</a>
+            <a href="#/clients" data-route data-admin-only>Клієнти</a>
+        </div>
+    </nav>
+</aside>
+
+<main id="main-content">
+</main>
+
+
+<template id="tpl-login">
+    <main class="auth-container">
+        <section class="auth-box">
+            <header class="auth-header">
+                <h2>Вхід</h2>
+            </header>
+
+            <div class="error-message" role="alert" data-error-box hidden>
+                <p data-error-text></p>
+            </div>
+
+            <form class="auth-form" data-form="login">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Дані для входу</legend>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Пошта" aria-label="Пошта" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Пароль" aria-label="Пароль" required>
+                    </div>
+                </fieldset>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Ввійти</button>
+                </footer>
+            </form>
+
+            <nav class="auth-navigation">
+                <a href="#/register" class="btn-link" data-route>
+                    <button type="button" class="btn-main btn-outline">Зареєструватись</button>
+                    <a href="#/spices" class="btn-main btn-outline btn-block" data-route>Скасувати</a>
+                </a>
+            </nav>
+        </section>
+    </main>
+</template>
+
+<template id="tpl-register">
+    <main class="auth-container">
+        <section class="auth-box">
+            <header class="auth-header">
+                <h2>Реєстрація</h2>
+            </header>
+
+            <div class="error-message" role="alert" data-error-box hidden>
+                <p data-error-text></p>
+            </div>
+
+            <form class="auth-form" data-form="register">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Реєстраційні дані</legend>
+
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Пошта" aria-label="Пошта" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Пароль" aria-label="Пароль" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="last_name" placeholder="Прізвище" aria-label="Прізвище" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="first_name" placeholder="Ім'я" aria-label="Ім'я" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="fathers_name" placeholder="По батькові" aria-label="По батькові">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="phone_number" placeholder="Номер телефону" aria-label="Номер телефону"
+                               required>
+                    </div>
+                </fieldset>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зареєструватись</button>
+                </footer>
+            </form>
+
+            <nav class="auth-navigation">
+                <a href="#/login" class="btn-link" data-route>
+                    <button type="button" class="btn-main btn-outline">Ввійти</button>
+                    <a href="#/spices" class="btn-main btn-outline btn-block" data-route>Скасувати</a>
+                </a>
+            </nav>
+
+        </section>
+    </main>
+</template>
+
+<template id="tpl-profile">
+    <main class="profile-container">
+        <section class="auth-box profile-box">
+            <header class="auth-header">
+                <h2>Мій профіль</h2>
+            </header>
+
+            <div class="error-message" role="alert" data-error-box hidden>
+                <p data-error-text></p>
+            </div>
+
+            <form class="profile-form" data-form="profile">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Дані користувача</legend>
+
+                    <div class="form-group">
+                        <label for="id_ln">Прізвище</label>
+                        <input type="text" id="id_ln" name="ln" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_fn">Ім'я</label>
+                        <input type="text" id="id_fn" name="fn" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_mn">По батькові</label>
+                        <input type="text" id="id_mn" name="mn">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_phone">Телефон</label>
+                        <input type="text" id="id_phone" name="phone" required>
+                    </div>
+                </fieldset>
+
+                <aside class="loyalty-info">
+                    <p>Тип картки: <strong data-bonus-type></strong></p>
+                    <p>Нараховано бонусів: <strong class="accent-text" data-bonus-count></strong></p>
+                </aside>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти зміни</button>
+                </footer>
+            </form>
+
+            <nav class="profile-actions">
+                <a href="#/logout" class="btn-link" data-action="logout">
+                    <button type="button" class="btn-main btn-delete">Вийти з акаунту</button>
+                </a>
+            </nav>
+        </section>
+    </main>
+</template>
+
+<template id="tpl-spices">
+    <main class="catalog-page">
+        <header class="page-header">
+            <h1 class="visually-hidden">Каталог спецій</h1>
+            <a href="#/spices/add" class="admin-add-btn" aria-label="Додати спецію" data-route data-admin-only>+</a>
+        </header>
+
+        <section class="spice-grid" id="spice-grid">
+        </section>
+    </main>
+</template>
+
+<template id="tpl-spice-card">
+    <article class="spice-card" role="button" tabindex="0">
+        <figure class="spice-image-container">
+            <img src="/static/images/placeholder.jpg" class="spice-img" alt="">
+        </figure>
+
+        <div class="spice-content">
+            <header class="spice-header">
+                <h3 class="spice-title"></h3>
+            </header>
+
+            <p class="spice-meta" data-type></p>
+            <p class="spice-meta" data-purpose></p>
+
+            <footer class="spice-footer">
+                <p class="spice-price"><span data-price></span> <span class="price-unit">грн / 100 гр</span></p>
+            </footer>
+        </div>
+
+        <a href="#" class="fav-heart-btn" aria-label="Додати в обране" data-fav-toggle>❤</a>
+    </article>
+</template>
+
+<template id="tpl-spice-form">
+    <main class="edit-container">
+        <header class="form-header">
+            <h2 data-title>Створення спеції</h2>
+        </header>
+
+        <figure class="edit-preview">
+            <img src="/static/images/placeholder.jpg" class="edit-image-big" alt="Прев'ю спеції">
+        </figure>
+
+        <section class="form-section">
+            <div class="error-message" role="alert" data-error-box hidden>
+                <p data-error-text></p>
+            </div>
+
+            <form class="edit-form" data-form="spice">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Спеція</legend>
+
+                    <div class="form-group">
+                        <label for="id_name">Назва спеції</label>
+                        <input type="text" id="id_name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_type">Вид спеції</label>
+                        <textarea id="id_type" name="type" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_purpose">Призначення</label>
+                        <textarea id="id_purpose" name="purpose" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_price">Ціна (грн / 100 гр)</label>
+                        <input type="number" id="id_price" step="0.01" name="price" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_supplier">Назва постачальника</label>
+                        <input type="text" id="id_supplier" name="supplier_name"
+                               placeholder="Введіть назву постачальника">
+                    </div>
+                </fieldset>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти</button>
+                </footer>
+            </form>
+
+            <aside class="danger-zone" data-danger-zone hidden>
+                <button class="btn-delete" data-action="spice-delete">Видалити</button>
+            </aside>
+
+            <nav class="navigation-actions">
+                <a href="#/spices" class="btn-main btn-outline btn-block" data-route>Скасувати</a>
+            </nav>
+        </section>
+    </main>
+</template>
+
+<template id="tpl-cards">
+    <main class="content-container">
+        <header class="page-header">
+            <h1 class="visually-hidden">Бонусні картки</h1>
+
+            <a href="#/cards/new" class="admin-add-btn" aria-label="Додати нову картку" data-route data-admin-only>+</a>
+        </header>
+
+        <section class="long-list" id="cards-list">
+        </section>
+    </main>
+</template>
+
+<template id="tpl-card-item">
+    <article class="long-card bonus-card-full" role="button" tabindex="0">
+        <figure class="card-image-wrapper">
+            <img src="/static/images/new_card.jpg" alt="">
+        </figure>
+
+        <div class="bonus-info-block">
+            <header class="card-title">
+                <h2 data-type-title></h2>
+            </header>
+
+            <section class="card-details">
+                <p>
+                    Відсоток нарахування бонусів:
+                    <span class="highlight-value" data-bonus></span>
+                </p>
+
+                <p>
+                    Знижка(%):
+                    <span class="highlight-value" data-discount></span>
+                </p>
+            </section>
+        </div>
+    </article>
+</template>
+
+<template id="tpl-bonus-card-form">
+    <main class="edit-container">
+        <header class="form-header">
+            <h2 data-title>Додати бонусну картку</h2>
+        </header>
+
+        <section class="form-section">
+            <div class="error-message" role="alert" data-error-box hidden>
+                <p data-error-text></p>
+            </div>
+
+            <form class="edit-form" data-form="card">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Бонусна картка</legend>
+
+                    <div class="form-group">
+                        <label for="id_type">Тип картки</label>
+                        <input type="text" id="id_type" name="type" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_bonus">Нарахування бонусів (%)</label>
+                        <input type="number" id="id_bonus" name="bonus_percent" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_discount">Знижка (%)</label>
+                        <input type="number" id="id_discount" name="discount" required>
+                    </div>
+                </fieldset>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти</button>
+                </footer>
+            </form>
+
+            <aside class="danger-zone" data-danger-zone hidden>
+                <button type="button" class="btn-delete" data-action="card-delete">Видалити</button>
+            </aside>
+
+            <nav class="navigation-actions">
+                <a href="#/cards" class="btn-main btn-outline" data-route>Скасувати</a>
+            </nav>
+        </section>
+    </main>
+</template>
+
+<template id="tpl-outlets">
+    <main class="outlets-page">
+        <header class="page-header">
+            <h1 class="visually-hidden">Наші торгові точки</h1>
+            <a href="#/outlets/new" class="admin-add-btn" aria-label="Додати торгову точку" data-route
+               data-admin-only>+</a>
+        </header>
+
+        <section class="long-list" id="outlets-list">
+        </section>
+    </main>
+</template>
+
+<template id="tpl-outlet-item">
+    <article class="long-card" role="button" tabindex="0">
+        <figure class="card-image-wrapper">
+            <img src="/static/images/outlet_placeholder.jpg" alt="">
+        </figure>
+
+        <section class="card-details">
+            <header class="outlet-title">
+                <h2 data-name></h2>
+            </header>
+            <p class="outlet-address" data-address></p>
+        </section>
+    </article>
+</template>
+
+<template id="tpl-outlet-form">
+    <main class="edit-container">
+        <header class="form-header">
+            <h2 data-title>Додати торгову точку</h2>
+        </header>
+
+        <section class="form-section">
+            <div class="error-message" role="alert" data-error-box hidden>
+                <p data-error-text></p>
+            </div>
+
+            <form class="edit-form" data-form="outlet">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Торгова точка</legend>
+
+                    <div class="form-group">
+                        <label for="id_name">Назва точки</label>
+                        <input type="text" id="id_name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_address">Адреса</label>
+                        <input type="text" id="id_address" name="address" required>
+                    </div>
+                </fieldset>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти</button>
+                </footer>
+            </form>
+
+            <aside class="danger-zone" data-danger-zone hidden>
+                <button type="button" class="btn-delete" data-action="outlet-delete">Видалити</button>
+            </aside>
+
+            <nav class="navigation-actions">
+                <a href="#/outlets" class="btn-main btn-outline" data-route>Скасувати</a>
+            </nav>
+        </section>
+    </main>
+</template>
+
+<template id="tpl-employees">
+    <main class="employees-page">
+        <header class="page-header">
+            <h1 class="visually-hidden">Список працівників</h1>
+            <a href="#/employees/new" class="admin-add-btn" aria-label="Додати працівника" data-route
+               data-admin-only>+</a>
+        </header>
+
+        <section class="long-list" id="employees-list">
+        </section>
+    </main>
+</template>
+
+<template id="tpl-employee-item">
+    <article class="long-card employee-card" role="button" tabindex="0">
+        <section class="card-details">
+            <header class="employee-name">
+                <h2 class="employee-fullname" data-fullname></h2>
+            </header>
+
+            <div class="employee-info">
+                <p class="kv-line">
+                    <span class="kv-label">Посада:</span>
+                    <span class="kv-value" data-position></span>
+                    <span class="kv-muted" data-shift></span>
+                </p>
+
+                <p class="kv-line">
+                    <span class="kv-label">Торгова точка:</span>
+                    <span class="kv-value" data-outlet></span>
+                </p>
+
+                <p class="kv-line">
+                    <span class="kv-value" data-phone></span>
+                </p>
+            </div>
+        </section>
+    </article>
+</template>
+
+<template id="tpl-employee-form">
+    <main class="edit-container">
+        <header class="form-header">
+            <h2 data-title>Додати працівника</h2>
+        </header>
+
+        <section class="form-section">
+            <div class="error-message" role="alert" data-error-box hidden>
+                <p data-error-text></p>
+            </div>
+
+            <form class="edit-form" data-form="employee">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Працівник</legend>
+
+                    <div class="form-group">
+                        <label for="id_last_name">Прізвище</label>
+                        <input type="text" id="id_last_name" name="last_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_first_name">Ім'я</label>
+                        <input type="text" id="id_first_name" name="first_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_fathers_name">По батькові</label>
+                        <input type="text" id="id_fathers_name" name="fathers_name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_position">Посада</label>
+                        <input type="text" id="id_position" name="position">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_shift">Зміна (номер)</label>
+                        <input type="number" id="id_shift" name="shift">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_outlet">Торгова точка</label>
+                        <select name="outlet_id" id="id_outlet" required class="full-width-select">
+                            <option value="">-- Оберіть точку --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_phone">Номер телефону</label>
+                        <input type="text" id="id_phone" name="phone_number">
+                    </div>
+                </fieldset>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти</button>
+                </footer>
+            </form>
+
+            <aside class="danger-zone" data-danger-zone hidden>
+                <button type="button" class="btn-delete" data-action="employee-delete">Видалити</button>
+            </aside>
+
+            <nav class="navigation-actions">
+                <a href="#/employees" class="btn-main btn-outline" data-route>Скасувати</a>
+            </nav>
+        </section>
+    </main>
+</template>
+
+<template id="tpl-clients">
+    <main class="clients-page">
+        <header class="page-title">
+            <h1>Список клієнтів</h1>
+        </header>
+
+        <section class="long-list" id="clients-list">
+        </section>
+    </main>
+</template>
+
+<template id="tpl-client-item">
+    <article class="long-card client-card">
+        <section class="card-details">
+            <header class="client-name">
+                <h2 data-fullname></h2>
+            </header>
+
+            <div class="client-info">
+                <p>Тип картки: <strong data-card-type></strong></p>
+                <p>Кількість бонусів: <span class="bonus-count" data-bonus-count></span></p>
+                <p class="client-contact" data-phone></p>
+            </div>
+        </section>
+
+        <footer class="card-actions">
+            <button class="btn-del-small" data-action="client-delete">Видалити</button>
+        </footer>
+    </article>
+</template>
+
+<template id="tpl-suppliers">
+    <main class="employees-page">
+        <header class="page-header">
+            <h1 class="visually-hidden">Постачальники</h1>
+            <a href="#/suppliers/new" class="admin-add-btn" aria-label="Додати постачальника" data-route
+               data-admin-only>+</a>
+        </header>
+
+        <section class="long-list" id="suppliers-list">
+        </section>
+    </main>
+</template>
+
+<template id="tpl-supplier-item">
+    <article class="long-card employee-card" role="button" tabindex="0">
+        <section class="card-details">
+            <header class="employee-name">
+                <h2 class="employee-fullname" data-name></h2>
+            </header>
+
+            <div class="employee-info">
+                <p class="kv-line">
+                    <span class="kv-label">Адреса:</span>
+                    <span class="kv-value" data-address></span>
+                </p>
+
+                <p class="kv-line">
+                    <span class="kv-label">Телефон:</span>
+                    <span class="kv-value" data-phone></span>
+                </p>
+
+            </div>
+        </section>
+    </article>
+</template>
+
+<template id="tpl-supplier-form">
+    <main class="edit-container">
+        <header class="form-header">
+            <h2 data-title>Створення постачальника</h2>
+        </header>
+
+        <section class="form-section">
+            <div class="error-message" role="alert" data-error-box hidden>
+                <p data-error-text></p>
+            </div>
+
+            <form class="edit-form" data-form="supplier">
+                <fieldset class="form-fieldset">
+                    <legend class="visually-hidden">Постачальник</legend>
+
+                    <div class="form-group">
+                        <label for="id_name">Назва мережі</label>
+                        <input type="text" id="id_name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_address">Адреса</label>
+                        <input type="text" id="id_address" name="address">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_phone">Номер телефону</label>
+                        <input type="text" id="id_phone" name="phone_number">
+                    </div>
+                </fieldset>
+
+                <aside class="supplier-inventory" data-supplier-inventory hidden>
+                    <h3 class="section-title">Спеції від цього постачальника:</h3>
+                    <ul class="inline-list" data-spices-list></ul>
+                    <p class="muted" data-spices-empty hidden>Немає прив’язаних спецій.</p>
+                </aside>
+
+                <footer class="form-actions">
+                    <button type="submit" class="btn-main">Зберегти</button>
+                </footer>
+            </form>
+
+            <aside class="danger-zone" data-danger-zone hidden>
+                <button type="button" class="btn-delete" data-action="supplier-delete">Видалити</button>
+            </aside>
+
+            <nav class="navigation-actions">
+                <a href="#/suppliers" class="btn-main btn-outline" data-route>Скасувати</a>
+            </nav>
+        </section>
+    </main>
+</template>
+
+<template id="tpl-supplier-spices">
+    <main class="content-container">
+        <header class="page-header">
+            <h1 class="visually-hidden">Спеції постачальника</h1>
+        </header>
+
+        <section class="long-list">
+            <article class="long-card">
+                <section class="card-details">
+                    <header class="outlet-title">
+                        <h2 data-supplier-name></h2>
+                    </header>
+                    <ul class="inline-list" data-spices-list></ul>
+                    <p class="muted" data-empty hidden>Немає спецій.</p>
+                </section>
+            </article>
+        </section>
+
+        <nav class="navigation-actions">
+            <a href="#/suppliers" class="btn-main btn-outline" data-route>Назад</a>
+        </nav>
+    </main>
+</template>
+
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
