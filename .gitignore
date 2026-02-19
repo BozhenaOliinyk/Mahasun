@@ -11,5 +11,5 @@ venv/
 
 db.sqlite3
 
-web_app/dist
-web_app/node_modules
+dist/
+node_modules/
