@@ -112,7 +112,6 @@ async function apiFetch(path, { method = 'GET', body = null } = {}) {
   return data;
 }
 
-
 async function loadSession() {
   try {
     const s = await apiFetch('/session/', { method: 'GET' });
@@ -165,6 +164,22 @@ function applyAuthToUI() {
   mobileAvatar.alt = 'Профіль';
 }
 
+async function onRoute () {
+  await loadSession();
+
+  const hash = window.location.hash || '#/';
+  const match = routes.find((r) => r.path.test(hash));
+  if (!match) {
+    go('#/spices');
+    return;
+  }
+
+  const m = hash.match(match.path);
+  await match.handler(m);
+
+  applyAuthToUI();
+};
+
 function showError(root, message) {
   const box = qs('[data-error-box]', root);
   const text = qs('[data-error-text]', root);
@@ -185,23 +200,6 @@ function pickCardImage(type) {
   return '/static/images/new_card.jpg';
 }
 
-
-async function onRoute() {
-  await loadSession();
-
-  const hash = window.location.hash || '#/';
-  const match = routes.find((r) => r.path.test(hash));
-  if (!match) {
-    go('#/spices');
-    return;
-  }
-
-  const m = hash.match(match.path);
-  await match.handler(m);
-
-  applyAuthToUI();
-}
-
 window.addEventListener('hashchange', onRoute);
 
 document.addEventListener('click', (e) => {
@@ -212,7 +210,6 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   go(href);
 });
-
 
 async function renderFavoritesPanel() {
   const content = qs('#fav-content');
@@ -294,7 +291,6 @@ document.addEventListener('click', async (e) => {
     alert(err.message);
   }
 });
-
 
 async function renderLogin() {
   const frag = cloneTpl('tpl-login');
@@ -571,7 +567,7 @@ async function renderCards() {
     const card = itemFrag.firstElementChild;
 
     const values = Array.isArray(row.values) ? row.values : [];
-    const id = row.id;
+    const { id } = row;
 
     const type = values[1] || '';
     const img = qs('img', card);
@@ -682,7 +678,7 @@ async function renderOutlets() {
     const card = itemFrag.firstElementChild;
 
     const values = Array.isArray(row.values) ? row.values : [];
-    const id = row.id;
+    const { id } = row;
 
     const img = qs('img', card);
     img.alt = `Торгова точка ${values[1] || ''}`;
@@ -794,7 +790,7 @@ async function renderEmployees() {
     const card = itemFrag.firstElementChild;
 
     const values = Array.isArray(row.values) ? row.values : [];
-    const id = row.id;
+    const { id } = row;
 
     qs('[data-fullname]', card).textContent = `${values[1] || ''} ${values[2] || ''} ${values[3] || ''}`.trim();
     qs('[data-position]', card).textContent = values[4] || '';
@@ -926,7 +922,7 @@ async function renderClients() {
     const card = itemFrag.firstElementChild;
 
     const values = Array.isArray(row.values) ? row.values : [];
-    const id = row.id;
+    const { id } = row;
 
     qs('[data-fullname]', card).textContent = `${values[1] || ''} ${values[2] || ''} ${values[3] || ''}`.trim();
     qs('[data-card-type]', card).textContent = values[4] || '';
@@ -975,7 +971,7 @@ async function renderSuppliers() {
     const card = itemFrag.firstElementChild;
 
     const values = Array.isArray(row.values) ? row.values : [];
-    const id = row.id;
+    const { id } = row;
 
     qs('[data-name]', card).textContent = values[1] || '';
     qs('[data-address]', card).textContent = values[2] || '';
@@ -1124,7 +1120,6 @@ async function renderSupplierSpices({ id }) {
 
   setMain(root);
 }
-
 
 (async function init() {
   if (!window.location.hash) window.location.hash = '#/spices';
