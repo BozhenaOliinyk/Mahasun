@@ -1,0 +1,67 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+
+
+.app .auth-container {
+  @include container(520px);
+  padding: 40px 0 56px;
+}
+
+.app .auth-box {
+  @include card-surface;
+  padding: 18px;
+}
+
+.app .auth-header h2 {
+  margin: 0 0 14px;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.app .auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.app .auth-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.app .auth-navigation .btn-main{
+  padding: 15px;
+  width: min-content;
+}
+
+.app .error-message {
+  border-radius: 12px;
+  border: 1px solid rgba(132, 36, 0, 0.6);
+  background: rgba(132, 36, 0, 0.18);
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.app .error-message p {
+  margin: 0;
+  color: $text-100;
+  font-weight: 700;
+}
+
+[data-admin-only] {
+  display: none;
+}
+
+
+@media (max-width: 560px) {
+  .app .auth-header h2 {
+    font-size: 20px;
+  }
+
+  .app .auth-box {
+    padding: 14px;
+  }
+
+}
