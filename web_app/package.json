@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "sass:build": "sass scss:dist/css --no-source-map --style=compressed",
-  "copy:assets": "node scripts/copy-assets.js",
-  "build": "npm run sass:build && npm run copy:assets"
+    "sass:build": "sass scss:dist/css --no-source-map --style=compressed",
+    "copy:assets": "node scripts/copy-assets.js",
+    "build": "npm run sass:build && npm run copy:assets",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
