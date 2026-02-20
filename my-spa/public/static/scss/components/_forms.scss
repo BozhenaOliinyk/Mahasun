@@ -1,0 +1,125 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+
+
+.app .edit-container {
+  @include container(860px);
+  padding: 22px 0 44px;
+}
+
+.app .form-header h2 {
+  margin: 0 0 14px;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.app .form-section {
+  @include card-surface;
+  padding: 18px;
+}
+
+.app .edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.app .form-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.app .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: $text-200;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.app .form-group input,
+.app .form-group textarea,
+.app .form-group select {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #576e36;;
+  background: #a0ad8d;;
+  color: $text-100;
+  padding: 12px 12px;
+  font-family: inherit;
+  transition: border 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.app .form-group textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.app .form-group input:focus-visible,
+.app .form-group textarea:focus-visible,
+.app .form-group select:focus-visible {
+  @include focus-ring;
+  border: 1px solid rgba(102, 143, 40, 0.8);
+}
+
+.app .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.app .navigation-actions,
+.app .profile-actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.app .danger-zone {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(243, 239, 233, 0.16);
+}
+
+.app .edit-preview {
+  margin: 0 0 14px;
+  @include card-surface;
+  padding: 10px;
+}
+
+.app .edit-image-big {
+  width: 100%;
+  height: 260px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid rgba(243, 239, 233, 0.12);
+}
+
+
+
+
+@media (max-width: 560px) {
+  .app .form-header h2 {
+    font-size: 20px;
+  }
+
+  .app .form-section {
+    padding: 14px;
+  }
+
+  .app .form-group input,
+  .app .form-group textarea,
+  .app .form-group select {
+    padding: 10px 10px;
+    font-size: 14px;
+  }
+
+  .app .edit-image-big {
+    height: 200px;
+  }
+
+}
