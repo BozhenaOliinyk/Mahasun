@@ -86,14 +86,13 @@ export default function Layout() {
             ) : null}
 
             <div className="profile-area">
-              <button
-                type="button"
+              <a
                 className="btn-link"
                 aria-label={session.isAdmin ? "Вийти" : "Профіль"}
                 onClick={onProfileClick}
               >
                 <img id="profile-avatar" src={profile.src} alt={profile.alt} />
-              </button>
+              </a>
             </div>
 
             <label htmlFor="menu-toggle" className="burger-btn" aria-label="Меню">
