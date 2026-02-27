@@ -24,8 +24,6 @@ from .models import (
     SupplierSpice,
 )
 
-
-
 def is_admin(user) -> bool:
     return bool(user.is_authenticated and user.is_staff)
 
