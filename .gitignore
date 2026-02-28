@@ -13,3 +13,6 @@ db.sqlite3
 
 dist/
 node_modules/
+
+my-spa/coverage/
+my-spa/.vite/
