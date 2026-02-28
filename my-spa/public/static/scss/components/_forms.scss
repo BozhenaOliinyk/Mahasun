@@ -42,7 +42,8 @@
 
 .app .form-group input,
 .app .form-group textarea,
-.app .form-group select {
+.app .form-group select,
+.app .search{
   width: 100%;
   border-radius: 12px;
   border: 1px solid #576e36;;
@@ -60,7 +61,8 @@
 
 .app .form-group input:focus-visible,
 .app .form-group textarea:focus-visible,
-.app .form-group select:focus-visible {
+.app .form-group select:focus-visible,
+.app .search:focus-visible{
   @include focus-ring;
   border: 1px solid rgba(102, 143, 40, 0.8);
 }
@@ -77,7 +79,6 @@
   display: flex;
   flex-wrap: wrap;
 }
-
 
 .app .danger-zone {
   margin-top: 16px;

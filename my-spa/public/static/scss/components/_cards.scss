@@ -139,6 +139,13 @@
   grid-template-columns: 160px 1fr;
 }
 
+.app .bonus-info{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 3%;
+}
+
 .app .bonus-info-block {
   display: flex;
   flex-direction: column;
@@ -150,6 +157,16 @@
   font-size: 22px;
   font-weight: 800;
   color: $text-100;
+}
+
+.app .bonus-card-mine{
+  background: linear-gradient(180deg, rgb(147, 137, 96), rgb(145, 135, 85));
+  border: 1px solid rgba(166, 133, 30, 0.95);
+}
+
+.app .mine-badge{
+  font-weight: 700;
+  margin-right: 10%;
 }
 
 

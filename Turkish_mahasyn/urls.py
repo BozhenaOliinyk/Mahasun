@@ -6,21 +6,27 @@ from appi_app import views
 urlpatterns = [
     path('clients/', views.client_list, name='client_list'),
     path('clients/<int:pk>/delete/', views.client_delete, name='client_delete'),
+    path("clients/search/", views.client_search, name="client_search"),
 
     path('employees/', views.employee_list, name='employee_list'),
     path('employees/new/', views.employee_edit, name='employee_create'),
     path('employees/<int:pk>/edit/', views.employee_edit, name='employee_update'),
     path('employees/<int:pk>/delete/', views.employee_delete, name='employee_delete'),
+    path("employees/search/", views.employee_search, name="employee_search"),
 
     path('spices/', views.spice_list, name='spice_list'),
     path('spices/add/', views.spice_create, name='spice_create'),
     path('spices/edit/<int:spice_id>/', views.spice_edit, name='spice_edit'),
     path('spices/delete/<int:spice_id>/', views.spice_delete, name='spice_delete'),
+    path("spices/search/", views.spice_search, name="spice_search"),
+    path("spices/filter/", views.spice_filter, name="spice_filter"),
+
 
     path('outlets/', views.outlet_list, name='outlet_list'),
     path('outlets/new/', views.outlet_edit, name='outlet_create'),
     path('outlets/<int:pk>/edit/', views.outlet_edit, name='outlet_update'),
     path('outlets/<int:pk>/delete/', views.outlet_delete, name='outlet_delete'),
+    path("outlets/search/", views.outlet_search, name="outlet_search"),
 
     path('cards/', views.card_list, name='card_list'),
     path('cards/new/', views.card_edit, name='card_create'),
@@ -32,6 +38,7 @@ urlpatterns = [
     path('suppliers/<int:pk>/edit/', views.supplier_edit, name='supplier_update'),
     path('suppliers/<int:pk>/delete/', views.supplier_delete, name='supplier_delete'),
     path('suppliers/<int:supplier_id>/spices/', views.supplier_spices, name='supplier_spices'),
+    path("suppliers/search/", views.supplier_search, name="supplier_search"),
 
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),

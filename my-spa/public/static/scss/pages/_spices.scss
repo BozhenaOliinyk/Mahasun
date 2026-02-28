@@ -1,6 +1,22 @@
 @use "../abstracts/colors" as *;
 @use "../abstracts/mixins" as *;
 
+.app .filter{
+  width: 15%;
+  border-radius: 12px;
+  border: 1px solid #576e36;;
+  background: #a0ad8d;;
+  color: $text-100;
+  padding: 12px 12px;
+  font-family: inherit;
+  transition: border 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.app .filter{
+  @include focus-ring;
+  border: 1px solid rgba(102, 143, 40, 0.8);
+}
+
 .app .spice-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

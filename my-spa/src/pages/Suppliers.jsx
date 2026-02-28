@@ -1,112 +1,121 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { apiFetch } from "../api/client";
-import { useAuth } from "../context/AuthContext.jsx";
+import React, {useEffect, useMemo, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {apiFetch} from "../api/client";
+import {useAuth} from "../context/AuthContext.jsx";
 
 export default function Suppliers() {
-  const { session } = useAuth();
-  const navigate = useNavigate();
+    const {session} = useAuth();
+    const navigate = useNavigate();
 
-  const [error, setError] = useState("");
-  const [rows, setRows] = useState([]);
+    const [error, setError] = useState("");
+    const [rows, setRows] = useState([]);
+    const [q, setQ] = useState("");
 
-  useEffect(() => {
-    let alive = true;
+    useEffect(() => {
+        let alive = true;
 
-    if (session?.loaded && !session.isAdmin) {
-      navigate("/spices", { replace: true });
-      return;
+        if (session?.loaded && !session.isAdmin) {
+            navigate("/spices", {replace: true});
+            return;
+        }
+
+        (async () => {
+            try {
+                setError("");
+
+                const query = q.trim();
+
+                let url = "/suppliers/";
+                if (query) {
+                    const params = new URLSearchParams({q: query});
+                    url = `/suppliers/search/?${params.toString()}`;
+                }
+
+                const data = await apiFetch(url, {method: "GET"});
+
+                const r = Array.isArray(data?.rows) ? data.rows : [];
+                if (alive) setRows(r);
+            } catch (err) {
+                if (alive) setError(err?.message || "Не вдалося завантажити постачальників");
+            }
+        })();
+
+        return () => {
+            alive = false;
+        };
+    }, [session?.loaded, session?.isAdmin, navigate, q]);
+
+    const errorNode = useMemo(() => {
+        if (!error) return null;
+        return (
+            <div className="error-message" role="alert">
+                <p>{error}</p>
+            </div>
+        );
+    }, [error]);
+
+    function openEdit(id) {
+        navigate(`/suppliers/${id}/edit`);
     }
 
-    (async () => {
-      try {
-        const data = await apiFetch("/suppliers/", { method: "GET" });
-        const r = Array.isArray(data?.rows) ? data.rows : [];
-        if (alive) setRows(r);
-      } catch (err) {
-        if (alive) setError(err?.message || "Не вдалося завантажити постачальників");
-      }
-    })();
+    function openSpices(id) {
+        navigate(`/suppliers/${id}/spices`);
+    }
 
-    return () => {
-      alive = false;
-    };
-  }, [session?.loaded, session?.isAdmin, navigate]);
-
-  const errorNode = useMemo(() => {
-    if (!error) return null;
     return (
-      <div className="error-message" role="alert">
-        <p>{error}</p>
-      </div>
-    );
-  }, [error]);
-
-  function openEdit(id) {
-    navigate(`/suppliers/${id}/edit`);
-  }
-
-  function openSpices(id) {
-    navigate(`/suppliers/${id}/spices`);
-  }
-
-  return (
-    <main className="employees-page">
-      <header className="page-header">
-        <h1 className="visually-hidden">Постачальники</h1>
-        <Link to="/suppliers/new" className="admin-add-btn" aria-label="Додати постачальника">+</Link>
-      </header>
-
-      {errorNode}
-
-      <section className="long-list" id="suppliers-list">
-        {rows.map((row) => {
-          const values = Array.isArray(row.values) ? row.values : [];
-          const id = row.id;
-
-          return (
-            <article
-              key={id}
-              className="long-card employee-card"
-              role="button"
-              tabIndex={0}
-              onClick={() => openEdit(id)}
-              onKeyDown={(e) => e.key === "Enter" && openEdit(id)}
-            >
-              <section className="card-details">
-                <header className="employee-name">
-                  <h2 className="employee-fullname">{values[1] || ""}</h2>
-                </header>
-
-                <div className="employee-info">
-                  <p className="kv-line">
-                    <span className="kv-label">Адреса:</span>{" "}
-                    <span className="kv-value">{values[2] || ""}</span>
-                  </p>
-                  <p className="kv-line">
-                    <span className="kv-label">Телефон:</span>{" "}
-                    <span className="kv-value">{values[3] || ""}</span>
-                  </p>
-
-                  <div style={{ marginTop: 10 }}>
-                    <button
-                      type="button"
-                      className="btn-main btn-outline"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openSpices(id);
-                      }}
-                    >
-                      Спеції постачальника
-                    </button>
-                  </div>
+        <main className="employees-page">
+            <header className="page-header">
+                <h1 className="visually-hidden">Постачальники</h1>
+                <div className="page-header-row">
+                    <div>
+                        <input className="search"
+                               type="text"
+                               value={q}
+                               onChange={(e) => setQ(e.target.value)}
+                               placeholder="Пошук постачальника"
+                               aria-label="Пошук постачальника"
+                        />
+                    </div>
                 </div>
-              </section>
-            </article>
-          );
-        })}
-      </section>
-    </main>
-  );
+                <Link to="/suppliers/new" className="admin-add-btn" aria-label="Додати постачальника">+</Link>
+            </header>
+
+            {errorNode}
+
+            <section className="long-list" id="suppliers-list">
+                {rows.map((row) => {
+                    const values = Array.isArray(row.values) ? row.values : [];
+                    const id = row.id;
+
+                    return (
+                        <article
+                            key={id}
+                            className="long-card employee-card"
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => openEdit(id)}
+                            onKeyDown={(e) => e.key === "Enter" && openEdit(id)}
+                        >
+                            <section className="card-details">
+                                <header className="employee-name">
+                                    <h2 className="employee-fullname">{values[1] || ""}</h2>
+                                </header>
+
+                                <div className="employee-info">
+                                    <p className="kv-line">
+                                        <span className="kv-label">Адреса:</span>{" "}
+                                        <span className="kv-value">{values[2] || ""}</span>
+                                    </p>
+                                    <p className="kv-line">
+                                        <span className="kv-label">Телефон:</span>{" "}
+                                        <span className="kv-value">{values[3] || ""}</span>
+                                    </p>
+                                </div>
+                            </section>
+                        </article>
+                    );
+                })}
+            </section>
+        </main>
+    );
 }

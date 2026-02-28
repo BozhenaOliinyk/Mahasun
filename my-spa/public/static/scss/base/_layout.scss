@@ -23,6 +23,27 @@
   margin-bottom: 18px;
 }
 
+.app .page-header-row {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  alignItems: center;
+  justify-content: space-between;
+}
+
+.app .clients-page .page-title{
+  justify-content: start;
+  margin: 0px;
+}
+
+.app .page-header-clients {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
 .app .page-title {
   @include container(1160px);
   padding: 18px 0 12px;

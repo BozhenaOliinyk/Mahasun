@@ -1,5 +1,6 @@
 import json
 import os
+from decimal import Decimal, InvalidOperation
 from typing import Any, Dict, List, Optional
 
 from django.conf import settings
@@ -7,6 +8,8 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.db.models import Q
+from django.db.models.fields import IntegerField
 from django.http import JsonResponse, HttpRequest, HttpResponse, FileResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -23,6 +26,7 @@ from .models import (
     Supplier,
     SupplierSpice,
 )
+
 
 def is_admin(user) -> bool:
     return bool(user.is_authenticated and user.is_staff)
@@ -74,7 +78,6 @@ def _ensure_admin(request: HttpRequest) -> Optional[JsonResponse]:
     if not is_admin(request.user):
         return _json_error("Доступ заборонено", status=403)
     return None
-
 
 
 @require_http_methods(["GET"])
@@ -161,7 +164,6 @@ def register_view(request: HttpRequest) -> JsonResponse:
     )
     request.session["client_id"] = client.id
     return _json_ok({"client_id": client.id, "redirect": "/"})
-
 
 
 @csrf_exempt
@@ -343,13 +345,75 @@ def spice_delete(request: HttpRequest, spice_id: int) -> JsonResponse:
     return _json_ok()
 
 
+@require_http_methods(["GET"])
+def spice_filter(request: HttpRequest) -> JsonResponse:
+    purpose = (request.GET.get("purpose") or "").strip()
+    type_ = (request.GET.get("type") or "").strip()
+    price_min_raw = (request.GET.get("price_min") or "").strip()
+    price_max_raw = (request.GET.get("price_max") or "").strip()
+
+    spices = Spice.objects.all()
+
+    if purpose:
+        spices = spices.filter(purpose__iexact=purpose)
+
+    if type_:
+        spices = spices.filter(type__iexact=type_)
+
+    try:
+        if price_min_raw != "":
+            spices = spices.filter(price__gte=Decimal(price_min_raw))
+    except (InvalidOperation, TypeError, ValueError):
+        pass
+
+    try:
+        if price_max_raw != "":
+            spices = spices.filter(price__lte=Decimal(price_max_raw))
+    except (InvalidOperation, TypeError, ValueError):
+        pass
+
+    client = _get_client_from_session(request)
+    fav_ids: List[int] = []
+    if client:
+        fav_ids = list(
+            Favorite.objects.filter(client_id=client.id).values_list("spice_id", flat=True)
+        )
+
+    rows = _build_rows(spices, fields=["id", "name", "type", "purpose", "price"])
+    return JsonResponse({"rows": rows, "fav_ids": fav_ids})
+
+
+@require_http_methods(["GET"])
+def spice_search(request: HttpRequest) -> JsonResponse:
+    q = (request.GET.get("q") or "").strip()
+
+    spices = Spice.objects.all()
+    if q:
+        spices = spices.filter(name__icontains=q)
+
+    client = _get_client_from_session(request)
+    fav_ids: List[int] = []
+    if client:
+        fav_ids = list(
+            Favorite.objects.filter(client_id=client.id).values_list("spice_id", flat=True)
+        )
+
+    rows = _build_rows(spices, fields=["id", "name", "type", "purpose", "price"])
+    return JsonResponse({"rows": rows, "fav_ids": fav_ids})
+
 
 @require_http_methods(["GET"])
 def card_list(request: HttpRequest) -> JsonResponse:
     cards = BonusCard.objects.all()
     rows = _build_rows(cards, fields=["id", "type", "bonus_percent", "discount"])
-    return JsonResponse({"rows": rows})
 
+    client = _get_client_from_session(request)
+
+    my_card_id = None
+    if client:
+        my_card_id = client.bonus_card_id
+
+    return JsonResponse({"rows": rows, "my_card_id": my_card_id})
 
 @require_http_methods(["GET"])
 def card_detail(request: HttpRequest, pk: int) -> JsonResponse:
@@ -399,7 +463,6 @@ def card_delete(request: HttpRequest, pk: int) -> JsonResponse:
     obj = get_object_or_404(BonusCard, pk=pk)
     obj.delete()
     return _json_ok()
-
 
 
 @require_http_methods(["GET"])
@@ -456,6 +519,16 @@ def outlet_delete(request: HttpRequest, pk: int) -> JsonResponse:
     obj.delete()
     return _json_ok()
 
+@require_http_methods(["GET"])
+def outlet_search(request: HttpRequest) -> JsonResponse:
+    q = (request.GET.get("q") or "").strip()
+
+    outlets = RetailOutlet.objects.all()
+    if q:
+        outlets = outlets.filter(address__icontains=q)
+
+    rows = _build_rows(outlets, fields=["id", "name", "address"])
+    return JsonResponse({"rows": rows})
 
 
 @user_passes_test(is_admin)
@@ -530,6 +603,36 @@ def employee_delete(request: HttpRequest, pk: int) -> JsonResponse:
     obj.delete()
     return _json_ok()
 
+@require_http_methods(["GET"])
+def employee_search(request: HttpRequest) -> JsonResponse:
+    q = (request.GET.get("q") or "").strip()
+
+    employees = Employee.objects.select_related("outlet").all()
+
+    if q:
+        employees = employees.filter(
+            Q(last_name__icontains=q) |
+            Q(first_name__icontains=q) |
+            Q(fathers_name__icontains=q)
+        )
+
+    rows = []
+    for e in employees:
+        rows.append({
+            "id": e.pk,
+            "values": [
+                str(e.pk),
+                e.last_name or "",
+                e.first_name or "",
+                e.fathers_name or "",
+                e.position or "",
+                str(e.shift) if e.shift is not None else "",
+                e.outlet.name if e.outlet else "",
+                e.phone_number or "",
+            ]
+        })
+
+    return JsonResponse({"rows": rows})
 
 
 @user_passes_test(is_admin)
@@ -561,7 +664,35 @@ def client_delete(request: HttpRequest, pk: int) -> JsonResponse:
     Client.objects.filter(pk=pk).delete()
     return _json_ok()
 
+@require_http_methods(["GET"])
+def client_search(request: HttpRequest) -> JsonResponse:
+    q = (request.GET.get("q") or "").strip()
 
+    clients = Client.objects.select_related("bonus_card").all()
+
+    if q:
+        clients = clients.filter(
+            Q(last_name__icontains=q) |
+            Q(first_name__icontains=q) |
+            Q(fathers_name__icontains=q)
+        )
+
+    rows = []
+    for c in clients:
+        rows.append({
+            "id": c.pk,
+            "values": [
+                None,
+                c.last_name or "",
+                c.first_name or "",
+                c.fathers_name or "",
+                (getattr(c.bonus_card, "type", "") or ""),
+                getattr(c, "bonus_count", 0) if getattr(c, "bonus_count", None) is not None else 0,
+                getattr(c, "email", "") or "",
+            ],
+        })
+
+    return JsonResponse({"rows": rows})
 
 @user_passes_test(is_admin)
 @require_http_methods(["GET"])
@@ -634,6 +765,17 @@ def supplier_delete(request: HttpRequest, pk: int) -> JsonResponse:
 
     supplier.delete()
     return _json_ok()
+
+@require_http_methods(["GET"])
+def supplier_search(request: HttpRequest) -> JsonResponse:
+    q = (request.GET.get("q") or "").strip()
+
+    suppliers = Supplier.objects.all()
+    if q:
+        suppliers = suppliers.filter(name__icontains=q)
+
+    rows = _build_rows(suppliers, fields=["id", "name", "address", "phone_number"])
+    return JsonResponse({"rows": rows})
 
 
 @user_passes_test(is_admin)
