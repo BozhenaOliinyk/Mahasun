@@ -10,6 +10,7 @@
 @use "components/cards";
 @use "components/forms";
 @use "components/favorites";
+@use "./components/ws";
 
 @use "pages/auth";
 @use "pages/profile";

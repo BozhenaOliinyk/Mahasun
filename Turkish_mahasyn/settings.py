@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'appi_app',
     'rest_framework',
     'corsheaders',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -112,5 +113,12 @@ CORS_ALLOWED_ORIGINS = [
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "web_app" / "dist",
+    BASE_DIR / "my-spa" / "dist",
 ]
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}

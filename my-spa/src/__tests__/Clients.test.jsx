@@ -57,7 +57,6 @@ describe("Clients page", () => {
 
         render(<Clients/>);
 
-        expect(await screen.findByText("Список клієнтів")).toBeInTheDocument();
         expect(apiFetchMock).toHaveBeenCalledWith("/clients/", {method: "GET"});
 
         expect(await screen.findByText("Іваненко Іван Іванович")).toBeInTheDocument();

@@ -185,7 +185,3 @@ describe("SpiceForm page (create/edit/delete)", () => {
     expect(navigateMock).not.toHaveBeenCalled();
   });
 });
-
-// npm i
-// npm run test
-// npm run coverage

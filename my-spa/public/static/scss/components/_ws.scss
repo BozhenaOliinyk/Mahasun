@@ -1,0 +1,32 @@
+.ws-toasts {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.ws-toast {
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(20, 20, 20, 0.85);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+}
+
+.ws-toast-title {
+  font-size: 12px;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.ws-toast-message {
+  font-size: 14px;
+  line-height: 1.25;
+}

@@ -5,6 +5,7 @@ import { useSession } from "../hooks/useSession";
 import FavoritesPanel from "./FavoritesPanel";
 import MobileMenu from "./MobileMenu";
 import Navbar from "./Navbar";
+import AlertsToasts from "./AlertsToasts.jsx";
 
 function avatarFor(session) {
   if (session.isAdmin) {
@@ -100,6 +101,8 @@ export default function Layout() {
             </label>
           </section>
         </header>
+
+        <AlertsToasts />
 
         {favOpen ? <FavoritesPanel isOpen={favOpen} onChanged={onFavChanged} /> : null}
 
